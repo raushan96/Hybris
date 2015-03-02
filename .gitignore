@@ -1,7 +1,6 @@
 build/
 out/
-.gradle
+.gradle/
 .idea
 *.iml
-/gradle
 Hybris.iml
