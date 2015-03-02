@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+
+			<Pattern>
+				%-5level %logger{36} - %msg%n
+			</Pattern>
+
+		</layout>
+	</appender>
+
+	<root level="debug">
+		<appender-ref ref="STDOUT" />
+	</root>
+
+ <!--<appender name="flowersLog" class="ch.qos.logback.core.FileAppender">
+        <file>c:\\Users\\andreika\\IdeaProjects\\Flowers\\src\\main\\resources\\flowers.log</file>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="flowersErrorLog" class="ch.qos.logback.core.FileAppender">
+        <file>c:\\Users\\andreika\\IdeaProjects\\Flowers\\src\\main\\resources\\flowers.log</file>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="andre.rest" level="INFO" additivity="false">
+        <appender-ref ref="flowersLog" />
+    </logger>
+
+    <logger name="andre.rest" level="ERROR" additivity="false">
+        <appender-ref ref="flowersErrorLog" />
+    </logger>
+
+    <root level="DEBUG">
+        <appender-ref ref="flowersLog" />
+    </root> -->
+
+</configuration>
