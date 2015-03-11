@@ -22,7 +22,16 @@ public class WelcomeController {
 
 		ModelAndView model = new ModelAndView();
 		model.setViewName("index");
-		model.addObject("name", String.format(template, name));
+		model.addObject("name", String.format(template, name) + "nda");
+
+		return model;
+
+	}
+
+	@RequestMapping(value = "/secure", method = RequestMethod.GET)
+	public ModelAndView secureTest() {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("secure");
 
 		return model;
 

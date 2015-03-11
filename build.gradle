@@ -19,6 +19,9 @@ dependencies {
     compile 'org.springframework:spring-webmvc:4.1.4.RELEASE'
     compile 'org.springframework.data:spring-data-jpa:1.7.2.RELEASE'
 
+    compile 'org.springframework.security:spring-security-web:3.2.6.RELEASE'
+    compile 'org.springframework.security:spring-security-config:3.2.6.RELEASE'
+
     //hibernate
     compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
     compile 'org.hibernate:hibernate-entitymanager:4.3.8.Final'

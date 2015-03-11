@@ -2,12 +2,12 @@ package de.andre.entity.core;
 
 import de.andre.entity.BaseEntity;
 import org.hibernate.validator.constraints.CreditCardNumber;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 /**
@@ -20,7 +20,7 @@ public class DpsCreditCard extends BaseEntity {
     private Date expirationDate;
 
     @Basic
-    @NotNull
+    @NotBlank
     @CreditCardNumber
     @Column(name = "CREDIT_CARD_NUMBER")
     public String getCreditCardNumber() {
@@ -32,7 +32,7 @@ public class DpsCreditCard extends BaseEntity {
     }
 
     @Basic
-    @NotNull
+    @NotBlank
     @Column(name = "EXPIRATION_DATE")
     public Date getExpirationDate() {
         return expirationDate;

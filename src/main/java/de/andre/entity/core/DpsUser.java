@@ -2,9 +2,9 @@ package de.andre.entity.core;
 
 import de.andre.entity.BaseEntity;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 /**
@@ -21,7 +21,7 @@ public class DpsUser extends BaseEntity {
     private Date dateOfBirth;
 
     @Basic
-    @NotNull
+    @NotBlank
     @Column(name = "LOGIN")
     public String getLogin() {
         return login;
@@ -32,7 +32,7 @@ public class DpsUser extends BaseEntity {
     }
 
     @Basic
-    @NotNull
+    @NotBlank
     @Column(name = "PASSWORD")
     public String getPassword() {
         return password;
@@ -53,7 +53,7 @@ public class DpsUser extends BaseEntity {
     }
 
     @Basic
-    @NotNull
+    @NotBlank
     @Column(name = "GENDER")
     public Byte getGender() {
         return gender;

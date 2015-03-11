@@ -1,9 +1,9 @@
 package de.andre.entity.core;
 
 import de.andre.entity.BaseEntity;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 /**
  * Created by andreika on 2/28/2015.
@@ -15,7 +15,7 @@ public class DpsRole extends BaseEntity {
     private String description;
 
     @Basic
-    @NotNull
+    @NotBlank
     @Column(name = "NAME")
     public String getName() {
         return name;
