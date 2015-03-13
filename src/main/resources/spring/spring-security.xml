@@ -9,14 +9,13 @@
 
     <http security="none" pattern="/resources/css"/>
     <http use-expressions="true">
-        <intercept-url pattern="/login" access="permitAll"/>
+        <intercept-url pattern="/login" access="hasRole('ROLE_USER')"/>
         <intercept-url pattern="/index" access="permitAll"/>
         <intercept-url pattern="/secure" access="hasRole('ROLE_USER')" />
-        <form-login/>
-        <!-- default success page? -->
-<!--        <form-login authentication-failure-url="login?error"/>
+
+        <form-login login-page="/login"/>
         <logout logout-success-url="/login?logout" delete-cookies="JSESSIONID"/>
-        <session-management invalid-session-url="/timeout.jsp">
+<!--        <session-management invalid-session-url="/timeout.jsp">
             <concurrency-control max-sessions="1"/>
         </session-management>-->
     </http>
