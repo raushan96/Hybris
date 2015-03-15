@@ -21,6 +21,7 @@ dependencies {
 
     compile 'org.springframework.security:spring-security-web:3.2.6.RELEASE'
     compile 'org.springframework.security:spring-security-config:3.2.6.RELEASE'
+    runtime 'org.springframework.security:spring-security-taglibs:3.2.6.RELEASE'
 
     //hibernate
     compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'

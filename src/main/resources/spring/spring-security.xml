@@ -7,34 +7,25 @@
            http://www.springframework.org/schema/security/spring-security.xsd">
     <global-method-security pre-post-annotations="enabled"/>
 
-    <http security="none" pattern="/resources/css"/>
+    <http security="none" pattern="/resources/**"/>
     <http use-expressions="true">
-        <intercept-url pattern="/login" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/login" access="permitAll"/>
         <intercept-url pattern="/index" access="permitAll"/>
         <intercept-url pattern="/secure" access="hasRole('ROLE_USER')" />
 
-        <form-login login-page="/login"/>
-        <logout logout-success-url="/login?logout" delete-cookies="JSESSIONID"/>
+        <form-login login-page="/login" authentication-failure-url="/login?error" default-target-url="/hello"/>
+        <logout logout-success-url="/login?logout" logout-url="/logout" delete-cookies="JSESSIONID"/>
+        <remember-me key="hybris123" token-validity-seconds="86400" remember-me-parameter="remember-me"/>
 <!--        <session-management invalid-session-url="/timeout.jsp">
             <concurrency-control max-sessions="1"/>
         </session-management>-->
     </http>
 
     <authentication-manager alias="authenticationManager">
-        <authentication-provider>
-            <user-service>
-                <user name="admin" password="admin" authorities="ROLE_USER"/>
-            </user-service>
+        <authentication-provider user-service-ref="userDetailsServiceImpl">
+            <password-encoder ref="bcryptEncoder"/>
         </authentication-provider>
     </authentication-manager>
 
     <beans:bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-
-    <!--    <beans:bean id="successHandler"
-              class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler"/>
-        <beans:bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
-            <beans:property name="permissionEvaluator">
-                <beans:bean class="messages.security.MessagePermissionEvaluator"/>
-            </beans:property>
-        </beans:bean>-->
 </beans:beans>

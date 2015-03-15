@@ -12,23 +12,24 @@ import java.sql.Date;
  */
 @Entity
 @Table(name = "DPS_USER", schema = "ANDRE")
-public class DpsUser extends BaseEntity {
-    private String login;
+public class DpsUser {
+    private Integer userId;
     private String password;
     private String firstName;
     private Byte gender;
     private String email;
     private Date dateOfBirth;
 
-    @Basic
-    @NotBlank
-    @Column(name = "LOGIN")
-    public String getLogin() {
-        return login;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")
+    @SequenceGenerator(name = "globalSeq", sequenceName = "global_seq")
+    @Column(name = "user_id")
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Basic
@@ -65,6 +66,7 @@ public class DpsUser extends BaseEntity {
 
     @Basic
     @Email
+    @NotBlank
     @Column(name = "EMAIL")
     public String getEmail() {
         return email;
@@ -95,7 +97,6 @@ public class DpsUser extends BaseEntity {
         if (email != null ? !email.equals(dpsUser.email) : dpsUser.email != null) return false;
         if (firstName != null ? !firstName.equals(dpsUser.firstName) : dpsUser.firstName != null) return false;
         if (gender != null ? !gender.equals(dpsUser.gender) : dpsUser.gender != null) return false;
-        if (login != null ? !login.equals(dpsUser.login) : dpsUser.login != null) return false;
         if (password != null ? !password.equals(dpsUser.password) : dpsUser.password != null) return false;
 
         return true;
@@ -103,8 +104,7 @@ public class DpsUser extends BaseEntity {
 
     @Override
     public int hashCode() {
-        int result = this.getId();
-        result = 31 * result + (login != null ? login.hashCode() : 0);
+        int result = this.getUserId();
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (gender != null ? gender.hashCode() : 0);

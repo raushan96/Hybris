@@ -17,9 +17,11 @@
             <fieldset>
                 <legend>Login</legend>
                 <label for="email">Email</label>
-                <input type="text" id="email" name="username">
+                <input type="text" id="email" name="j_username" placeholder="example@com" autofocus>
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password">
+                <input type="password" id="password" name="j_password" placeholder="password">
+                <label for="remember-me">Remember me</label>
+                <input type="checkbox" id="remember-me" name="remember-me">
 
                 <button type="submit">Log in</button>
             </fieldset>

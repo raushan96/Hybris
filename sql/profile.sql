@@ -2,8 +2,7 @@
 
 create table dps_user (
 	user_id	number(8,0),
-	login	varchar2(40)	not null,
-	password	varchar2(40) not null,
+	password	varchar2(120) not null,
 	first_name	varchar2(40)	null,
 	gender number(1, 0) not null,
 	email	varchar2(40)	null,

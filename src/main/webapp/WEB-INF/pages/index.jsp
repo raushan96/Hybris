@@ -2,7 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%--<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>--%>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <!doctype html>
 <html lang="en">
@@ -19,8 +19,27 @@
 
 <body>
 
-<h1>Gradle - Spring</h1>
-<h2>Hello ${name}</h2>
+<h2>Spring</h2>
+<sec:authorize access="!isAuthenticated()">
+    <h2>Hello ${name}</h2>
+    <a href="/login" role="button">Login</a>
+</sec:authorize>
+
+<sec:authorize access="isAuthenticated()">
+    <h2>Hello <sec:authentication property="principal.username" /></h2>
+    <a href="/logout" role="button">Logout</a>
+</sec:authorize>
+
+<sec:authorize access="isRememberMe()">
+    Logged by remember me
+</sec:authorize>
+
+<sec:authorize access="isFullyAuthenticated()">
+    For sure logged
+</sec:authorize>
+
+<a href="/hello">Index</a>
+<a href="/secure">Secure</a>
 <%--<div class="container">
     <div class="row">
         <div class="span8 offset2">
