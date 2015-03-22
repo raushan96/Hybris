@@ -13,7 +13,7 @@
         <intercept-url pattern="/index" access="permitAll"/>
         <intercept-url pattern="/secure" access="hasRole('ROLE_USER')" />
 
-        <form-login login-page="/login" authentication-failure-url="/login?error" default-target-url="/hello"/>
+        <form-login login-page="/login" authentication-failure-url="/login-error" default-target-url="/index"/>
         <logout logout-success-url="/login?logout" logout-url="/logout" delete-cookies="JSESSIONID"/>
         <remember-me key="hybris123" token-validity-seconds="86400" remember-me-parameter="remember-me"/>
 <!--        <session-management invalid-session-url="/timeout.jsp">

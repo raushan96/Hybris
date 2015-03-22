@@ -15,7 +15,7 @@ public class WelcomeController {
 	private final String template = "Ga, %s!";
 	private final AtomicLong counter = new AtomicLong();
 
-	@RequestMapping(value = "/hello", method = RequestMethod.GET)
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView welcome(@RequestParam(value="name", defaultValue = "world") String name) {
 
 		logger.debug("welcome() - name {}", name);
