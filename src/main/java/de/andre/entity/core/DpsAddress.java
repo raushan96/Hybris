@@ -84,7 +84,6 @@ public class DpsAddress {
         if (city != null ? !city.equals(that.city) : that.city != null) return false;
         if (companyName != null ? !companyName.equals(that.companyName) : that.companyName != null) return false;
         if (country != null ? !country.equals(that.country) : that.country != null) return false;
-        if (!dpsUser.equals(that.dpsUser)) return false;
         if (postalCode != null ? !postalCode.equals(that.postalCode) : that.postalCode != null) return false;
 
         return true;
@@ -97,7 +96,6 @@ public class DpsAddress {
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
         result = 31 * result + (country != null ? country.hashCode() : 0);
-        result = 31 * result + dpsUser.hashCode();
         return result;
     }
 }

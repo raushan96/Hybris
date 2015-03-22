@@ -69,7 +69,6 @@ public class DpsCreditCard {
 
         if (!creditCardNumber.equals(that.creditCardNumber)) return false;
         if (!creditId.equals(that.creditId)) return false;
-        if (!dpsUser.equals(that.dpsUser)) return false;
         if (!expirationDate.equals(that.expirationDate)) return false;
 
         return true;
@@ -80,7 +79,6 @@ public class DpsCreditCard {
         int result = creditId.hashCode();
         result = 31 * result + creditCardNumber.hashCode();
         result = 31 * result + expirationDate.hashCode();
-        result = 31 * result + dpsUser.hashCode();
         return result;
     }
 }

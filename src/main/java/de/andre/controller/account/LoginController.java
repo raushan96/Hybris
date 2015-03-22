@@ -14,12 +14,12 @@ public class LoginController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String loginPage(Model model) {
-        return "login";
+        return "account/login";
     }
 
     @RequestMapping("/login-error")
     public String loginError(Model model) {
         model.addAttribute("loginError", true);
-        return "login";
+        return "account/login";
     }
 }

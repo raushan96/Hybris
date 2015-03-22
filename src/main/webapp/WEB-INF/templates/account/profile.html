@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <title>Hybris My Account</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+
+<h2>My Account</h2>
+<div th:fragment="logout" sec:authorize="isAuthenticated()">
+    Logged user: <span sec:authentication="name">Andre</span> |
+    <a href="/logout" th:href="@{/logout}">Logout</a>
+</div>
+<a href="/secure" th:href="@{/secure}">Secure</a>
+
+<h2>Your profile</h2>
+<div th:object="${user}">
+    <p>Name: <span th:text="*{firstName}">Name</span>.</p>
+    <p>Email: <span th:text="*{email}">Email</span>.</p>
+    <p>Date of birth: <span th:text="*{dateOfBirth}">Date of birth</span>.</p>
+</div>
+
+<h2>Addresses</h2>
+<table>
+    <tr>
+        <th>Company</th>
+        <th>Country</th>
+        <th>City</th>
+        <th>Postal code</th>
+    </tr>
+    <tr th:each="address : ${addresses}">
+        <td th:text="${address.companyName}">Company</td>
+        <td th:text="${address.country}">Country</td>
+        <td th:text="${address.city}">City</td>
+        <td th:text="${address.postalCode}">Postal code</td>
+    </tr>
+</table>
+
+</body>
+
+</html>
