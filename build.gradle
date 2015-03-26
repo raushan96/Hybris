@@ -15,16 +15,18 @@ dependencies {
     compile 'ch.qos.logback:logback-classic:1.1.2'
 
     //spring
-    compile "org.springframework:spring-context:4.1.4.RELEASE"
-    compile 'org.springframework:spring-webmvc:4.1.4.RELEASE'
+    compile "org.springframework:spring-context:4.1.5.RELEASE"
+    compile 'org.springframework:spring-webmvc:4.1.5.RELEASE'
     compile 'org.springframework.data:spring-data-jpa:1.7.2.RELEASE'
 
     compile 'org.springframework.security:spring-security-web:3.2.6.RELEASE'
     compile 'org.springframework.security:spring-security-config:3.2.6.RELEASE'
     runtime 'org.springframework.security:spring-security-taglibs:3.2.6.RELEASE'
 
+    //thymeleaf
     compile 'org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE'
     compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity3:2.1.1.RELEASE'
+    compile 'nz.net.ultraq.web.thymeleaf:thymeleaf-layout-dialect:1.0.6'
 
     //hibernate
     compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
