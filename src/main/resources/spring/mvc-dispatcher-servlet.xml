@@ -17,6 +17,7 @@
         <property name="suffix" value=".html"/>
         <property name="templateMode" value="HTML5"/>
         <property name="characterEncoding" value="UTF-8"/>
+        <!-- dev mode -->
         <property name="cacheable" value="false"/>
     </bean>
 
@@ -25,7 +26,7 @@
         <property name="additionalDialects">
             <set>
                 <bean class="org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect"/>
-				<bean class="nz.net.ultraq.web.thymeleaf.LayoutDialect"/>
+				<bean class="nz.net.ultraq.thymeleaf.LayoutDialect"/>
             </set>
         </property>
     </bean>
