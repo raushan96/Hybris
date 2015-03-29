@@ -6,6 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -23,6 +26,10 @@ public class WelcomeController {
 		ModelAndView model = new ModelAndView();
 		model.setViewName("index");
 		model.addObject("name", String.format(template, name) + "nda");
+
+		Calendar calInstance = Calendar.getInstance();
+		model.addObject("date", new SimpleDateFormat().format(calInstance.getTime()));
+		model.addObject("name", "lox");
 
 		return model;
 

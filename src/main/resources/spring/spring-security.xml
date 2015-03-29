@@ -1,31 +1,31 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"
-             xmlns:beans="http://www.springframework.org/schema/beans"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://www.springframework.org/schema/beans
+			 xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
            http://www.springframework.org/schema/security
            http://www.springframework.org/schema/security/spring-security.xsd">
-    <global-method-security pre-post-annotations="enabled"/>
+	<global-method-security pre-post-annotations="enabled"/>
 
-    <http security="none" pattern="/resources/**"/>
-    <http use-expressions="true">
-        <intercept-url pattern="/login" access="permitAll"/>
-        <intercept-url pattern="/index" access="permitAll"/>
-        <intercept-url pattern="/secure" access="hasRole('ROLE_USER')" />
+	<http security="none" pattern="/resources/**"/>
+	<http use-expressions="true">
+		<intercept-url pattern="/login" access="permitAll"/>
+		<intercept-url pattern="/index" access="permitAll"/>
+		<intercept-url pattern="/secure" access="hasRole('ROLE_USER')"/>
 
-        <form-login login-page="/login" authentication-failure-url="/login-error" default-target-url="/index"/>
-        <logout logout-success-url="/login?logout" logout-url="/logout" delete-cookies="JSESSIONID"/>
-        <remember-me key="hybris123" token-validity-seconds="86400" remember-me-parameter="remember-me"/>
-<!--        <session-management invalid-session-url="/timeout.jsp">
-            <concurrency-control max-sessions="1"/>
-        </session-management>-->
-    </http>
+		<form-login login-page="/login" authentication-failure-url="/login-error" default-target-url="/index"/>
+		<logout logout-success-url="/login?logout" logout-url="/logout" delete-cookies="JSESSIONID"/>
+		<remember-me key="hybris123" token-validity-seconds="86400" remember-me-parameter="remember-me"/>
+		<!--        <session-management invalid-session-url="/timeout.jsp">
+					<concurrency-control max-sessions="1"/>
+				</session-management>-->
+	</http>
 
-    <authentication-manager alias="authenticationManager">
-        <authentication-provider user-service-ref="userDetailsServiceImpl">
-            <password-encoder ref="bcryptEncoder"/>
-        </authentication-provider>
-    </authentication-manager>
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider user-service-ref="userDetailsServiceImpl">
+			<password-encoder ref="bcryptEncoder"/>
+		</authentication-provider>
+	</authentication-manager>
 
-    <beans:bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	<beans:bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 </beans:beans>

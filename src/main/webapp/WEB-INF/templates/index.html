@@ -12,6 +12,9 @@
 </head>
 <body>
 
+<p th:text="#{common.welcome(${name}, ${name})}">hmm</p>
+<p>Today is <span th:text="${date}"/></p>
+
 <div th:replace="fragments/header :: header"></div>
 
 <div layout:fragment="content">
