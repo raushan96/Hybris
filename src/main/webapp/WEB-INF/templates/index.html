@@ -5,16 +5,19 @@
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<title>Andre's Market | Welcome</title>
-	<link rel="stylesheet" href="/resources/css/foundation.css"/>
+	<script src="/resources/js/jquery/jquery-1.11.2.js"></script>
+	<script src="/resources/js/easytabs/jquery.easytabs.min.js"></script>
+	<script src="/resources/js/easytabs/jquery.hashchange.min.js"></script>
+	<script src="/resources/js/foundation.min.js"></script>
 	<script src="/resources/js/vendor/modernizr.js"></script>
+	<link rel="stylesheet" href="/resources/css/foundation.css"/>
 	<link href="http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet"/>
 	<link href="/resources/css/hybris.css" rel="stylesheet"/>
+	<link rel="icon" type="image/png" th:href="@{../../resources/images/favicon.png}"/>
 </head>
 <body>
 
 <p th:text="#{common.welcome(${name}, ${name})}">hmm</p>
-<p>Today is <span th:text="${date}"/></p>
-
 <div th:replace="fragments/header :: header"></div>
 
 <div layout:fragment="content">
@@ -43,11 +46,5 @@
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>
-
-<script src="/resources/js/vendor/jquery.js"></script>
-<script src="/resources/js/foundation.min.js"></script>
-<script>
-	$(document).foundation();
-</script>
 </body>
 </html>
