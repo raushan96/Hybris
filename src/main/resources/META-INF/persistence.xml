@@ -8,7 +8,7 @@
 		<!-- <class>andre.entity.Customer</class> -->
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
-			<property name="hibernate.connection.url" value="jdbc:oracle:thin:@localhost:1522:xe" />
+			<property name="hibernate.connection.url" value="jdbc:oracle:thin:@localhost:1521:xe" />
 			<property name="hibernate.connection.driver_class" value="oracle.jdbc.OracleDriver" />
 			<property name="hibernate.connection.username" value="hybris" />
 			<property name="hibernate.connection.password" value="hybris" />

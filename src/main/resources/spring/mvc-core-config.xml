@@ -16,18 +16,22 @@
 	<context:component-scan
 			base-package="de.andre"/>
 	<jpa:repositories base-package="de.andre.repository"
-                      entity-manager-factory-ref="entityManagerFactory"
-            transaction-manager-ref="transactionManager"/>
+					  entity-manager-factory-ref="entityManagerFactory"
+					  transaction-manager-ref="transactionManager"/>
 
 	<bean id="entityManagerFactory"
-		class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
-		<property name="persistenceUnitName" value="defaultPersistenceUnit" />
+		  class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="defaultPersistenceUnit"/>
 	</bean>
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
+		<property name="entityManagerFactory" ref="entityManagerFactory"/>
 	</bean>
 
-	<tx:annotation-driven transaction-manager="transactionManager" />
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messages.messages"/>
+	</bean>
 
 </beans>

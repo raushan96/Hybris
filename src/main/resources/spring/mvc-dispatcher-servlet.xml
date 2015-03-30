@@ -12,29 +12,30 @@
 	<context:component-scan base-package="de.andre"/>
 	<mvc:annotation-driven/>
 
-    <bean id="templateResolver" class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
-        <property name="prefix" value="/WEB-INF/templates/"/>
-        <property name="suffix" value=".html"/>
-        <property name="templateMode" value="HTML5"/>
-        <property name="characterEncoding" value="UTF-8"/>
-        <property name="cacheable" value="false"/>
-    </bean>
+	<bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
+		<property name="prefix" value="/WEB-INF/templates/"/>
+		<property name="suffix" value=".html"/>
+		<property name="templateMode" value="HTML5"/>
+		<property name="characterEncoding" value="UTF-8"/>
+		<!-- dev mode -->
+		<property name="cacheable" value="false"/>
+	</bean>
 
-    <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
-        <property name="templateResolver" ref="templateResolver"/>
-        <property name="additionalDialects">
-            <set>
-                <bean class="org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect"/>
-				<bean class="nz.net.ultraq.web.thymeleaf.LayoutDialect"/>
-            </set>
-        </property>
-    </bean>
+	<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+		<property name="templateResolver" ref="templateResolver"/>
+		<property name="additionalDialects">
+			<set>
+				<bean class="org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect"/>
+				<bean class="nz.net.ultraq.thymeleaf.LayoutDialect"/>
+			</set>
+		</property>
+	</bean>
 
-    <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
-        <property name="templateEngine" ref="templateEngine"/>
-        <property name="order" value="1"/>
-        <property name="characterEncoding" value="UTF-8"/>
-    </bean>
+	<bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="templateEngine"/>
+		<property name="order" value="1"/>
+		<property name="characterEncoding" value="UTF-8"/>
+	</bean>
 
-	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:resources mapping="/resources/**" location="/resources/"/>
 </beans>
