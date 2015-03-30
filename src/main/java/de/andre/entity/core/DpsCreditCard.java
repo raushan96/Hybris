@@ -12,73 +12,84 @@ import java.sql.Date;
 @Entity
 @Table(name = "DPS_CREDIT_CARD", schema = "HYBRIS")
 public class DpsCreditCard {
-    private Integer creditId;
-    private String creditCardNumber;
-    private Date expirationDate;
-    private DpsUser dpsUser;
+	private Integer creditId;
+	private String creditCardNumber;
+	private Date expirationDate;
+	private DpsUser dpsUser;
+	private DpsAddress dpsAddress;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profileSeq")
-    @SequenceGenerator(name = "profileSeq", sequenceName = "profile_seq")
-    @Column(name = "CREDIT_ID")
-    public Integer getCreditId() {
-        return creditId;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profileSeq")
+	@SequenceGenerator(name = "profileSeq", sequenceName = "profile_seq")
+	@Column(name = "CREDIT_ID")
+	public Integer getCreditId() {
+		return creditId;
+	}
 
-    public void setCreditId(Integer creditId) {
-        this.creditId = creditId;
-    }
+	public void setCreditId(Integer creditId) {
+		this.creditId = creditId;
+	}
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CREDIT_ID")
-    public DpsUser getDpsUser() {
-        return dpsUser;
-    }
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "USER_ID")
+	public DpsUser getDpsUser() {
+		return dpsUser;
+	}
 
-    public void setDpsUser(DpsUser dpsUser) {
-        this.dpsUser = dpsUser;
-    }
+	public void setDpsUser(DpsUser dpsUser) {
+		this.dpsUser = dpsUser;
+	}
 
-    @NotBlank
-    @CreditCardNumber
-    @Column(name = "CREDIT_CARD_NUMBER")
-    public String getCreditCardNumber() {
-        return creditCardNumber;
-    }
+	@OneToOne
+	@JoinColumn(name = "BILLING_ADDR", referencedColumnName = "ADDRESS_ID")
+	public DpsAddress getDpsAddress() {
+		return dpsAddress;
+	}
 
-    public void setCreditCardNumber(String creditCardNumber) {
-        this.creditCardNumber = creditCardNumber;
-    }
+	public void setDpsAddress(DpsAddress dpsAddress) {
+		this.dpsAddress = dpsAddress;
+	}
 
-    @NotBlank
-    @Column(name = "EXPIRATION_DATE")
-    public Date getExpirationDate() {
-        return expirationDate;
-    }
+	@NotBlank
+	@CreditCardNumber
+	@Column(name = "CREDIT_CARD_NUMBER")
+	public String getCreditCardNumber() {
+		return creditCardNumber;
+	}
 
-    public void setExpirationDate(Date expirationDate) {
-        this.expirationDate = expirationDate;
-    }
+	public void setCreditCardNumber(String creditCardNumber) {
+		this.creditCardNumber = creditCardNumber;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DpsCreditCard)) return false;
+	@NotBlank
+	@Column(name = "EXPIRATION_DATE")
+	public Date getExpirationDate() {
+		return expirationDate;
+	}
 
-        DpsCreditCard that = (DpsCreditCard) o;
+	public void setExpirationDate(Date expirationDate) {
+		this.expirationDate = expirationDate;
+	}
 
-        if (!creditCardNumber.equals(that.creditCardNumber)) return false;
-        if (!creditId.equals(that.creditId)) return false;
-        if (!expirationDate.equals(that.expirationDate)) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof DpsCreditCard)) return false;
 
-        return true;
-    }
+		DpsCreditCard that = (DpsCreditCard) o;
 
-    @Override
-    public int hashCode() {
-        int result = creditId.hashCode();
-        result = 31 * result + creditCardNumber.hashCode();
-        result = 31 * result + expirationDate.hashCode();
-        return result;
-    }
+		if (!creditCardNumber.equals(that.creditCardNumber)) return false;
+		if (!creditId.equals(that.creditId)) return false;
+		if (!expirationDate.equals(that.expirationDate)) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = creditId.hashCode();
+		result = 31 * result + creditCardNumber.hashCode();
+		result = 31 * result + expirationDate.hashCode();
+		return result;
+	}
 }

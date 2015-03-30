@@ -10,39 +10,39 @@ import javax.persistence.*;
 @Entity
 @Table(name = "DPS_ROLE", schema = "HYBRIS")
 public class DpsRole {
-    private Integer roleId;
-    private String name;
-    private String description;
+	private Integer roleId;
+	private String name;
+	private String description;
 
-    @Id
-    @GeneratedValue
-    public Integer getRoleId() {
-        return roleId;
-    }
+	@Id
+	@GeneratedValue
+	public Integer getRoleId() {
+		return roleId;
+	}
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
+	}
 
-    @Basic
-    @NotBlank
-    @Column(name = "NAME")
-    public String getName() {
-        return name;
-    }
+	@Basic
+	@NotBlank
+	@Column(name = "NAME")
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Basic
-    @Column(name = "DESCRIPTION")
-    public String getDescription() {
-        return description;
-    }
+	@Basic
+	@Column(name = "DESCRIPTION")
+	public String getDescription() {
+		return description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 }
