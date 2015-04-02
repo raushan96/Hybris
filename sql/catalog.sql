@@ -1,11 +1,11 @@
 create table dcs_catalog (
-	catalog_id	varchar2(40),
+	catalog_id	number(8,0),
 	display_name	varchar2(40)	null,
 	creation_date	timestamp	null,
   constraint dcs_catalog_p primary key (catalog_id));
 
 create table dcs_category (
-	category_id	varchar2(40),
+	category_id	number(8,0),
 	catalog_id	constraint dcs_cata_fk references dcs_catalog(catalog_id) on delete cascade,
 	display_name	varchar2(40)	null,
 	description	varchar2(254)	null,
@@ -47,7 +47,7 @@ create table dcs_claimable (
   constraint dcs_claimable_pk primary key (claimable_id));
 
 create table dcs_price_list (
-  price_list_id	varchar2(40),
+  price_list_id	number(8,0),
   base_price_list constraint dcs_price_list_fk references dcs_price_list(price_list_id),
   description	varchar2(80) null,
   creation_date	timestamp	null,

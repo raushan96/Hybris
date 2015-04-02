@@ -34,8 +34,7 @@ constraint dps_credit_card_pk primary key(credit_id));
 create index dps_credit_addr_idx on dps_credit_card(billing_addr);
 
 create table dps_giftlist (
-	gift_list_id	number(8, 0),
-	user_id	constraint gift_list_user_fk references dps_user(user_id),
+	gift_list_id	number(8, 0) constraint gift_list_user_fk references dps_user(user_id),
 	is_published	number(1,0)	default 0,
 	creation_date	timestamp	null,
 	shipping_addr_id	constraint gift_list_address_fk references dps_user_address(address_id),
@@ -43,7 +42,6 @@ constraint dps_giftlist_pk primary key (gift_list_id),
 constraint dps_giftlist_publ_ch check (is_published in (0,1)));
 
 create index gftlst_shpadid_idx on dps_giftlist (shipping_addr_id);
-create index gft_owner_id_idx on dps_giftlist (user_id);
 
 create table dps_giftitem (
 	gift_item_id	number(8,0),

@@ -26,9 +26,7 @@ dependencies {
     //thymeleaf
     compile 'org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE'
     compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity3:2.1.1.RELEASE'
-    //compile 'nz.net.ultraq.web.thymeleaf:thymeleaf-layout-dialect:1.2.7.RELEASE'
     compile files('./src/main/resources/extraLibs/thymeleaf-layout-dialect-1.2.7.jar')
-
 
     //hibernate
     compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
@@ -43,7 +41,6 @@ dependencies {
     //compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
     //servlets
-    compile 'jstl:jstl:1.2'
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
     providedCompile group: 'javax', name: 'javaee-api', version: '7.0'
     compile 'org.hsqldb:hsqldb:2.3.1'
