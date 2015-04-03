@@ -52,7 +52,7 @@ public class DpsGiftlist {
 	}
 
 	@OneToOne
-	@JoinColumn(name = "USER_ID")
+	@JoinColumn(name = "GIFT_LIST_ID")
 	public DpsUser getDpsUser() {
 		return dpsUser;
 	}

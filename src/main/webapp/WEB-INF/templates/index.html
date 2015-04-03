@@ -10,7 +10,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"/>
-	<link href="/resources/css/hybris.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="/resources/css/hybris.css"/>
 	<link rel="icon" type="image/png" th:href="@{../../resources/images/favicon.png}"/>
 	<script>
 		$(document).ready(function(){
@@ -100,21 +101,6 @@
 		</div>
 
 	</div>
-
-
-	<!--			<div th:fragment="logout" sec:authorize="isAuthenticated()">
-					Logged user: <span sec:authentication="name">Andre</span> |
-					Roles: <span sec:authentication="principal.authorities">[ROLE_USER]</span> |
-					<a href="/logout" th:href="@{/logout}">Logout</a>
-				</div>
-				<a href="/login" th:href="@{/login}">Login</a>-->
-
-<!--				<h2>Exception handling</h2>
-				<ul>
-					<li>You can <a href="/error" th:href="@{/simulateError}">simulate an exception</a> to see custom
-						ErrorPage.
-					</li>
-				</ul>-->
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>

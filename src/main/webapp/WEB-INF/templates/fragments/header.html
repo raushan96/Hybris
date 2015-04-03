@@ -1,50 +1,50 @@
 <header th:fragment="header">
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-main">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" th:href="@{/index}">Andre's Market</a>
-			</div>
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse" id="navbar-main">
-				<ul class="nav navbar-nav">
-					<li>
-						<a th:href="@{/account/profile}">Account</a>
-					</li>
-					<li>
-						<a th:href="@{/secure}">Secure</a>
-					</li>
-					<li>
-						<a href="#">About us</a>
-					</li>
-					<li>
-						<span sec:authorize="isAuthenticated()" style="color: #9d9d9d;">
-							Logged user: <span sec:authentication="name">Andre</span>
-							<a href="/logout" th:href="@{/logout}">Logout</a>
-						</span>
-					</li>
-				</ul>
-
-			<form class="navbar-form navbar-right" role="search" th:action="@{/j_spring_security_check}" method="post" sec:authorize="!isAuthenticated()">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a th:href="@{/index}" class="navbar-brand">Andre's Market</a>
+		</div>
+		<!-- Collection of nav links, forms, and other content for toggling -->
+		<div id="navbarCollapse" class="collapse navbar-collapse">
+			<ul class="nav navbar-nav">
+				<li class="active"><a th:href="@{/account/profile}">Account</a></li>
+				<li><a href="#">Profile</a></li>
+				<li class="dropdown">
+					<a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
+					<ul role="menu" class="dropdown-menu">
+						<li><a href="#">Inbox</a></li>
+						<li><a href="#">Drafts</a></li>
+						<li><a href="#">Sent Items</a></li>
+						<li class="divider"></li>
+						<li><a href="#">Trash</a></li>
+					</ul>
+				</li>
+			</ul>
+			<form role="search" class="navbar-form navbar-left">
 				<div class="form-group">
-					<input type="text" class="form-control" name="j_username" placeholder="Email"/>
+					<input type="text" placeholder="Search" class="form-control"/>
 				</div>
-				<div class="form-group">
-					<input type="password" class="form-control" name="j_password" placeholder="Password"/>
-				</div>
-				<input type="checkbox" id="remember-me" name="remember-me"/>
-				<button type="submit" class="btn btn-default">Sign In</button>
 			</form>
+			<ul class="nav navbar-nav navbar-right">
+				<li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
+				<li sec:authorize="isAuthenticated()"><span sec:authentication="name"></span></li>
+				<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+			</ul>
+
+			<!--			<div th:fragment="logout" sec:authorize="isAuthenticated()">
+				Logged user: <span sec:authentication="name">Andre</span> |
+				Roles: <span sec:authentication="principal.authorities">[ROLE_USER]</span> |
+				<a href="/logout" th:href="@{/logout}">Logout</a>
+			</div>
+			<a href="/login" th:href="@{/login}">Login</a>-->
 		</div>
-		<!-- /.navbar-collapse -->
 		</div>
-		<!-- /.container -->
 	</nav>
 </header>

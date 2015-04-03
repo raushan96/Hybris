@@ -12,6 +12,7 @@
 		<intercept-url pattern="/login" access="permitAll"/>
 		<intercept-url pattern="/index" access="permitAll"/>
 		<intercept-url pattern="/secure" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/account/**" access="hasRole('ROLE_USER')"/>
 
 		<form-login login-page="/login" authentication-failure-url="/login-error" default-target-url="/index"/>
 		<logout logout-success-url="/login?logout" logout-url="/logout" delete-cookies="JSESSIONID"/>
