@@ -1,5 +1,6 @@
 package de.andre.entity.core;
 
+import de.andre.entity.core.enums.Gender;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -17,7 +18,7 @@ public class DpsUser {
 	private String password;
 	private String firstName;
 	private String lastName;
-	private Byte gender;
+	private Gender gender;
 	private String email;
 	private Date dateOfBirth;
 	private Set<DpsCreditCard> dpsCreditCard;
@@ -45,7 +46,7 @@ public class DpsUser {
 		this.dpsCreditCard = dpsCreditCard;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "dpsUser")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "dpsUser")
 	public Set<DpsAddress> getDpsAddresses() {
 		return dpsAddresses;
 	}
@@ -91,13 +92,13 @@ public class DpsUser {
 		this.lastName = lastName;
 	}
 
-	@NotBlank
+	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "GENDER")
-	public Byte getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
-	public void setGender(Byte gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 
@@ -142,10 +143,10 @@ public class DpsUser {
 	@Override
 	public int hashCode() {
 		int result = userId.hashCode();
-		result = 31 * result + password.hashCode();
+		result = 31 * result + (password != null ? password.hashCode() : 0);
 		result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
 		result = 31 * result + (gender != null ? gender.hashCode() : 0);
-		result = 31 * result + email.hashCode();
+		result = 31 * result + (email != null ? email.hashCode() : 0);
 		result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
 		return result;
 	}

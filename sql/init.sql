@@ -12,4 +12,7 @@ insert into dps_giftitem(gift_item_id, gift_list_id, display_name, description, 
 values (1, 1, 'gift item 1', 'test description', 1, 0);
 insert into dps_giftitem(gift_item_id, gift_list_id, display_name, description, quantity_desired, quantity_purchased)
 values (2, 1, 'gift item 2', 'test description new', 3, 0);
+
+insert into dps_user_address(address_id, company_name, city, postal_code, country)
+values(3, 'ExpertSoft', 'Mensk', '123412', 'Belarus');
 commit;

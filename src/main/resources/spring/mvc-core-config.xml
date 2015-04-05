@@ -14,7 +14,7 @@
      http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<context:component-scan
-			base-package="de.andre"/>
+			base-package="de.andre.service"/>
 	<jpa:repositories base-package="de.andre.repository"
 					  entity-manager-factory-ref="entityManagerFactory"
 					  transaction-manager-ref="transactionManager"/>
@@ -24,11 +24,13 @@
 		<property name="persistenceUnitName" value="defaultPersistenceUnit"/>
 	</bean>
 
+	<bean id="sessionFactory" class="org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory"/>
 	</bean>
-
-	<tx:annotation-driven transaction-manager="transactionManager"/>
 
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="messages.messages"/>

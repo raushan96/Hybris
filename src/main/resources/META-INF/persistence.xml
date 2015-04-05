@@ -8,11 +8,16 @@
 		<!-- <class>andre.entity.Customer</class> -->
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
-			<property name="hibernate.connection.url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+			<property name="hibernate.connection.url" value="jdbc:oracle:thin:@localhost:1522:xe" />
 			<property name="hibernate.connection.driver_class" value="oracle.jdbc.OracleDriver" />
 			<property name="hibernate.connection.username" value="hybris" />
 			<property name="hibernate.connection.password" value="hybris" />
+			<property name="hibernate.c3p0.min_size" value="5"/>
+			<property name="hibernate.c3p0.max_size" value="20"/>
+			<property name="hibernate.c3p0.timeout" value="1800"/>
+			<property name="hibernate.c3p0.max_statements" value="50"/>
 			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.current_session_context_class" value="thread" />
 		</properties>
 <!--		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />

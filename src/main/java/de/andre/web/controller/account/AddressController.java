@@ -1,4 +1,4 @@
-package de.andre.controller.account;
+package de.andre.web.controller.account;
 
 import de.andre.entity.core.DpsAddress;
 import de.andre.repository.AddressRepository;
