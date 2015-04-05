@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Objects;
 
 /**
  * Created by andreika on 2/28/2015.
@@ -20,7 +21,7 @@ public class DpsCreditCard {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profileSeq")
-	@SequenceGenerator(name = "profileSeq", sequenceName = "profile_seq")
+	@SequenceGenerator(name = "profileSeq", sequenceName = "profile_seq",  allocationSize = 10)
 	@Column(name = "CREDIT_ID")
 	public Integer getCreditId() {
 		return creditId;
@@ -79,7 +80,6 @@ public class DpsCreditCard {
 		DpsCreditCard that = (DpsCreditCard) o;
 
 		if (!creditCardNumber.equals(that.creditCardNumber)) return false;
-		if (!creditId.equals(that.creditId)) return false;
 		if (!expirationDate.equals(that.expirationDate)) return false;
 
 		return true;
@@ -87,9 +87,6 @@ public class DpsCreditCard {
 
 	@Override
 	public int hashCode() {
-		int result = creditId.hashCode();
-		result = 31 * result + creditCardNumber.hashCode();
-		result = 31 * result + expirationDate.hashCode();
-		return result;
+		return Objects.hash(creditCardNumber, expirationDate);
 	}
 }

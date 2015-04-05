@@ -1,6 +1,7 @@
 package de.andre.entity.core;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Created by andreika on 2/28/2015.
@@ -17,7 +18,7 @@ public class DpsAddress {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profileSeq")
-	@SequenceGenerator(name = "profileSeq", sequenceName = "profile_seq")
+	@SequenceGenerator(name = "profileSeq", sequenceName = "profile_seq",  allocationSize = 10)
 	@Column(name = "ADDRESS_ID")
 	public Integer getAddressId() {
 		return addressId;
@@ -80,7 +81,6 @@ public class DpsAddress {
 
 		DpsAddress that = (DpsAddress) o;
 
-		if (!addressId.equals(that.addressId)) return false;
 		if (city != null ? !city.equals(that.city) : that.city != null) return false;
 		if (companyName != null ? !companyName.equals(that.companyName) : that.companyName != null) return false;
 		if (country != null ? !country.equals(that.country) : that.country != null) return false;
@@ -91,11 +91,6 @@ public class DpsAddress {
 
 	@Override
 	public int hashCode() {
-		int result = addressId.hashCode();
-		result = 31 * result + (companyName != null ? companyName.hashCode() : 0);
-		result = 31 * result + (city != null ? city.hashCode() : 0);
-		result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
-		result = 31 * result + (country != null ? country.hashCode() : 0);
-		return result;
+		return Objects.hash(companyName, city, postalCode, country);
 	}
 }

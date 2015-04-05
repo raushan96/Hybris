@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -22,7 +23,7 @@ public class DpsGiftlist {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profileSeq")
-	@SequenceGenerator(name = "profileSeq", sequenceName = "profile_seq")
+	@SequenceGenerator(name = "profileSeq", sequenceName = "profile_seq",  allocationSize = 10)
 	@Column(name = "GIFT_LIST_ID")
 	public Integer getGiftListId() {
 		return giftListId;
@@ -88,7 +89,6 @@ public class DpsGiftlist {
 
 		DpsGiftlist that = (DpsGiftlist) o;
 
-		if (giftListId != null ? !giftListId.equals(that.giftListId) : that.giftListId != null) return false;
 		if (isPublished != null ? !isPublished.equals(that.isPublished) : that.isPublished != null) return false;
 		if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
 
@@ -97,9 +97,6 @@ public class DpsGiftlist {
 
 	@Override
 	public int hashCode() {
-		int result = giftListId != null ? giftListId.hashCode() : 0;
-		result = 31 * result + (isPublished != null ? isPublished.hashCode() : 0);
-		result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-		return result;
+		return Objects.hash(isPublished, creationDate);
 	}
 }

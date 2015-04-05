@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -27,7 +28,7 @@ public class DpsUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profileSeq")
-	@SequenceGenerator(name = "profileSeq", sequenceName = "profile_seq")
+	@SequenceGenerator(name = "profileSeq", sequenceName = "profile_seq", allocationSize = 10)
 	@Column(name = "user_id")
 	public Integer getUserId() {
 		return userId;
@@ -135,19 +136,12 @@ public class DpsUser {
 		if (firstName != null ? !firstName.equals(dpsUser.firstName) : dpsUser.firstName != null) return false;
 		if (gender != null ? !gender.equals(dpsUser.gender) : dpsUser.gender != null) return false;
 		if (!password.equals(dpsUser.password)) return false;
-		if (!userId.equals(dpsUser.userId)) return false;
 
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		int result = userId.hashCode();
-		result = 31 * result + (password != null ? password.hashCode() : 0);
-		result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-		result = 31 * result + (gender != null ? gender.hashCode() : 0);
-		result = 31 * result + (email != null ? email.hashCode() : 0);
-		result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
-		return result;
+		return Objects.hash(password, firstName, gender, email, dateOfBirth);
 	}
 }

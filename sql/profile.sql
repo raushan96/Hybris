@@ -73,5 +73,5 @@ constraint dps_user_role_pk primary key (user_id, hybris_role));
 
 create index dps_usr_roles_idx on dps_user_role (hybris_role);
 
-create sequence profile_seq start with 100 increment by 1;
+create sequence profile_seq start with 100 increment by 10;
 create sequence global_seq start with 30 increment by 1;

@@ -1,6 +1,7 @@
 package de.andre.entity.core;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Created by Andrei on 3/30/2015.
@@ -17,7 +18,7 @@ public class DpsGiftitem {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profileSeq")
-	@SequenceGenerator(name = "profileSeq", sequenceName = "profile_seq")
+	@SequenceGenerator(name = "profileSeq", sequenceName = "profile_seq",  allocationSize = 10)
 	@Column(name = "GIFT_ITEM_ID")
 	public Integer getGiftItemId() {
 		return giftItemId;
@@ -80,7 +81,6 @@ public class DpsGiftitem {
 
 		DpsGiftitem that = (DpsGiftitem) o;
 
-		if (giftItemId != null ? !giftItemId.equals(that.giftItemId) : that.giftItemId != null) return false;
 		if (displayName != null ? !displayName.equals(that.displayName) : that.displayName != null) return false;
 		if (description != null ? !description.equals(that.description) : that.description != null) return false;
 		if (quantityDesired != null ? !quantityDesired.equals(that.quantityDesired) : that.quantityDesired != null)
@@ -93,11 +93,6 @@ public class DpsGiftitem {
 
 	@Override
 	public int hashCode() {
-		int result = giftItemId != null ? giftItemId.hashCode() : 0;
-		result = 31 * result + (displayName != null ? displayName.hashCode() : 0);
-		result = 31 * result + (description != null ? description.hashCode() : 0);
-		result = 31 * result + (quantityDesired != null ? quantityDesired.hashCode() : 0);
-		result = 31 * result + (quantityPurchased != null ? quantityPurchased.hashCode() : 0);
-		return result;
+		return Objects.hash(displayName, description, quantityDesired, quantityPurchased);
 	}
 }

@@ -102,3 +102,5 @@ create table dcspp_amtinfo_adj (
 	sequence_num 	integer	not null,
 	adjustments 	constraint dcspp_adj_fk references dcspp_price_adjust(adjustment_id),
 primary key(amount_info_id, sequence_num));
+
+create sequence order_seq start with 100 increment by 10;

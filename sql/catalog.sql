@@ -60,4 +60,4 @@ create table dcs_price (
   product_id	constraint dcs_price_prod_fk references dcs_product(product_id) on delete cascade,
   constraint dcs_price_pk primary key (price_list_id));
 
-create sequence catalog_seq start with 200 increment by 1;
+create sequence catalog_seq start with 200 increment by 10;
