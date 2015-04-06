@@ -38,5 +38,10 @@
 		<property name="characterEncoding" value="UTF-8"/>
 	</bean>
 
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="defaultErrorView" value="error"/>
+		<property name="warnLogCategory" value="warn"/>
+	</bean>
+
 	<mvc:resources mapping="/resources/**" location="/resources/"/>
 </beans>

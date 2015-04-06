@@ -8,8 +8,7 @@
 
 	<web>
 		<link target="/">
-			<dir name="${rebel.workspace.path}/src/main/webapp">
-			</dir>
+			<dir name="${rebel.workspace.path}/src/main/webapp"/>
 		</link>
 	</web>
 

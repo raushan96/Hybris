@@ -1,71 +1,54 @@
 <!DOCTYPE html>
 <html layout:decorator="index">
-<head>
-	<script>
-		$(document).ready(function() {
-			$('#tab-container').easytabs();
-		});
-	</script>
-</head>
-
 <body>
 
 <div layout:fragment="content" th:remove="tag">
-	<h2>My Account</h2>
-
-	<div th:fragment="logout" sec:authorize="isAuthenticated()">
-		Logged user: <span sec:authentication="name">Andre</span> |
-		<a href="/logout" th:href="@{/logout}">Logout</a>
-	</div>
-	<a href="/secure" th:href="@{/secure}">Secure</a>
-
-	<div id="tab-container" class="tab-container">
-		<ul class='etabs'>
-			<li class='tab'><a href="#tabs1-html">HTML Markup</a></li>
-			<li class='tab'><a href="#tabs1-js">Required JS</a></li>
-			<li class='tab'><a href="#tabs1-css">Example CSS</a></li>
+	<div role="tabpanel">
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal info</a></li>
+			<li role="presentation"><a href="#addresses" aria-controls="addresses" role="tab" data-toggle="tab">Adresses</a></li>
+			<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Credit cards</a></li>
+			<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Orders</a></li>
+			<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Gift list</a></li>
 		</ul>
-		<div class="tab-content-container">
-			<div id="tabs1-html">
-				<h2>HTML Markup for these tabs</h2>
-				<!-- content -->
+
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="personal">
+				<h2>My profile</h2>
+
+				<div th:object="${user}">
+					<p>Name: <span th:text="*{firstName}">First Name</span>&nbsp;<span th:text="*{lastName}">Last Name</span></p>
+
+					<p>Email: <span th:text="*{email}">Email</span></p>
+
+					<p>Date of birth: <span th:text="*{dateOfBirth}">Date of birth</span></p>
+
+					<p>Gender: <span th:text="*{gender.name() == 'MALE'} ? 'male' : 'female' ">Gender</span></p>
+				</div>
+
+				<a th:href="@{/account/editProfile(userId=${user.userId})}" class="btn btn-primary">Edit profile</a>
 			</div>
-			<div id="tabs1-js">
-				<h2>JS for these tabs</h2>
-				<!-- content -->
+			<div role="tabpanel" class="tab-pane" id="addresses">
+				<h2>Addresses</h2>
+				<table>
+					<tr>
+						<th>Company</th>
+						<th>Country</th>
+						<th>City</th>
+						<th>Postal code</th>
+					</tr>
+					<tr th:each="address : ${addresses}">
+						<td th:text="${address.companyName}">Company</td>
+						<td th:text="${address.country}">Country</td>
+						<td th:text="${address.city}">City</td>
+						<td th:text="${address.postalCode}">Postal code</td>
+					</tr>
+				</table>
 			</div>
-			<div id="tabs1-css">
-				<h2>CSS Styles for these tabs</h2>
-				<!-- content -->
-			</div>
+			<div role="tabpanel" class="tab-pane" id="messages">3</div>
+			<div role="tabpanel" class="tab-pane" id="settings">4</div>
 		</div>
 	</div>
-
-	<h2>Your profile</h2>
-
-	<div th:object="${user}">
-		<p>Name: <span th:text="*{firstName}">Name</span>.</p>
-
-		<p>Email: <span th:text="*{email}">Email</span>.</p>
-
-		<p>Date of birth: <span th:text="*{dateOfBirth}">Date of birth</span>.</p>
-	</div>
-
-	<h2>Addresses</h2>
-	<table>
-		<tr>
-			<th>Company</th>
-			<th>Country</th>
-			<th>City</th>
-			<th>Postal code</th>
-		</tr>
-		<tr th:each="address : ${addresses}">
-			<td th:text="${address.companyName}">Company</td>
-			<td th:text="${address.country}">Country</td>
-			<td th:text="${address.city}">City</td>
-			<td th:text="${address.postalCode}">Postal code</td>
-		</tr>
-	</table>
 </div>
 </body>
 

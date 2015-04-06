@@ -3,9 +3,10 @@ package de.andre.entity.core;
 import de.andre.entity.core.enums.Gender;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.core.style.ToStringCreator;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
@@ -38,7 +39,7 @@ public class DpsUser {
 		this.userId = userId;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "dpsUser")
+	@OneToMany(mappedBy = "dpsUser")
 	public Set<DpsCreditCard> getDpsCreditCard() {
 		return dpsCreditCard;
 	}
@@ -47,7 +48,7 @@ public class DpsUser {
 		this.dpsCreditCard = dpsCreditCard;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "dpsUser")
+	@OneToMany(mappedBy = "dpsUser")
 	public Set<DpsAddress> getDpsAddresses() {
 		return dpsAddresses;
 	}
@@ -65,7 +66,6 @@ public class DpsUser {
 		this.dpsGiftlist = dcsGiftlist;
 	}
 
-	@NotBlank
 	@Column(name = "PASSWORD")
 	public String getPassword() {
 		return password;
@@ -115,6 +115,7 @@ public class DpsUser {
 	}
 
 	@Column(name = "DATE_OF_BIRTH")
+	@Temporal(TemporalType.DATE)
 	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
@@ -142,6 +143,18 @@ public class DpsUser {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(password, firstName, gender, email, dateOfBirth);
+		return Objects.hash(firstName, lastName, gender, email, dateOfBirth);
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringCreator(this)
+				.append("userId", this.getUserId())
+				.append("firstName", this.getFirstName())
+				.append("lastName", this.getLastName())
+				.append("gender", this.getGender())
+				.append("email", this.getEmail())
+				.append("dateOfBirth", this.getDateOfBirth())
+				.toString();
 	}
 }

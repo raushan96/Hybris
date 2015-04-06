@@ -24,11 +24,11 @@ public class WelcomeController {
 	@Autowired
 	HibernateService hibernateService;
 
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
 	public ModelAndView welcome(@RequestParam(value = "name", defaultValue = "world") String name) {
 		//hibernateService.testHibernate();
 		//hibernateService.getUsers();
-		hibernateService.detached();
+		//hibernateService.detached();
 		logger.debug("welcome() - name {}", name);
 		ModelAndView model = new ModelAndView();
 		model.setViewName("index");
