@@ -62,7 +62,7 @@ public class AccountController {
 		if (result.hasErrors()) {
 			return "account/editProfile";
 		} else {
-			userRepository.save(editUser);
+			userRepository.editUserUpdate(editUser.getFirstName(), editUser.getLastName(), editUser.getEmail(), editUser.getDateOfBirth());
 			status.setComplete();
 			return "redirect:/account/profile";
 		}

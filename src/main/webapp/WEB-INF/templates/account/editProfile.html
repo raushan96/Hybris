@@ -7,9 +7,10 @@
 
 	<form th:object="${editUser}" th:method="post" th:action="@{${#httpServletRequest.servletPath}}">
 		<input type="hidden" th:field="*{userId}"/>
-		<div class="form-group">
+		<div class="form-group" th:classappend="${#fields.hasErrors('email')} ? error">
 			<label for="edit_email">Email</label>
 			<input type="email" class="form-control" id="edit_email" placeholder="Email" th:field="*{email}"/>
+			<span class="help-inline" th:errors="*{email}">[error]</span>
 		</div>
 		<div class="form-group">
 			<label for="edit_firstName">First name</label>

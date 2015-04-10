@@ -23,7 +23,7 @@
 
 					<p>Date of birth: <span th:text="*{dateOfBirth}">Date of birth</span></p>
 
-					<p>Gender: <span th:text="*{gender.name() == 'MALE'} ? 'male' : 'female' ">Gender</span></p>
+					<p>Gender: <span th:text="*{gender.name() == 'MALE'} ? 'Male' : 'Female' ">Gender</span></p>
 				</div>
 
 				<a th:href="@{/account/editProfile(userId=${user.userId})}" class="btn btn-primary">Edit profile</a>
