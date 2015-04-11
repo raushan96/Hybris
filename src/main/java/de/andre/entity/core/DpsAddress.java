@@ -1,5 +1,8 @@
 package de.andre.entity.core;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -28,7 +31,7 @@ public class DpsAddress {
 		this.addressId = addressId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "USER_ID")
 	public DpsUser getDpsUser() {
 		return dpsUser;
@@ -39,6 +42,7 @@ public class DpsAddress {
 	}
 
 	@Column(name = "COMPANY_NAME")
+	@Length(min = 3, max = 20)
 	public String getCompanyName() {
 		return companyName;
 	}
@@ -48,6 +52,8 @@ public class DpsAddress {
 	}
 
 	@Column(name = "CITY")
+	@NotEmpty
+	@Length(min = 1, max = 20)
 	public String getCity() {
 		return city;
 	}
@@ -56,7 +62,9 @@ public class DpsAddress {
 		this.city = city;
 	}
 
+	//regex?
 	@Column(name = "POSTAL_CODE")
+	@NotEmpty
 	public String getPostalCode() {
 		return postalCode;
 	}
@@ -66,6 +74,8 @@ public class DpsAddress {
 	}
 
 	@Column(name = "COUNTRY")
+	@Length(min = 1, max = 20)
+	@NotEmpty
 	public String getCountry() {
 		return country;
 	}

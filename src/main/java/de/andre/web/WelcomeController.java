@@ -26,9 +26,6 @@ public class WelcomeController {
 
 	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
 	public ModelAndView welcome(@RequestParam(value = "name", defaultValue = "world") String name) {
-		//hibernateService.testHibernate();
-		//hibernateService.getUsers();
-		//hibernateService.detached();
 		logger.debug("welcome() - name {}", name);
 		ModelAndView model = new ModelAndView();
 		model.setViewName("index");

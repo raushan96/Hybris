@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -31,7 +31,7 @@ public class DpsCreditCard {
 		this.creditId = creditId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "USER_ID")
 	public DpsUser getDpsUser() {
 		return dpsUser;
@@ -52,7 +52,7 @@ public class DpsCreditCard {
 	}
 
 	@NotBlank
-	@CreditCardNumber
+	//@CreditCardNumber
 	@Column(name = "CREDIT_CARD_NUMBER")
 	public String getCreditCardNumber() {
 		return creditCardNumber;
@@ -63,6 +63,7 @@ public class DpsCreditCard {
 	}
 
 	@NotBlank
+	@Temporal(TemporalType.DATE)
 	@Column(name = "EXPIRATION_DATE")
 	public Date getExpirationDate() {
 		return expirationDate;

@@ -2,10 +2,12 @@ package de.andre.entity.core;
 
 import de.andre.entity.core.enums.Gender;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.core.style.ToStringCreator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
@@ -75,6 +77,7 @@ public class DpsUser {
 		this.password = password;
 	}
 
+	@Length(min = 3, max = 20)
 	@Column(name = "FIRST_NAME")
 	public String getFirstName() {
 		return firstName;
@@ -84,6 +87,7 @@ public class DpsUser {
 		this.firstName = firstName;
 	}
 
+	@Length(min = 3, max = 20)
 	@Column(name = "LAST_NAME")
 	public String getLastName() {
 		return lastName;
@@ -93,6 +97,7 @@ public class DpsUser {
 		this.lastName = lastName;
 	}
 
+	@NotNull
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "GENDER")
 	public Gender getGender() {
