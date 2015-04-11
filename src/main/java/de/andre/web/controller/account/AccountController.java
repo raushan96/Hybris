@@ -58,7 +58,7 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/account/editProfile", method = RequestMethod.POST)
-	public String updateAccount(DpsUser editUser, BindingResult result, SessionStatus status) {
+	public String updateAccount(@Valid DpsUser editUser, BindingResult result, SessionStatus status) {
 		if (result.hasErrors()) {
 			return "account/editProfile";
 		} else {
