@@ -1,10 +1,13 @@
 package de.andre.entity.core;
 
 import de.andre.entity.core.enums.Gender;
+import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.core.style.ToStringCreator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,6 +28,7 @@ public class DpsUser {
 	private Gender gender;
 	private String email;
 	private Date dateOfBirth;
+	private Boolean acceptEmails;
 	private Set<DpsCreditCard> dpsCreditCard;
 	private Set<DpsAddress> dpsAddresses;
 	private DpsGiftlist dpsGiftlist;
@@ -68,7 +72,7 @@ public class DpsUser {
 		this.dpsGiftlist = dcsGiftlist;
 	}
 
-	@Column(name = "PASSWORD")
+	@Column(name = "PASSWORD", updatable = false)
 	public String getPassword() {
 		return password;
 	}
@@ -78,6 +82,7 @@ public class DpsUser {
 	}
 
 	@Length(min = 3, max = 20)
+	@NotBlank
 	@Column(name = "FIRST_NAME")
 	public String getFirstName() {
 		return firstName;
@@ -120,6 +125,7 @@ public class DpsUser {
 	}
 
 	@Column(name = "DATE_OF_BIRTH")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	public Date getDateOfBirth() {
 		return dateOfBirth;
@@ -129,6 +135,15 @@ public class DpsUser {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	@Column(name = "ACCEPT_EMAILS")
+	@Type(type = "boolean")
+	public Boolean isAcceptEmails() {
+		return acceptEmails;
+	}
+
+	public void setAcceptEmails(Boolean acceptEmails) {
+		this.acceptEmails = acceptEmails;
+	}
 
 	@Override
 	public boolean equals(Object o) {

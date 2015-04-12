@@ -2,6 +2,7 @@ package de.andre.service;
 
 import de.andre.entity.core.DpsUser;
 import de.andre.repository.UserRepository;
+import de.andre.service.account.AccountTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,12 +23,12 @@ import java.util.Set;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    AccountTools accountTools;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
-            DpsUser user = userRepository.findByLogin(email);
+            DpsUser user = accountTools.findUserByEmail(email);
             if (null == user) {
                 throw new UsernameNotFoundException("User wasnt found with provided email: " + email);
             }

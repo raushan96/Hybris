@@ -1,14 +1,16 @@
 create table dps_user (
 	user_id	number(8,0),
 	password	varchar2(120) not null,
-	first_name	varchar2(40)	null,
+	first_name	varchar2(40)	not null,
 	last_name	varchar2(40)	null,
 	gender number(1, 0) not null,
-	email	varchar2(40)	null,
+	email	varchar2(40)	not null,
 	date_of_birth	date	null,
+	accept_emails	number(1, 0)	default 0,
 constraint dps_user_pk primary key(user_id),
 constraint dps_user_un_email unique (email),
-constraint dps_user_ch_gender check(gender in (0, 1)));
+constraint dps_user_ch_gender check(gender in (0, 1)),
+constraint dps_user_ch_acmail check(accept_emails in (0, 1)));
 
 create table dps_user_address (
 	address_id	number(8,0),
@@ -17,6 +19,7 @@ create table dps_user_address (
 	city	varchar2(40)	null,
 	postal_code	varchar2(15)	null,
 	country	varchar2(40)	null,
+	address	varchar2(80)	null,
 constraint dps_user_address_pk primary key(address_id));
 
 create index dps_addr_comp_idx on dps_user_address(company_name);

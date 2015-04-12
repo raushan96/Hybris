@@ -3,7 +3,6 @@ package de.andre.entity.core;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.Set;
