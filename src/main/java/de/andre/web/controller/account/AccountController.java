@@ -1,8 +1,11 @@
 package de.andre.web.controller.account;
 
 import de.andre.entity.core.DpsUser;
+import de.andre.entity.core.utils.ForgotPasswordForm;
 import de.andre.service.account.AccountTools;
+import de.andre.utils.validation.ForgotPasswordFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -10,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -26,16 +28,20 @@ public class AccountController {
 	private final AccountTools accountTools;
 
 	@Autowired
+	private ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource;
+
+	@Autowired
 	public AccountController(AccountTools accountTools) {
 		this.accountTools = accountTools;
 	}
 
-	@InitBinder
+	@InitBinder("passwordForm")
 	public void initBinder(WebDataBinder webDataBinder) {
 /*		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 		dateFormat.setLenient(false);
 		webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));*/
 		webDataBinder.setDisallowedFields("userId");
+		webDataBinder.setValidator(new ForgotPasswordFormValidator());
 	}
 
 	@RequestMapping("/account/profile")
@@ -51,6 +57,7 @@ public class AccountController {
 		if (!map.containsKey("dpsUser")) {
 			map.addAttribute("dpsUser", accountTools.getUserById(Integer.valueOf(id)));
 		}
+		map.addAttribute("passwordForm", new ForgotPasswordForm());
 		return "account/editProfile";
 	}
 
@@ -66,8 +73,12 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/account/resetPassword", method = RequestMethod.POST)
-	public ModelAndView savePassword(@RequestParam("sdf") String passwordEntered) {
-		ModelAndView mav = new ModelAndView("redirect:/account/profile");
-		return mav;
+	public String savePassword(@Valid ForgotPasswordForm passwordForm, BindingResult result, Principal principal) {
+		if (result.hasErrors()) {
+			return "account/editProfile";
+		} else {
+			accountTools.updatePassword(principal.getName(), passwordForm.getEnteredPassword());
+			return "redirect:/account/profile";
+		}
 	}
 }

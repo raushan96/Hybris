@@ -5,6 +5,7 @@ import de.andre.entity.core.DpsUser;
 import de.andre.repository.AddressRepository;
 import de.andre.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,5 +49,12 @@ public class AccountToolsImpl implements AccountTools {
 	@Override
 	public Collection<DpsAddress> findAddressesByUser(DpsUser dpsUser) {
 		return addressRepository.findAddressesByCustomer(dpsUser);
+	}
+
+	@Transactional
+	@Override
+	public void updatePassword(String email, String newPassword) {
+		String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+		userRepository.updateUserPassword(email, newPassword);
 	}
 }

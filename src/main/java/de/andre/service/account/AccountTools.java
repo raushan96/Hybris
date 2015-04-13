@@ -16,4 +16,6 @@ public interface AccountTools {
 	DpsUser findUserByEmail(String email);
 
 	Collection<DpsAddress> findAddressesByUser(DpsUser dpsUser);
+
+	void updatePassword(String email, String newPassword);
 }

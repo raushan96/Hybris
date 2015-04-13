@@ -3,7 +3,7 @@
 <body>
 
 <div layout:fragment="content" th:remove="tag">
-	<!--<span th:text="${session}"/>-->
+	<span th:text="${session}"/>
 	<div class="row">
 		<div class="col-md-5">
 			<h2>Edit profile</h2>
@@ -57,15 +57,17 @@
 
 		<div class="col-md-3">
 			<h2>Change password</h2>
-			<form th:action="@{/account/resetPassword}" th:method="post">
-				<div class="form-group">
+			<form th:action="@{/account/resetPassword}" th:method="post" th:object="${passwordForm}">
+				<div class="form-group" th:classappend="${#fields.hasErrors('enteredPassword')} ? error">
 					<label for="edit_password">Enter password</label>
-					<input type="password" id="edit_password" class="form-control" placeholder="Enter password"/>
+					<input type="password" id="edit_password" class="form-control" placeholder="Enter password" th:field="*{enteredPassword}"/>
+					<span class="help-inline" th:errors="*{enteredPassword}">[error]</span>
 				</div>
 
-				<div class="form-group">
+				<div class="form-group" th:classappend="${#fields.hasErrors('confirmedPassword')} ? error">
 					<label for="confirm-password">Re-enter password</label>
-					<input type="password" id="confirm-password" class="form-control" placeholder="Confirm password"/>
+					<input type="password" id="confirm-password" class="form-control" placeholder="Confirm password" th:field="*{confirmedPassword}"/>
+					<span class="help-inline" th:errors="*{confirmedPassword}">[error]</span>
 				</div>
 
 				<div class="form-group">

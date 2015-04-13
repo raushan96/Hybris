@@ -12,6 +12,8 @@ constraint dps_user_un_email unique (email),
 constraint dps_user_ch_gender check(gender in (0, 1)),
 constraint dps_user_ch_acmail check(accept_emails in (0, 1)));
 
+create index dps_user_email_idx on dps_user(email);
+
 create table dps_user_address (
 	address_id	number(8,0),
   user_id constraint address_user_fk references dps_user(user_id) on delete cascade,
