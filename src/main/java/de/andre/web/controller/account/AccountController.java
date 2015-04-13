@@ -41,9 +41,8 @@ public class AccountController {
 	@RequestMapping("/account/profile")
 	public String showAccount(Model map, Principal principal) {
 		DpsUser dpsUser = accountTools.findUserByEmail(principal.getName());
-		map.addAttribute("dpsUser", dpsUser);
+		map.addAttribute("dpsUser", accountTools.findUserByEmail(principal.getName()));
 		map.addAttribute("addresses", accountTools.findAddressesByUser(dpsUser));
-
 		return "account/profile";
 	}
 
@@ -64,5 +63,11 @@ public class AccountController {
 			status.setComplete();
 			return "redirect:/account/profile";
 		}
+	}
+
+	@RequestMapping(value = "/account/resetPassword", method = RequestMethod.POST)
+	public ModelAndView savePassword(@RequestParam("sdf") String passwordEntered) {
+		ModelAndView mav = new ModelAndView("redirect:/account/profile");
+		return mav;
 	}
 }

@@ -137,7 +137,7 @@ public class DpsUser {
 
 	@Column(name = "ACCEPT_EMAILS")
 	@Type(type = "boolean")
-	public Boolean isAcceptEmails() {
+	public Boolean getAcceptEmails() {
 		return acceptEmails;
 	}
 
