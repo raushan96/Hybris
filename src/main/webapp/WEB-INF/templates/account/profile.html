@@ -63,12 +63,17 @@
 						<th>Country</th>
 						<th>City</th>
 						<th>Postal code</th>
+						<th>Actions</th>
 					</tr>
 					<tr th:each="address : ${addresses}">
 						<td th:text="${address.companyName}">Company</td>
 						<td th:text="${address.country}">Country</td>
 						<td th:text="${address.city}">City</td>
 						<td th:text="${address.postalCode}">Postal code</td>
+						<td>
+							<button type="button" th:id="'editAddress_' + ${address.addressId}" name="edit_address" class="btn btn-primary">Edit</button>
+							<button type="button" th:id="'deleteAddress_' + ${address.addressId}" name="delete_address" class="btn btn-danger">Delete</button>
+						</td>
 					</tr>
 				</table>
 			</div>

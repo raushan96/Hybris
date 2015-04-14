@@ -1,6 +1,7 @@
 package de.andre.utils.validation;
 
 import de.andre.entity.core.utils.ForgotPasswordForm;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -8,6 +9,8 @@ import org.springframework.validation.Validator;
 /**
  * Created by andreika on 4/13/2015.
  */
+
+@Component
 public class ForgotPasswordFormValidator implements Validator{
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -17,11 +20,11 @@ public class ForgotPasswordFormValidator implements Validator{
 	@Override
 	public void validate(Object target, Errors errors) {
 		ForgotPasswordForm passwordForm = (ForgotPasswordForm) target;
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "enteredPassword", "password 1 empty");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmedPassword", "password 2 empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "enteredPassword", "password.entered.empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmedPassword", "password.confirmed.empty");
 
 		if (!passwordForm.getConfirmedPassword().equals(passwordForm.getEnteredPassword())) {
-			errors.reject("passwords not equals");
+			errors.reject("enteredPassword", "passwords.notEquals");
 		}
 	}
 }

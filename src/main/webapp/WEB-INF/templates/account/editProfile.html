@@ -51,13 +51,14 @@
 
 				<div class="form-group">
 					<button type="submit" class="btn btn-default">Save changes</button>
+					<a th:href="@{${#httpServletRequest.getHeader('referer')}}" class="btn btn-default">Cancel</a>
 				</div>
 			</form>
 		</div>
 
 		<div class="col-md-3">
 			<h2>Change password</h2>
-			<form th:action="@{/account/resetPassword}" th:method="post" th:object="${passwordForm}">
+			<form th:action="@{/account/resetPassword}" th:method="post" th:object="${forgotPasswordForm}">
 				<div class="form-group" th:classappend="${#fields.hasErrors('enteredPassword')} ? error">
 					<label for="edit_password">Enter password</label>
 					<input type="password" id="edit_password" class="form-control" placeholder="Enter password" th:field="*{enteredPassword}"/>

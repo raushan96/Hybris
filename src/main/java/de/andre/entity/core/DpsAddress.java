@@ -16,6 +16,7 @@ public class DpsAddress {
 	private String companyName;
 	private String city;
 	private String postalCode;
+	private String address;
 	private String country;
 	private DpsUser dpsUser;
 
@@ -53,7 +54,7 @@ public class DpsAddress {
 
 	@Column(name = "CITY")
 	@NotEmpty
-	@Length(min = 1, max = 20)
+	@Length(min = 3, max = 20)
 	public String getCity() {
 		return city;
 	}
@@ -62,7 +63,6 @@ public class DpsAddress {
 		this.city = city;
 	}
 
-	//regex?
 	@Column(name = "POSTAL_CODE")
 	@NotEmpty
 	public String getPostalCode() {
@@ -74,7 +74,7 @@ public class DpsAddress {
 	}
 
 	@Column(name = "COUNTRY")
-	@Length(min = 1, max = 20)
+	@Length(min = 3, max = 20)
 	@NotEmpty
 	public String getCountry() {
 		return country;
@@ -82,6 +82,15 @@ public class DpsAddress {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	@Column(name = "ADDRESS")
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	@Override
@@ -95,12 +104,13 @@ public class DpsAddress {
 		if (companyName != null ? !companyName.equals(that.companyName) : that.companyName != null) return false;
 		if (country != null ? !country.equals(that.country) : that.country != null) return false;
 		if (postalCode != null ? !postalCode.equals(that.postalCode) : that.postalCode != null) return false;
+		if (address != null ? !address.equals(that.address) : that.address != null) return false;
 
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(companyName, city, postalCode, country);
+		return Objects.hash(companyName, city, postalCode, country, address);
 	}
 }

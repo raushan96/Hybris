@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html layout:decorator="index">
 <body>
-<p th:if="${loginError}">Wrong user or password</p>
+<p th:if="${loginError}">Wrong user or password.</p>
 
 <div class="container" layout:fragment="content" th:remove="tag">
 	<div class="card card-container">
 		<img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
 		<p id="profile-name" class="profile-name-card"></p>
+		<p th:if="${loginError}">Wrong email or password</p>
 		<form class="form-signin" th:action="@{/j_spring_security_check}" method="post">
 			<span id="reauth-email" class="reauth-email"></span>
 			<input type="email" id="inputEmail" name="j_username" class="form-control" placeholder="Email address" required="" autofocus=""/>

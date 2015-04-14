@@ -6,6 +6,7 @@ import de.andre.repository.AddressRepository;
 import de.andre.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +21,13 @@ public class AccountToolsImpl implements AccountTools {
 
 	private final UserRepository userRepository;
 	private final AddressRepository addressRepository;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
-	public AccountToolsImpl(UserRepository userRepository, AddressRepository addressRepository) {
+	public AccountToolsImpl(UserRepository userRepository, AddressRepository addressRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.userRepository = userRepository;
 		this.addressRepository = addressRepository;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
 	@Transactional(readOnly = true)
@@ -54,7 +57,7 @@ public class AccountToolsImpl implements AccountTools {
 	@Transactional
 	@Override
 	public void updatePassword(String email, String newPassword) {
-		String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
-		userRepository.updateUserPassword(email, newPassword);
+		String hashedPassword = bCryptPasswordEncoder.encode(newPassword);
+		userRepository.updateUserPassword(email, hashedPassword);
 	}
 }

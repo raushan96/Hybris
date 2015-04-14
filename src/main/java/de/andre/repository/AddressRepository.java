@@ -13,7 +13,6 @@ import java.util.List;
  */
 public interface AddressRepository extends JpaRepository<DpsAddress, Integer> {
 
-    @Query("select a from DpsAddress a where a.dpsUser = :dpsUser")
-    public List<DpsAddress> findAddressesByCustomer(@Param("dpsUser")DpsUser dpsUser);
-
+	@Query("select a from DpsAddress a where a.dpsUser = :dpsUser")
+	public List<DpsAddress> findAddressesByCustomer(@Param("dpsUser") DpsUser dpsUser);
 }

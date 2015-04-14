@@ -148,22 +148,22 @@ public class DpsUser {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof DpsUser)) return false;
+		if (o == null || getClass() != o.getClass()) return false;
 
 		DpsUser dpsUser = (DpsUser) o;
 
-		if (dateOfBirth != null ? !dateOfBirth.equals(dpsUser.dateOfBirth) : dpsUser.dateOfBirth != null) return false;
-		if (!email.equals(dpsUser.email)) return false;
+		if (password != null ? !password.equals(dpsUser.password) : dpsUser.password != null) return false;
 		if (firstName != null ? !firstName.equals(dpsUser.firstName) : dpsUser.firstName != null) return false;
-		if (gender != null ? !gender.equals(dpsUser.gender) : dpsUser.gender != null) return false;
-		if (!password.equals(dpsUser.password)) return false;
-
-		return true;
+		if (lastName != null ? !lastName.equals(dpsUser.lastName) : dpsUser.lastName != null) return false;
+		if (gender != dpsUser.gender) return false;
+		if (email != null ? !email.equals(dpsUser.email) : dpsUser.email != null) return false;
+		if (dateOfBirth != null ? !dateOfBirth.equals(dpsUser.dateOfBirth) : dpsUser.dateOfBirth != null) return false;
+		return !(acceptEmails != null ? !acceptEmails.equals(dpsUser.acceptEmails) : dpsUser.acceptEmails != null);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(firstName, lastName, gender, email, dateOfBirth);
+		return Objects.hash(firstName, lastName, gender, email, dateOfBirth, acceptEmails);
 	}
 
 	@Override
@@ -175,6 +175,7 @@ public class DpsUser {
 				.append("gender", this.getGender())
 				.append("email", this.getEmail())
 				.append("dateOfBirth", this.getDateOfBirth())
+				.append("acceptEmails", this.getAcceptEmails())
 				.toString();
 	}
 }

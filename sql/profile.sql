@@ -18,9 +18,9 @@ create table dps_user_address (
 	address_id	number(8,0),
   user_id constraint address_user_fk references dps_user(user_id) on delete cascade,
 	company_name	varchar2(40)	null,
-	city	varchar2(40)	null,
-	postal_code	varchar2(15)	null,
-	country	varchar2(40)	null,
+	city	varchar2(40) not null,
+	postal_code	varchar2(15)	not null,
+	country	varchar2(40)	not null,
 	address	varchar2(80)	null,
 constraint dps_user_address_pk primary key(address_id));
 
