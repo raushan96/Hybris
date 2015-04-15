@@ -1,5 +1,6 @@
 package de.andre.entity.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -33,6 +34,7 @@ public class DpsAddress {
 	}
 
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "USER_ID")
 	public DpsUser getDpsUser() {
 		return dpsUser;

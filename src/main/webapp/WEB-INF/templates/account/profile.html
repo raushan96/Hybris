@@ -71,11 +71,59 @@
 						<td th:text="${address.city}">City</td>
 						<td th:text="${address.postalCode}">Postal code</td>
 						<td>
-							<button type="button" th:id="'editAddress_' + ${address.addressId}" name="edit_address" class="btn btn-primary">Edit</button>
+							<button type="button" th:id="'editAddress_' + ${address.addressId}" name="edit_address" class="btn btn-primary" data-toggle="modal" data-target="#addressModal">Edit</button>
 							<button type="button" th:id="'deleteAddress_' + ${address.addressId}" name="delete_address" class="btn btn-danger">Delete</button>
 						</td>
 					</tr>
 				</table>
+				<button type="button" id="add_address" name="add_address" class="btn btn-default" data-toggle="modal" data-target="#addressModal">Add address</button>
+
+				<div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="addressModalLabel">Address</h4>
+							</div>
+							<div class="modal-body">
+
+								<form id="modal_addrForm">
+									<input type="hidden" id="modal_addressId" name="addressId"/>
+									<div class="form-group">
+										<label for="modal_addrCompany">Company</label>
+										<input type="text" class="form-control" id="modal_addrCompany" placeholder="Company"/>
+									</div>
+
+									<div class="form-group">
+										<label for="modal_addrCountry">Country</label>
+										<input type="text" class="form-control" id="modal_addrCountry" placeholder="Country"/>
+									</div>
+
+									<div class="form-group">
+										<label for="modal_addrCity">City</label>
+										<input type="text" class="form-control" id="modal_addrCity" placeholder="City"/>
+									</div>
+
+									<div class="form-group">
+										<label for="modal_addrPostalCode">Postal code</label>
+										<input type="text" class="form-control" id="modal_addrPostalCode" placeholder="(__)-___-___"/>
+									</div>
+
+									<div class="form-group">
+										<label for="modal_addrAddress">Main address</label>
+										<input type="text" class="form-control" id="modal_addrAddress" placeholder="Main address"/>
+									</div>
+								</form>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary">Proceed</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
 			</div>
 			<div role="tabpanel" class="tab-pane" id="messages">3</div>
 			<div role="tabpanel" class="tab-pane" id="settings">4</div>

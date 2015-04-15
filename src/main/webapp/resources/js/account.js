@@ -10,12 +10,35 @@ $(document).ready(function() {
 			dataType: 'json',
 			data: $.param(ajaxData),
 			success: function(res) {
-				console.log(res);
+				var form = $('#modal_addrForm');
+				populateForm(form, res);
 			}
 		});
 	};
 
+	function populateForm(form, addrObj) {
+		form.find('#modal_addrCompany').val(addrObj.companyName);
+		form.find('#modal_addrCity').val(addrObj.city);
+		form.find('#modal_addrPostalCode').val(addrObj.postalCode);
+		form.find('#modal_addrAddress').val(addrObj.address);
+		form.find('#modal_addrCountry').val(addrObj.country);
+		form.find('#modal_addressId').val(addrObj.addressId);
+	}
+
+	function cleanAddressPopUp() {
+		var form = $('#modal_addrForm')[0];
+		form.reset();
+	};
+
 	$('button[name=edit_address]').bind('click', function() {
 		openEditPopUp(this.id);
-	})
+	});
+
+	$('button[name=delete_address]').bind('click', function() {
+		openEditPopUp(this.id);
+	});
+
+	$('#add_address').bind('click', function() {
+		cleanAddressPopUp();
+	});
 });

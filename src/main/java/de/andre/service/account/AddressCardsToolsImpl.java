@@ -24,4 +24,10 @@ public class AddressCardsToolsImpl implements AddressCardsTools {
 	public DpsAddress getAddressById(String addressId) {
 		return addressRepository.findOne(Integer.valueOf(addressId));
 	}
+
+	@Transactional
+	@Override
+	public void deleteAdressById(String addressId) {
+		addressRepository.delete(Integer.valueOf(addressId));
+	}
 }
