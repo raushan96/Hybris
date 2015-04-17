@@ -25,16 +25,26 @@ $(document).ready(function() {
 		form.find('#modal_addressId').val(addrObj.addressId);
 	}
 
+	$('button[name=delete_address]').bind('click', function() {
+		var ajaxData = {};
+		ajaxData['addressId'] = this.id.split('_')[1];
+		$.ajax({
+			type: 'POST',
+			url: '/address/deleteAddress',
+			dataType: 'json',
+			data: $.param(ajaxData),
+			success: function(res) {
+				console.log(res);
+			}
+		});
+	});
+
 	function cleanAddressPopUp() {
 		var form = $('#modal_addrForm')[0];
 		form.reset();
 	};
 
 	$('button[name=edit_address]').bind('click', function() {
-		openEditPopUp(this.id);
-	});
-
-	$('button[name=delete_address]').bind('click', function() {
 		openEditPopUp(this.id);
 	});
 

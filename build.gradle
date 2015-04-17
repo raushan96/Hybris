@@ -13,6 +13,7 @@ dependencies {
 
     //logging
     compile 'ch.qos.logback:logback-classic:1.1.2'
+    //configurations.all { exclude group: 'commons-logging' }
 
     //spring
     compile "org.springframework:spring-context:4.1.5.RELEASE"

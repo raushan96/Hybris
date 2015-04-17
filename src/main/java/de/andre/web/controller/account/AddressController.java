@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.core.Response;
+import java.security.Principal;
 
 /**
  * Created by andreika on 3/29/2015.
@@ -31,8 +31,14 @@ public class AddressController {
 	}
 
 	@RequestMapping(value = "/address/deleteAddress", method = RequestMethod.POST)
-	public Response deleteAddress(@RequestParam("addressId") String addressId) {
-		DpsAddress dpsAddress = addressCardsTools.getAddressById(addressId);
-		return Response.ok().build();
+	public String deleteAddress(@RequestParam("addressId") String addressId) {
+		addressCardsTools.deleteAdressById(addressId);
+		return addressId;
+	}
+
+	@RequestMapping(value = "/address/addAddress", method = RequestMethod.POST)
+	public String deleteAddress(DpsAddress dpsAddress) {
+		addressCardsTools.createAddress(dpsAddress);
+		return "1";
 	}
 }

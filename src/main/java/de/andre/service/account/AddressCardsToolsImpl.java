@@ -30,4 +30,10 @@ public class AddressCardsToolsImpl implements AddressCardsTools {
 	public void deleteAdressById(String addressId) {
 		addressRepository.delete(Integer.valueOf(addressId));
 	}
+
+	@Transactional
+	@Override
+	public void createAddress(DpsAddress dpsAddress) {
+		addressRepository.save(dpsAddress);
+	}
 }

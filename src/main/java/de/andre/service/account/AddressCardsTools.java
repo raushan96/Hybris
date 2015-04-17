@@ -9,4 +9,6 @@ public interface AddressCardsTools {
 	DpsAddress getAddressById(String addressId);
 
 	void deleteAdressById(String addressId);
+
+	void createAddress(DpsAddress dpsAddress);
 }

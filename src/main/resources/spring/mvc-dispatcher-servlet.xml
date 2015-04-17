@@ -59,4 +59,6 @@
 		<property name="defaultErrorView" value="error"/>
 		<property name="warnLogCategory" value="warn"/>
 	</bean>
+
+	<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 </beans>
