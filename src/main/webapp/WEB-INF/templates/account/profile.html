@@ -7,7 +7,7 @@
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" class="active"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal info</a></li>
 			<li role="presentation"><a href="#addresses" aria-controls="addresses" role="tab" data-toggle="tab">Adresses</a></li>
-			<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Credit cards</a></li>
+			<li role="presentation"><a href="#creditCard" aria-controls="creditCard" role="tab" data-toggle="tab">Credits</a></li>
 			<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Orders</a></li>
 			<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Gift list</a></li>
 		</ul>
@@ -55,6 +55,7 @@
 
 				<a th:href="@{/account/editProfile(userId=${dpsUser.userId})}" class="btn btn-primary">Edit profile</a>
 			</div>
+
 			<div role="tabpanel" class="tab-pane" id="addresses">
 				<h2>Addresses</h2>
 				<table class="table table-striped">
@@ -89,6 +90,7 @@
 
 								<form id="modal_addrForm">
 									<input type="hidden" id="modal_addressId" name="addressId"/>
+									<input type="hidden" id="modal_addrUser" th:value="${dpsUser.userId}"/>
 									<div class="form-group">
 										<label for="modal_addrCompany">Company</label>
 										<input type="text" class="form-control" id="modal_addrCompany" placeholder="Company"/>
@@ -113,19 +115,35 @@
 										<label for="modal_addrAddress">Main address</label>
 										<input type="text" class="form-control" id="modal_addrAddress" placeholder="Main address"/>
 									</div>
-								</form>
 
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary" id="modal_addrSubmit">Proceed</button>
+									</div>
+								</form>
 							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Proceed</button>
-							</div>
+
 						</div>
 					</div>
 				</div>
 
 			</div>
-			<div role="tabpanel" class="tab-pane" id="messages">3</div>
+
+			<div role="tabpanel" class="tab-pane" id="creditCard">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Credit card</h3>
+					</div>
+					<div class="panel-body">
+						<ul class="list-group" th:object="${creditCard}">
+							<li class="list-group-item" th:text="'Card number: ' + *{creditCardNumber}">Card Number</li>
+							<li class="list-group-item" th:text="'Expiration date: ' + *{expirationDate}">Expiration date</li>
+							<li class="list-group-item" th:id="'creditAddr_' + *{dpsAddress.addressId}" th:text="'Address: ' + *{dpsAddress.address}">Address</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
 			<div role="tabpanel" class="tab-pane" id="settings">4</div>
 		</div>
 	</div>

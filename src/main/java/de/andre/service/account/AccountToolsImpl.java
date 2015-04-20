@@ -1,6 +1,7 @@
 package de.andre.service.account;
 
 import de.andre.entity.core.DpsAddress;
+import de.andre.entity.core.DpsCreditCard;
 import de.andre.entity.core.DpsUser;
 import de.andre.repository.AddressRepository;
 import de.andre.repository.UserRepository;
@@ -59,5 +60,11 @@ public class AccountToolsImpl implements AccountTools {
 	public void updatePassword(String email, String newPassword) {
 		String hashedPassword = bCryptPasswordEncoder.encode(newPassword);
 		userRepository.updateUserPassword(email, hashedPassword);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public DpsCreditCard findCardByUser(DpsUser dpsUser) {
+		return userRepository.findCardByUser(dpsUser);
 	}
 }

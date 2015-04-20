@@ -2,6 +2,7 @@ package de.andre.entity.core;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -64,6 +65,7 @@ public class DpsCreditCard {
 
 	@NotBlank
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "EXPIRATION_DATE")
 	public Date getExpirationDate() {
 		return expirationDate;

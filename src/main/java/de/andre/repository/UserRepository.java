@@ -1,5 +1,6 @@
 package de.andre.repository;
 
+import de.andre.entity.core.DpsCreditCard;
 import de.andre.entity.core.DpsUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -22,4 +23,7 @@ public interface UserRepository extends JpaRepository<DpsUser, Integer> {
 	@Transactional
 	@Query(value = "update dps_user set password = :newPassword where email = :email", nativeQuery = true)
 	void updateUserPassword(@Param("email") String email, @Param("newPassword") String newPassword);
+
+	@Query("select c from DpsCreditCard c where c.dpsUser = :dpsUser")
+	DpsCreditCard findCardByUser(@Param("dpsUser")DpsUser dpsUser);
 }

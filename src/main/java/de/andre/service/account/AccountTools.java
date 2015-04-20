@@ -1,6 +1,7 @@
 package de.andre.service.account;
 
 import de.andre.entity.core.DpsAddress;
+import de.andre.entity.core.DpsCreditCard;
 import de.andre.entity.core.DpsUser;
 
 import java.util.Collection;
@@ -18,4 +19,6 @@ public interface AccountTools {
 	Collection<DpsAddress> findAddressesByUser(DpsUser dpsUser);
 
 	void updatePassword(String email, String newPassword);
+
+	DpsCreditCard findCardByUser(DpsUser dpsUser);
 }

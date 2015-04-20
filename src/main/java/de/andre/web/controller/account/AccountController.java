@@ -51,6 +51,7 @@ public class AccountController {
 		DpsUser dpsUser = accountTools.findUserByEmail(principal.getName());
 		map.addAttribute("dpsUser", accountTools.findUserByEmail(principal.getName()));
 		map.addAttribute("addresses", accountTools.findAddressesByUser(dpsUser));
+		map.addAttribute("creditCard", accountTools.findCardByUser(dpsUser));
 		return "account/profile";
 	}
 

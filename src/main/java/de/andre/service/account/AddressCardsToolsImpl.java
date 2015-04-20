@@ -2,6 +2,7 @@ package de.andre.service.account;
 
 import de.andre.entity.core.DpsAddress;
 import de.andre.repository.AddressRepository;
+import de.andre.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AddressCardsToolsImpl implements AddressCardsTools {
 	private final AddressRepository addressRepository;
+	private final UserRepository userRepository;
 
 	@Autowired
-	public AddressCardsToolsImpl(AddressRepository addressRepository) {
+	public AddressCardsToolsImpl(AddressRepository addressRepository, UserRepository userRepository) {
 		this.addressRepository = addressRepository;
+		this.userRepository = userRepository;
 	}
 
 	@Transactional(readOnly = true)
@@ -33,7 +36,8 @@ public class AddressCardsToolsImpl implements AddressCardsTools {
 
 	@Transactional
 	@Override
-	public void createAddress(DpsAddress dpsAddress) {
+	public void createAddress(DpsAddress dpsAddress, String userId) {
+		dpsAddress.setDpsUser(userRepository.getOne(Integer.valueOf(userId)));
 		addressRepository.save(dpsAddress);
 	}
 }
