@@ -23,7 +23,7 @@ public class CatalogController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView catalogMenu() {
 		ModelAndView mav = new ModelAndView("catalog/catalog");
-		mav.addObject("prod", catalogRepository.findOne("a1").getChildProducts());
+		mav.addObject("rootCats", catalogRepository.getRootChildCategories());
 		return mav;
 	}
 

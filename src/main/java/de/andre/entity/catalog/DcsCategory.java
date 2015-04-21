@@ -20,6 +20,8 @@ public class DcsCategory {
 	private String longDescription;
 	private Boolean rootCategory;
 	private List<DcsProduct> childProducts;
+	private DcsCategory parentCategory;
+	private List<DcsCategory> childCategories;
 
 	@Id
 	@Column(name = "CATEGORY_ID")
@@ -41,6 +43,25 @@ public class DcsCategory {
 
 	public void setChildProducts(List<DcsProduct> childProducts) {
 		this.childProducts = childProducts;
+	}
+
+	@OneToMany(mappedBy = "parentCategory")
+	public List<DcsCategory> getChildCategories() {
+		return childCategories;
+	}
+
+	public void setChildCategories(List<DcsCategory> childCategories) {
+		this.childCategories = childCategories;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "PARENT_CAT_ID")
+	public DcsCategory getParentCategory() {
+		return parentCategory;
+	}
+
+	public void setParentCategory(DcsCategory parentCategory) {
+		this.parentCategory = parentCategory;
 	}
 
 	@Column(name = "DISPLAY_NAME")

@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html layout:decorator="index">
-<body>
-<div th:remove="tag" layout:fragment="content">
-	<a th:href="@{/catalog/category-a1}" title="a1">
-		<img src="" alt="spice-a1"/>
-	</a>
-	<a th:href="@{/catalog/category-a2}" title="a2">
-		<img src="" alt="spice-a2"/>
-	</a>
-</div>
-</body>
+	<body>
+		<div th:remove="tag" layout:fragment="content">
+			<div th:each="rootCat,iterStat : ${rootCats}">
+				<div class="row" th:if="${iterStat.count} % 2 == 0">
+					<div class="col-md-3">
+						<a th:href="@{/catalog/category-} + ${rootCat.categoryId}" th:title="${rootCat.displayName}">
+							<img src="" th:alt-title="${rootCat.displayName}"/>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>
