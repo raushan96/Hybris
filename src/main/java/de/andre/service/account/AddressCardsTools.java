@@ -10,5 +10,5 @@ public interface AddressCardsTools {
 
 	void deleteAdressById(String addressId);
 
-	void createAddress(DpsAddress dpsAddress, String userId);
+	Integer createAddress(DpsAddress dpsAddress, String userId);
 }

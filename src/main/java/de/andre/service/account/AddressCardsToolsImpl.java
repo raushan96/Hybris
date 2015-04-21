@@ -36,8 +36,9 @@ public class AddressCardsToolsImpl implements AddressCardsTools {
 
 	@Transactional
 	@Override
-	public void createAddress(DpsAddress dpsAddress, String userId) {
+	public Integer createAddress(DpsAddress dpsAddress, String userId) {
 		dpsAddress.setDpsUser(userRepository.getOne(Integer.valueOf(userId)));
 		addressRepository.save(dpsAddress);
+		return dpsAddress.getAddressId();
 	}
 }

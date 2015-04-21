@@ -13,6 +13,7 @@ constraint dps_user_ch_gender check(gender in (0, 1)),
 constraint dps_user_ch_acmail check(accept_emails in (0, 1)));
 
 create index dps_user_email_idx on dps_user(email);
+create index dps_user_dob_idx on dps_user(date_of_birth);
 
 create table dps_user_address (
 	address_id	number(8,0),
@@ -33,10 +34,12 @@ create table dps_credit_card (
 	user_id	constraint credit_user_fk	references dps_user(user_id) on delete cascade,
 	credit_card_number	varchar2(40)	not null,
 	expiration_date	date not null,
-	billing_addr constraint credit_address_fk references dps_user_address(address_id),
+	billing_addr constraint credit_address_fk references dps_user_address(address_id) on delete cascade,
 constraint dps_credit_card_pk primary key(credit_id));
 
 create index dps_credit_addr_idx on dps_credit_card(billing_addr);
+
+--not used for now
 
 create table dps_giftlist (
 	gift_list_id	number(8, 0) constraint gift_list_user_fk references dps_user(user_id) on delete cascade,

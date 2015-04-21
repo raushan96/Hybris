@@ -45,7 +45,11 @@ $(document).ready(function() {
 			dataType: 'json',
 			data: $.param(ajaxData),
 			success: function(res) {
-				console.log(res);
+				if (res.success) {
+					$('#deleteAddress_' + res.deletedId).parent().parent().remove();
+				} else {
+					console.log(res.err);
+				}
 			}
 		});
 	});
@@ -70,10 +74,36 @@ $(document).ready(function() {
 			dataType: 'json',
 			data: $.param(ajaxData),
 			success: function(res) {
-				if (res.success === 'true') {
-					//update/add row
+				if (res.success) {
+					$('#account_addresses').find('tbody')
+						.append($('<tr>')
+							.append($('<td>')
+								.append(ajaxData['companyName']))
+							.append($('<td>')
+								.append(ajaxData['country']))
+							.append($('<td>')
+								.append(ajaxData['city']))
+							.append($('<td>')
+								.append(ajaxData['postalCode']))
+							.append($('<td>')
+								.append($('<button>')
+									.attr('type', 'button')
+									.attr('id', 'editAddress_')
+									.attr('class', 'btn btn-primary')
+									.attr('name', 'edit_address' + res.newAddressId)
+									.attr('data-toggle', 'modal')
+									.attr('data-target', '#addressModal')
+									.text('Edit'))
+								.append('&nbsp;')
+								.append($('<button>')
+									.attr('type', 'button')
+									.attr('id', 'deleteAddress_' + res.newAddressId)
+									.attr('class', 'btn btn-danger')
+									.attr('name', 'delete_address')
+									.text('Delete')))
+					);
 				} else {
-					//error logic
+					console.log(res.err);
 				}
 			}
 		});

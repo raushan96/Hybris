@@ -2,6 +2,7 @@ package de.andre.web.controller.account;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.andre.entity.core.DpsAddress;
 import de.andre.service.account.AddressCardsTools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +20,7 @@ import java.util.Map;
  */
 
 @RestController
+@RequestMapping(value = "/address")
 public class AddressController {
 
 	private final AddressCardsTools addressCardsTools;
@@ -29,27 +32,34 @@ public class AddressController {
 		this.objectMapper = objectMapper;
 	}
 
-	@RequestMapping(value = "/address/getEditAddress", method = RequestMethod.GET)
+	@RequestMapping(value = "/getEditAddress", method = RequestMethod.GET)
 	public DpsAddress getEditAddress(@RequestParam("addressId") String addressId) {
 		DpsAddress dpsAddress = addressCardsTools.getAddressById(addressId);
 		return dpsAddress;
 	}
 
-	@RequestMapping(value = "/address/deleteAddress", method = RequestMethod.POST)
-	public String deleteAddress(@RequestParam("addressId") String addressId) {
-		addressCardsTools.deleteAdressById(addressId);
-		return addressId;
+	@RequestMapping(value = "/deleteAddress", method = RequestMethod.POST)
+	public ObjectNode deleteAddress(@RequestParam("addressId") String addressId) {
+		try {
+			addressCardsTools.deleteAdressById(addressId);
+			ObjectNode response = objectMapper.createObjectNode();
+			response.put("success", true);
+			response.put("deletedId", addressId);
+
+			return response;
+		} catch (Exception e) {
+			return objectMapper.createObjectNode().put("success", false).put("err", e.toString());
+		}
+
 	}
 
-	@RequestMapping(value = "/address/modifyAddress", method = RequestMethod.POST)
-	public String deleteAddress(DpsAddress dpsAddress, @RequestParam(value = "userId") String userId) throws JsonProcessingException {
-		Map<String, String> response = new HashMap<>();
+	@RequestMapping(value = "/modifyAddress", method = RequestMethod.POST)
+	public ObjectNode deleteAddress(@Valid DpsAddress dpsAddress, @RequestParam(value = "userId") String userId) throws JsonProcessingException {
 		try {
-			addressCardsTools.createAddress(dpsAddress, userId);
-			response.put("success", "true");
+			Integer newAddressId = addressCardsTools.createAddress(dpsAddress, userId);
+			return objectMapper.createObjectNode().put("success", true).put("newAddressId", newAddressId);
 		} catch (Exception e) {
-			response.put("success", "false");
+			return objectMapper.createObjectNode().put("success", false).put("err", e.toString());
 		}
-		return objectMapper.writeValueAsString(response);
 	}
 }

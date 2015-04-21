@@ -1,44 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
-
 			<Pattern>
-				%-5level %logger{36} - %msg%n
+				%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n
 			</Pattern>
-
 		</layout>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>TRACE</level>
+		</filter>
 	</appender>
 
+<!--	<appender name="hybrisLog" class="ch.qos.logback.core.FileAppender">
+		<file>c:\\Users\\andreika\\IdeaProjects\\Hybris\\src\\main\\resources\\hybris.log</file>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+		</encoder>
+	</appender>-->
+
+	<logger name="de.andre" level="DEBUG" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
 	<root level="debug">
-		<appender-ref ref="STDOUT"/>
+		<appender-ref ref="stdout"/>
 	</root>
 
-	<!--<appender name="flowersLog" class="ch.qos.logback.core.FileAppender">
-			<file>c:\\Users\\andreika\\IdeaProjects\\Flowers\\src\\main\\resources\\flowers.log</file>
-			<encoder>
-				<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
-			</encoder>
-		</appender>
-
-		<appender name="flowersErrorLog" class="ch.qos.logback.core.FileAppender">
-			<file>c:\\Users\\andreika\\IdeaProjects\\Flowers\\src\\main\\resources\\flowers.log</file>
-			<encoder>
-				<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
-			</encoder>
-		</appender>
-
-		<logger name="andre.rest" level="INFO" additivity="false">
-			<appender-ref ref="flowersLog" />
-		</logger>
-
-		<logger name="andre.rest" level="ERROR" additivity="false">
-			<appender-ref ref="flowersErrorLog" />
-		</logger>
-
-		<root level="DEBUG">
-			<appender-ref ref="flowersLog" />
-		</root> -->
 
 </configuration>

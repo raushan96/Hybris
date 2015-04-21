@@ -1,5 +1,6 @@
 package de.andre.entity.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.andre.entity.core.enums.Gender;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Type;
@@ -45,6 +46,7 @@ public class DpsUser {
 		this.userId = userId;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "dpsUser")
 	public Set<DpsCreditCard> getDpsCreditCard() {
 		return dpsCreditCard;
@@ -54,6 +56,7 @@ public class DpsUser {
 		this.dpsCreditCard = dpsCreditCard;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "dpsUser")
 	public Set<DpsAddress> getDpsAddresses() {
 		return dpsAddresses;

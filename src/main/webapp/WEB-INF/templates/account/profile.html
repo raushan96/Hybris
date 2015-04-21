@@ -58,7 +58,7 @@
 
 			<div role="tabpanel" class="tab-pane" id="addresses">
 				<h2>Addresses</h2>
-				<table class="table table-striped">
+				<table class="table table-striped" id="account_addresses">
 					<tr>
 						<th>Company</th>
 						<th>Country</th>
@@ -79,54 +79,7 @@
 				</table>
 				<button type="button" id="add_address" name="add_address" class="btn btn-default" data-toggle="modal" data-target="#addressModal">Add address</button>
 
-				<div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								<h4 class="modal-title" id="addressModalLabel">Address</h4>
-							</div>
-							<div class="modal-body">
-
-								<form id="modal_addrForm">
-									<input type="hidden" id="modal_addressId" name="addressId"/>
-									<input type="hidden" id="modal_addrUser" th:value="${dpsUser.userId}"/>
-									<div class="form-group">
-										<label for="modal_addrCompany">Company</label>
-										<input type="text" class="form-control" id="modal_addrCompany" placeholder="Company"/>
-									</div>
-
-									<div class="form-group">
-										<label for="modal_addrCountry">Country</label>
-										<input type="text" class="form-control" id="modal_addrCountry" placeholder="Country"/>
-									</div>
-
-									<div class="form-group">
-										<label for="modal_addrCity">City</label>
-										<input type="text" class="form-control" id="modal_addrCity" placeholder="City"/>
-									</div>
-
-									<div class="form-group">
-										<label for="modal_addrPostalCode">Postal code</label>
-										<input type="text" class="form-control" id="modal_addrPostalCode" placeholder="(__)-___-___"/>
-									</div>
-
-									<div class="form-group">
-										<label for="modal_addrAddress">Main address</label>
-										<input type="text" class="form-control" id="modal_addrAddress" placeholder="Main address"/>
-									</div>
-
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										<button type="submit" class="btn btn-primary" id="modal_addrSubmit">Proceed</button>
-									</div>
-								</form>
-							</div>
-
-						</div>
-					</div>
-				</div>
-
+				<div th:replace="fragments/addressModal :: addressModal"></div>
 			</div>
 
 			<div role="tabpanel" class="tab-pane" id="creditCard">
@@ -135,11 +88,16 @@
 						<h3 class="panel-title">Credit card</h3>
 					</div>
 					<div class="panel-body">
-						<ul class="list-group" th:object="${creditCard}">
-							<li class="list-group-item" th:text="'Card number: ' + *{creditCardNumber}">Card Number</li>
-							<li class="list-group-item" th:text="'Expiration date: ' + *{expirationDate}">Expiration date</li>
-							<li class="list-group-item" th:id="'creditAddr_' + *{dpsAddress.addressId}" th:text="'Address: ' + *{dpsAddress.address}">Address</li>
-						</ul>
+						<table class="table" th:object="${creditCard}">
+							<tr>
+								<th>Card Number</th>
+								<th>Expiration date</th>
+								<th>Address</th>
+							</tr>
+								<td th:text="'Card number: ' + *{creditCardNumber}">Card Number</td>
+								<td th:text="'Expiration date: ' + *{expirationDate}">Expiration date</td>
+								<td th:id="'creditAddr_' + *{dpsAddress.addressId}" th:text="'Address: ' + *{dpsAddress.address}">Address</td>
+						</table>
 					</div>
 				</div>
 			</div>

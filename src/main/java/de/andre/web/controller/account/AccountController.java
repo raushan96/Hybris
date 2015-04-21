@@ -5,6 +5,8 @@ import de.andre.entity.core.utils.ForgotPasswordForm;
 import de.andre.service.account.AccountTools;
 import de.andre.utils.validation.DpsUserValidator;
 import de.andre.utils.validation.ForgotPasswordFormValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,18 +24,24 @@ import java.security.Principal;
  */
 
 @Controller
+@RequestMapping(value = "/account")
 @SessionAttributes(value = "dpsUser")
 public class AccountController {
+	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
 	private final AccountTools accountTools;
 	private final DpsUserValidator dpsUserValidator;
 	private final ForgotPasswordFormValidator forgotPasswordFormValidator;
+
+/*	@Autowired
+	private CatalogRepository catalogRepository;*/
 
 	@Autowired
 	public AccountController(AccountTools accountTools, DpsUserValidator dpsUserValidator, ForgotPasswordFormValidator forgotPasswordFormValidator) {
 		this.accountTools = accountTools;
 		this.dpsUserValidator = dpsUserValidator;
 		this.forgotPasswordFormValidator = forgotPasswordFormValidator;
+		logger.info("Account controller initialized..");
 	}
 
 	@InitBinder(value = "forgotPasswordForm")
@@ -46,8 +54,9 @@ public class AccountController {
 		dataBinder.setValidator(dpsUserValidator);
 	}
 
-	@RequestMapping("/account/profile")
+	@RequestMapping("/profile")
 	public String showAccount(Model map, Principal principal) {
+		//catalogRepository.findOne("spices");
 		DpsUser dpsUser = accountTools.findUserByEmail(principal.getName());
 		map.addAttribute("dpsUser", accountTools.findUserByEmail(principal.getName()));
 		map.addAttribute("addresses", accountTools.findAddressesByUser(dpsUser));
@@ -55,7 +64,7 @@ public class AccountController {
 		return "account/profile";
 	}
 
-	@RequestMapping(value = "/account/editProfile", method = RequestMethod.GET)
+	@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
 	public String editAccount(@RequestParam("userId") String id, ModelMap map) {
 		if (!map.containsKey("dpsUser")) {
 			map.addAttribute("dpsUser", accountTools.getUserById(Integer.valueOf(id)));
@@ -64,7 +73,7 @@ public class AccountController {
 		return "account/editProfile";
 	}
 
-	@RequestMapping(value = "/account/editProfile", method = RequestMethod.POST)
+	@RequestMapping(value = "/editProfile", method = RequestMethod.POST)
 	public String updateAccount(@Valid DpsUser dpsUser, BindingResult result, SessionStatus status) {
 		if (result.hasErrors()) {
 			return "account/editProfile";
