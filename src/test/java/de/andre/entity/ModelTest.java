@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.andre.entity.core.DpsUser;
-import de.andre.entity.core.enums.Gender;
+import de.andre.entity.enums.Gender;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;

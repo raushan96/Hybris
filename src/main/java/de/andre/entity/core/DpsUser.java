@@ -1,8 +1,7 @@
 package de.andre.entity.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.andre.entity.core.enums.Gender;
-import org.hibernate.annotations.Immutable;
+import de.andre.entity.enums.Gender;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;

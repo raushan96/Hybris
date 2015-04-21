@@ -1,10 +1,12 @@
 package de.andre.entity.catalog;
 
+import de.andre.entity.enums.ProductType;
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.math.BigInteger;
-import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,20 +20,30 @@ public class DcsProduct {
 	private String displayName;
 	private String description;
 	private String image;
-	private Integer productType;
-	private Integer discountable;
-	private Timestamp startDate;
-	private Timestamp expirationDate;
+	private ProductType productType;
+	private Boolean discountable;
+	private Date startDate;
+	private Date expirationDate;
 	private String brand;
+	private List<DcsCategory> parentCategories;
 
 	@Id
 	@Column(name = "PRODUCT_ID")
-	public int getProductId() {
+	public Integer getProductId() {
 		return productId;
 	}
 
-	public void setProductId(int productId) {
+	public void setProductId(Integer productId) {
 		this.productId = productId;
+	}
+
+	@ManyToMany(mappedBy = "childProducts")
+	public List<DcsCategory> getParentCategories() {
+		return parentCategories;
+	}
+
+	public void setParentCategories(List<DcsCategory> parentCategories) {
+		this.parentCategories = parentCategories;
 	}
 
 	@Column(name = "DISPLAY_NAME")
@@ -62,40 +74,42 @@ public class DcsProduct {
 	}
 
 	@Column(name = "PRODUCT_TYPE")
-	public Integer getProductType() {
+	@Enumerated(EnumType.ORDINAL)
+	public ProductType getProductType() {
 		return productType;
 	}
 
-	public void setProductType(Integer productType) {
+	public void setProductType(ProductType productType) {
 		this.productType = productType;
 	}
 
 	@Column(name = "DISCOUNTABLE")
-	public Integer getDiscountable() {
+	@Type(type = "boolean")
+	public Boolean getDiscountable() {
 		return discountable;
 	}
 
-	public void setDiscountable(Integer discountable) {
+	public void setDiscountable(Boolean discountable) {
 		this.discountable = discountable;
 	}
 
-	@Basic
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "START_DATE")
-	public Timestamp getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Timestamp startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-	@Basic
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "EXPIRATION_DATE")
-	public Timestamp getExpirationDate() {
+	public Date getExpirationDate() {
 		return expirationDate;
 	}
 
-	public void setExpirationDate(Timestamp expirationDate) {
+	public void setExpirationDate(Date expirationDate) {
 		this.expirationDate = expirationDate;
 	}
 

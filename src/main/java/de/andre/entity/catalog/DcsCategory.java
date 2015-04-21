@@ -1,9 +1,11 @@
 package de.andre.entity.catalog;
 
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,7 +18,8 @@ public class DcsCategory {
 	private String categoryId;
 	private String displayName;
 	private String longDescription;
-	private BigInteger rootCategory;
+	private Boolean rootCategory;
+	private List<DcsProduct> childProducts;
 
 	@Id
 	@Column(name = "CATEGORY_ID")
@@ -26,6 +29,18 @@ public class DcsCategory {
 
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "dcs_category_products",
+			joinColumns = {@JoinColumn(name = "CATEGORY_ID", referencedColumnName = "CATEGORY_ID")},
+			inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")})
+	public List<DcsProduct> getChildProducts() {
+		return childProducts;
+	}
+
+	public void setChildProducts(List<DcsProduct> childProducts) {
+		this.childProducts = childProducts;
 	}
 
 	@Column(name = "DISPLAY_NAME")
@@ -47,11 +62,12 @@ public class DcsCategory {
 	}
 
 	@Column(name = "ROOT_CATEGORY")
-	public BigInteger getRootCategory() {
+	@Type(type = "boolean")
+	public Boolean getRootCategory() {
 		return rootCategory;
 	}
 
-	public void setRootCategory(BigInteger rootCategory) {
+	public void setRootCategory(Boolean rootCategory) {
 		this.rootCategory = rootCategory;
 	}
 

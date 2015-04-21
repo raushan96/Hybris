@@ -1,11 +1,9 @@
 package de.andre.entity.catalog;
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -17,8 +15,7 @@ import java.util.Objects;
 public class DcsCatalog {
 	private String catalogId;
 	private String displayName;
-	private Timestamp creationDate;
-	//private DcsCategory rootCategory;
+	private Date creationDate;
 
 	@Id
 	@Column(name = "CATALOG_ID")
@@ -40,27 +37,14 @@ public class DcsCatalog {
 	}
 
 	@Column(name = "CREATION_DATE")
-	public Timestamp getCreationDate() {
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Timestamp creationDate) {
+	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
-
-/*	@OneToOne
-	@JoinColumnsOrFormulas(
-			{@JoinColumnOrFormula(formula = @JoinFormula(value = "(select category_id from dcs_category where root_category = 1)",
-			referencedColumnName = "category_id")),
-			@JoinColumnOrFormula(column = @JoinColumn())}
-	)
-	public DcsCategory getRootCategory() {
-		return rootCategory;
-	}*/
-
-/*	public void setRootCategory(DcsCategory rootCategory) {
-		this.rootCategory = rootCategory;
-	}*/
 
 	@Override
 	public boolean equals(Object o) {

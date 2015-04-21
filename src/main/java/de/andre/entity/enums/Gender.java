@@ -1,4 +1,4 @@
-package de.andre.entity.core.enums;
+package de.andre.entity.enums;
 
 /**
  * Created by andreika on 4/5/2015.

@@ -33,9 +33,6 @@ public class AccountController {
 	private final DpsUserValidator dpsUserValidator;
 	private final ForgotPasswordFormValidator forgotPasswordFormValidator;
 
-/*	@Autowired
-	private CatalogRepository catalogRepository;*/
-
 	@Autowired
 	public AccountController(AccountTools accountTools, DpsUserValidator dpsUserValidator, ForgotPasswordFormValidator forgotPasswordFormValidator) {
 		this.accountTools = accountTools;
@@ -56,7 +53,6 @@ public class AccountController {
 
 	@RequestMapping("/profile")
 	public String showAccount(Model map, Principal principal) {
-		//catalogRepository.findOne("spices");
 		DpsUser dpsUser = accountTools.findUserByEmail(principal.getName());
 		map.addAttribute("dpsUser", accountTools.findUserByEmail(principal.getName()));
 		map.addAttribute("addresses", accountTools.findAddressesByUser(dpsUser));
