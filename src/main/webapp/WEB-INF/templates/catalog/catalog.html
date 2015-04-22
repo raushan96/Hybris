@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html layout:decorator="index">
 	<body>
-		<div th:remove="tag" layout:fragment="content">
-			<div th:each="rootCat,iterStat : ${rootCats}">
-				<div class="row" th:if="${iterStat.count} % 2 == 0">
-					<div class="col-md-3">
-						<a th:href="@{/catalog/category-} + ${rootCat.categoryId}" th:title="${rootCat.displayName}">
-							<img src="" th:alt-title="${rootCat.displayName}"/>
+		<div th:remove="tag" layout:fragment="content" th:with="rcats=${#lists.size(rootCats)}">
+			<div class="row" th:each="count : ${#numbers.sequence(0, rcats, 3)}">
+				<div class="col-md-3" th:each="innerCount : ${#numbers.sequence(count, count + 2, 1)}">
+						<a th:with="catId=${rootCats.get(__${innerCount}__).categoryId}, catName=${rootCats.get(__${innerCount}__).displayName}"
+						   th:href="@{/catalog/category-} + ${catId}" th:title="${catName}"
+						   th:unless="${innerCount} >= ${rcats}">
+								<img th:src="@{/resources/images/catalog/img-} + ${catId} + '.jpg'" th:alt-title="${catName}"/>
 						</a>
-					</div>
 				</div>
 			</div>
 		</div>

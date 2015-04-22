@@ -31,6 +31,14 @@ insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
 values('a2', 'spices', 'Spice Two', 'root-cat');
 insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
 values('a3', 'spices', 'Spice Three', 'root-cat');
+insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
+values('a4', 'spices', 'Spice Four', 'root-cat');
+insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
+values('a5', 'spices', 'Spice Five', 'root-cat');
+insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
+values('a6', 'spices', 'Spice Six', 'root-cat');
+insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
+values('a7', 'spices', 'Spice Seven', 'root-cat');
 
 insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
 values('b1', 'spices', 'Spice b1', 'a1');
