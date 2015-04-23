@@ -8,7 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,39 +28,45 @@ public class CatalogToolsImpl implements CatalogTools {
 	private final ProductRepository productRepository;
 
 	@Autowired
-	public CatalogToolsImpl(CatalogRepository catalogRepository, ProductRepository productRepository) {
+	public CatalogToolsImpl(final CatalogRepository catalogRepository, final ProductRepository productRepository) {
 		this.catalogRepository = catalogRepository;
 		this.productRepository = productRepository;
 	}
 
-	public List<DcsProduct> getCatalogProducts(final String catId) {
-		final String filterCatId = getFilterCategoryId(catId);
+	@Transactional
+	@Override
+	public void populateCategoryMap(final String catId, final ModelAndView mav) {
+		final DcsCategory parentCategory = catalogRepository.getCategoryParent(catId);
+		final String filterCatId = getFilterCategoryId(catId, parentCategory);
 
+		if (filterCatId == null || parentCategory == null) {
+			mav.addObject("error", true);
+			return;
+		}
 		List<DcsProduct> allProducts = getProductsByCatId(catId);
 		if (allProducts == null || allProducts.size() == 0) {
 			logger.warn("Category {0} has no products", catId);
-			return null;
 		}
 
-		final Map<String, String> categoryNameIdMap = getSubcategoriesNames(filterCatId);;
-		if (categoryNameIdMap == null || categoryNameIdMap.isEmpty()) {
+		final Map<String, String> categoryIdNameMap = getSubcategoriesNames(filterCatId);;
+		if (categoryIdNameMap == null || categoryIdNameMap.isEmpty()) {
 			logger.warn("No subcategories found for category {0}, returning without processing", catId);
-			return null;
 		}
-		return null;
+		mav.addObject("products", allProducts);
+		mav.addObject("catsNameId", categoryIdNameMap);
+		mav.addObject("parentCat", parentCategory);
+		mav.addObject("error", false);
 	}
 
-	private String getFilterCategoryId(final String catId) {
+	private String getFilterCategoryId(final String catId, final DcsCategory parentCategory) {
 		if (StringUtils.hasText(catId)) {
-			DcsCategory currentCat = catalogRepository.findCatWithChilds(catId);
-			List<DcsCategory> subCategories = currentCat.getChildCategories();
+			Integer childCount = catalogRepository.getChildCatsCount(catId);
 
-			if (subCategories != null && !subCategories.isEmpty()) {
+			if (childCount > 0) {
 				return catId;
 			} else {
-				final String parentCatId = currentCat.getParentCategory().getCategoryId();
-				if (parentCatId != null) {
-					return parentCatId;
+				if (parentCategory != null) {
+					return parentCategory.getCategoryId();
 				}
 			}
 		}
@@ -79,7 +87,7 @@ public class CatalogToolsImpl implements CatalogTools {
 		if (StringUtils.hasText(catId)){
 			try {
 				final List<String[]> childCategories = catalogRepository.getSubCategoriesIdsAndNames(catId);
-				final Map<String, String> categoryNameIdMap = new LinkedHashMap<>();
+				final Map<String, String> categoryIdNameMap = new LinkedHashMap<>();
 
 				if(childCategories.isEmpty()) {
 					logger.warn("No child categories found for category: ", catId);
@@ -87,9 +95,9 @@ public class CatalogToolsImpl implements CatalogTools {
 				}
 
 				for (Object[] dcsCategory : childCategories) {
-					categoryNameIdMap.put((String) dcsCategory[1], (String) dcsCategory[0]);
+					categoryIdNameMap.put((String) dcsCategory[0], (String) dcsCategory[1]);
 				}
-				return categoryNameIdMap;
+				return categoryIdNameMap;
 			} catch (Exception e) {
 				logger.error(e.toString());
 			}
@@ -97,6 +105,7 @@ public class CatalogToolsImpl implements CatalogTools {
 		return null;
 	}
 
+	@Transactional
 	@Override
 	public List<DcsCategory> getRootChildCategories() {
 		return catalogRepository.getRootChildCategories();

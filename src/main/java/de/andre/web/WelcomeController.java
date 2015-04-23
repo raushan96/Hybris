@@ -22,11 +22,11 @@ public class WelcomeController {
 	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
 	public ModelAndView welcome(@RequestParam(value = "name", defaultValue = "world") String name) {
 		logger.debug("welcome() - name {}", name);
-		ModelAndView model = new ModelAndView();
+		final ModelAndView model = new ModelAndView();
 		model.setViewName("index");
 		model.addObject("name", String.format(template, name) + "nda");
 
-		Calendar calInstance = Calendar.getInstance();
+		final Calendar calInstance = Calendar.getInstance();
 		model.addObject("date", new SimpleDateFormat().format(calInstance.getTime()));
 		model.addObject("name", "lox");
 
@@ -36,7 +36,7 @@ public class WelcomeController {
 
 	@RequestMapping(value = "/secure", method = RequestMethod.GET)
 	public ModelAndView secureTest() {
-		ModelAndView model = new ModelAndView();
+		final ModelAndView model = new ModelAndView();
 		model.setViewName("secure");
 
 		return model;

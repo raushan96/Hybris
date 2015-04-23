@@ -25,7 +25,7 @@ public class AccountToolsImpl implements AccountTools {
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
-	public AccountToolsImpl(UserRepository userRepository, AddressRepository addressRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+	public AccountToolsImpl(final UserRepository userRepository, final AddressRepository addressRepository, final BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.userRepository = userRepository;
 		this.addressRepository = addressRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -33,38 +33,38 @@ public class AccountToolsImpl implements AccountTools {
 
 	@Transactional(readOnly = true)
 	@Override
-	public DpsUser getUserById(Integer userId) {
+	public DpsUser getUserById(final Integer userId) {
 		return userRepository.findOne(userId);
 	}
 
 	@Transactional
 	@Override
-	public void saveUser(DpsUser dpsUser) {
+	public void saveUser(final DpsUser dpsUser) {
 		userRepository.save(dpsUser);
 	}
 
 	@Transactional(readOnly = true)
 	@Override
-	public DpsUser findUserByEmail(String email) {
+	public DpsUser findUserByEmail(final String email) {
 		return userRepository.findByLogin(email);
 	}
 
 	@Transactional(readOnly = true)
 	@Override
-	public Collection<DpsAddress> findAddressesByUser(DpsUser dpsUser) {
+	public Collection<DpsAddress> findAddressesByUser(final DpsUser dpsUser) {
 		return addressRepository.findAddressesByCustomer(dpsUser);
 	}
 
 	@Transactional
 	@Override
-	public void updatePassword(String email, String newPassword) {
-		String hashedPassword = bCryptPasswordEncoder.encode(newPassword);
+	public void updatePassword(final String email, final String newPassword) {
+		final String hashedPassword = bCryptPasswordEncoder.encode(newPassword);
 		userRepository.updateUserPassword(email, hashedPassword);
 	}
 
 	@Transactional(readOnly = true)
 	@Override
-	public DpsCreditCard findCardByUser(DpsUser dpsUser) {
+	public DpsCreditCard findCardByUser(final DpsUser dpsUser) {
 		return userRepository.findCardByUser(dpsUser);
 	}
 }

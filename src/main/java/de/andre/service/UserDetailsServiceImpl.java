@@ -26,13 +26,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     AccountTools accountTools;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
         try {
-            DpsUser user = accountTools.findUserByEmail(email);
+            final DpsUser user = accountTools.findUserByEmail(email);
             if (null == user) {
                 throw new UsernameNotFoundException("User wasnt found with provided email: " + email);
             }
-            Set<GrantedAuthority> roles = new HashSet<>();
+            final Set<GrantedAuthority> roles = new HashSet<>();
             roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 
             return new User(user.getEmail(), user.getPassword(), roles);

@@ -34,7 +34,7 @@ public class AddressController {
 
 	@RequestMapping(value = "/getEditAddress", method = RequestMethod.GET)
 	public DpsAddress getEditAddress(@RequestParam("addressId") String addressId) {
-		DpsAddress dpsAddress = addressCardsTools.getAddressById(addressId);
+		final DpsAddress dpsAddress = addressCardsTools.getAddressById(addressId);
 		return dpsAddress;
 	}
 
@@ -42,7 +42,7 @@ public class AddressController {
 	public ObjectNode deleteAddress(@RequestParam("addressId") String addressId) {
 		try {
 			addressCardsTools.deleteAdressById(addressId);
-			ObjectNode response = objectMapper.createObjectNode();
+			final ObjectNode response = objectMapper.createObjectNode();
 			response.put("success", true);
 			response.put("deletedId", addressId);
 
@@ -56,7 +56,7 @@ public class AddressController {
 	@RequestMapping(value = "/modifyAddress", method = RequestMethod.POST)
 	public ObjectNode deleteAddress(@Valid DpsAddress dpsAddress, @RequestParam(value = "userId") String userId) throws JsonProcessingException {
 		try {
-			Integer newAddressId = addressCardsTools.createAddress(dpsAddress, userId);
+			final Integer newAddressId = addressCardsTools.createAddress(dpsAddress, userId);
 			return objectMapper.createObjectNode().put("success", true).put("newAddressId", newAddressId);
 		} catch (Exception e) {
 			return objectMapper.createObjectNode().put("success", false).put("err", e.toString());

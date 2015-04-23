@@ -17,26 +17,26 @@ public class AddressCardsToolsImpl implements AddressCardsTools {
 	private final UserRepository userRepository;
 
 	@Autowired
-	public AddressCardsToolsImpl(AddressRepository addressRepository, UserRepository userRepository) {
+	public AddressCardsToolsImpl(final AddressRepository addressRepository, final UserRepository userRepository) {
 		this.addressRepository = addressRepository;
 		this.userRepository = userRepository;
 	}
 
 	@Transactional(readOnly = true)
 	@Override
-	public DpsAddress getAddressById(String addressId) {
+	public DpsAddress getAddressById(final String addressId) {
 		return addressRepository.findOne(Integer.valueOf(addressId));
 	}
 
 	@Transactional
 	@Override
-	public void deleteAdressById(String addressId) {
+	public void deleteAdressById(final String addressId) {
 		addressRepository.delete(Integer.valueOf(addressId));
 	}
 
 	@Transactional
 	@Override
-	public Integer createAddress(DpsAddress dpsAddress, String userId) {
+	public Integer createAddress(final DpsAddress dpsAddress, final String userId) {
 		dpsAddress.setDpsUser(userRepository.getOne(Integer.valueOf(userId)));
 		addressRepository.save(dpsAddress);
 		return dpsAddress.getAddressId();

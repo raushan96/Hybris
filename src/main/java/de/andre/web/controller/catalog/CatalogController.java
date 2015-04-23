@@ -29,16 +29,20 @@ public class CatalogController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView catalogMenu() {
-		ModelAndView mav = new ModelAndView("catalog/catalog");
+		final ModelAndView mav = new ModelAndView("catalog/catalog");
 		mav.addObject("rootCats", catalogTools.getRootChildCategories());
 		return mav;
 	}
 
 	@RequestMapping(value = "/{catalogLink}", method = RequestMethod.GET)
 	public ModelAndView showCategory(@PathVariable("catalogLink") String catalogLink) {
-		ModelAndView mav = new ModelAndView("catalog/category");
-		String categoryId = catalogLink.split("-")[1];
-		List<DcsProduct> dcsProducts = catalogTools.getCatalogProducts(categoryId);
+		final ModelAndView mav = new ModelAndView("catalog/category");
+		final String catId = catalogLink.split("-")[1];
+		catalogTools.populateCategoryMap(catId, mav);
+
+		if((Boolean)mav.getModel().get("error")) {
+			mav.setViewName("index");
+		}
 		return mav;
 	}
 }
