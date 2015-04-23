@@ -16,4 +16,7 @@ public interface CatalogRepository extends JpaRepository<DcsCategory, String> {
 
 	@Query(value = "select cat.category_id, cat.display_name from dcs_category cat where cat.parent_cat_id = :catId", nativeQuery = true)
 	List<String[]> getSubCategoriesIdsAndNames(@Param("catId") String catId);
+
+	@Query("select cat from DcsCategory cat join fetch cat.childCategories where cat.categoryId = :catId")
+	DcsCategory findCatWithChilds(@Param("catId") String catId);
 }
