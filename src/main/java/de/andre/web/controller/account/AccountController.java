@@ -34,7 +34,8 @@ public class AccountController {
 	private final ForgotPasswordFormValidator forgotPasswordFormValidator;
 
 	@Autowired
-	public AccountController(AccountTools accountTools, DpsUserValidator dpsUserValidator, ForgotPasswordFormValidator forgotPasswordFormValidator) {
+	public AccountController(final AccountTools accountTools, final DpsUserValidator dpsUserValidator,
+							 final ForgotPasswordFormValidator forgotPasswordFormValidator) {
 		this.accountTools = accountTools;
 		this.dpsUserValidator = dpsUserValidator;
 		this.forgotPasswordFormValidator = forgotPasswordFormValidator;
@@ -42,17 +43,17 @@ public class AccountController {
 	}
 
 	@InitBinder(value = "forgotPasswordForm")
-	public void initPasswordBinder(WebDataBinder dataBinder) {
+	public void initPasswordBinder(final WebDataBinder dataBinder) {
 		dataBinder.setValidator(forgotPasswordFormValidator);
 	}
 
 	@InitBinder(value = "dpsUser")
-	public void initUserBinder(WebDataBinder dataBinder) {
+	public void initUserBinder(final WebDataBinder dataBinder) {
 		dataBinder.setValidator(dpsUserValidator);
 	}
 
 	@RequestMapping("/profile")
-	public String showAccount(Model map, Principal principal) {
+	public String showAccount(final Model map, final Principal principal) {
 		final DpsUser dpsUser = accountTools.findUserByEmail(principal.getName());
 		map.addAttribute("dpsUser", accountTools.findUserByEmail(principal.getName()));
 		map.addAttribute("addresses", accountTools.findAddressesByUser(dpsUser));
@@ -61,7 +62,7 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
-	public String editAccount(@RequestParam("userId") String id, ModelMap map) {
+	public String editAccount(@RequestParam("userId") final String id, final ModelMap map) {
 		if (!map.containsKey("dpsUser")) {
 			map.addAttribute("dpsUser", accountTools.getUserById(Integer.valueOf(id)));
 		}
@@ -70,7 +71,7 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/editProfile", method = RequestMethod.POST)
-	public String updateAccount(@Valid DpsUser dpsUser, BindingResult result, SessionStatus status) {
+	public String updateAccount(@Valid final DpsUser dpsUser, final BindingResult result, final SessionStatus status) {
 		if (result.hasErrors()) {
 			return "account/editProfile";
 		} else {
@@ -81,7 +82,7 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/account/resetPassword", method = RequestMethod.POST)
-	public String savePassword(@Valid ForgotPasswordForm forgotPasswordForm, BindingResult result, Principal principal) {
+	public String savePassword(@Valid final ForgotPasswordForm forgotPasswordForm, final BindingResult result, final Principal principal) {
 		if (result.hasErrors()) {
 			return "account/editProfile";
 		} else {

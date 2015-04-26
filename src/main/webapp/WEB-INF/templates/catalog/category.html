@@ -19,11 +19,16 @@
 				<div class="col-sm-4 col-lg-4 col-md-4" th:each="prd : ${products}">
 					<div class="thumbnail">
 						<img src="http://placehold.it/320x150" th:alt-title="${prd.displayName}"/>
-						<div class="caption">
-							<h4 class="pull-right">$24.99</h4>
+						<div class="caption"
+							 th:with="prdBasePrice=${prd.salePrice != null ? '&lt;s&gt;' + '$' + prd.basePrice + '&lt;/s&gt;': '$' + prd.basePrice}">
+							<h4 class="pull-right" th:utext="${prdBasePrice}">$24.99</h4>
+							<h4 class="pull-right" th:if="${prd.salePrice != null}" th:text="'$' + ${prd.salePrice} + '&nbsp;'">$24.99</h4>
 							<h4><a href="#" th:text="${prd.displayName}">Product</a>
 							</h4>
 							<p th:text="${prd.description}">See more</p>
+							<p>
+								<a href="#" class="btn btn-primary">Add to cart</a> <a th:href="@{${#httpServletRequest.servletPath}} + '/prd-' + ${prd.productId}" class="btn btn-default">Product Page</a>
+							</p>
 						</div>
 						<div class="ratings">
 							<p class="pull-right">15 reviews</p>

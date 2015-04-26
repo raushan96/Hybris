@@ -13,4 +13,6 @@ public interface CatalogTools {
 	void populateCategoryMap(String catId, ModelAndView mav);
 
 	List<DcsCategory> getRootChildCategories();
+
+	DcsProduct getProductById(Integer prdId);
 }

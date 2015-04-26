@@ -115,8 +115,50 @@ values('b3', 139);
 insert into dcs_category_products (category_id, product_id)
 values('b3', 142);
 
-insert into dcs_price_list (price_list_id, base_price_list, description, locale)
-values('base-list', null, 'Default Price List', 'en_US');
-insert into dcs_price_list (price_list_id, base_price_list, description, locale)
-values('sales-list', 'base-list', 'Sales Price List', 'en_US');
+insert into dcs_price_list (price_list_id, base_price_list, description, locale, currency)
+values('base-list', null, 'Default Price List', 'en_US', 'EUR');
+insert into dcs_price_list (price_list_id, base_price_list, description, locale, currency)
+values('sales-list', 'base-list', 'Sales Price List', 'en_US', 'EUR');
+
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (55,'base-list',41,100);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (56,'base-list',23,103);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (57,'base-list',43,106);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (58,'base-list',47,109);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (59,'base-list',49,112);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (60,'base-list',20,115);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (61,'base-list',47,118);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (62,'base-list',33,121);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (63,'base-list',31,124);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (64,'base-list',40,127);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (65,'base-list',5,130);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (66,'base-list',32,133);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (67,'base-list',27,136);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (68,'base-list',35,139);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (69,'base-list',38,142);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (70,'base-list',25,145);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (71,'base-list',27,148);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (72,'base-list',41,151);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (73,'base-list',49,154);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (74,'base-list',8,157);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (75,'base-list',45,160);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (76,'base-list',6,163);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (77,'base-list',22,166);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (78,'base-list',38,169);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (79,'base-list',19,172);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (80,'base-list',27,175);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (81,'base-list',50,178);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (82,'base-list',32,181);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (83,'base-list',17,184);
+INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (84,'base-list',25,187);
+
+insert into dcs_price (price_id, price_list_id, list_price, product_id)
+values(1, 'sales-list', 4, 100);
+insert into dcs_price (price_id, price_list_id, list_price, product_id)
+values(2, 'sales-list', 4, 103);
+insert into dcs_price (price_id, price_list_id, list_price, product_id)
+values(3, 'sales-list', 3, 106);
+insert into dcs_price (price_id, price_list_id, list_price, product_id)
+values(4, 'sales-list', 5, 109);
+insert into dcs_price (price_id, price_list_id, list_price, product_id)
+values(5, 'sales-list', 2, 112);
 commit;

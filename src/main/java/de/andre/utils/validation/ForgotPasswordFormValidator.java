@@ -13,12 +13,12 @@ import org.springframework.validation.Validator;
 @Component
 public class ForgotPasswordFormValidator implements Validator{
 	@Override
-	public boolean supports(Class<?> clazz) {
+	public boolean supports(final Class<?> clazz) {
 		return ForgotPasswordForm.class.equals(clazz);
 	}
 
 	@Override
-	public void validate(Object target, Errors errors) {
+	public void validate(final Object target, final Errors errors) {
 		ForgotPasswordForm passwordForm = (ForgotPasswordForm) target;
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "enteredPassword", "password.entered.empty");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmedPassword", "password.confirmed.empty");

@@ -34,7 +34,7 @@ create table dps_credit_card (
 	user_id	constraint credit_user_fk	references dps_user(user_id) on delete cascade,
 	credit_card_number	varchar2(40)	not null,
 	expiration_date	date not null,
-	billing_addr constraint credit_address_fk references dps_user_address(address_id) on delete cascade,
+	billing_addr constraint credit_address_fk references dps_user_address(address_id),
 constraint dps_credit_card_pk primary key(credit_id));
 
 create index dps_credit_addr_idx on dps_credit_card(billing_addr);

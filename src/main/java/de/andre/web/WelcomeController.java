@@ -20,7 +20,7 @@ public class WelcomeController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
-	public ModelAndView welcome(@RequestParam(value = "name", defaultValue = "world") String name) {
+	public ModelAndView welcome(@RequestParam(value = "name", defaultValue = "world") final String name) {
 		logger.debug("welcome() - name {}", name);
 		final ModelAndView model = new ModelAndView();
 		model.setViewName("index");

@@ -3,11 +3,10 @@ create table dcs_catalog (
 	display_name	varchar2(40)	null,
 	creation_date	timestamp	null,
 constraint dcs_catalog_p primary key (catalog_id));
---root category?
 
 create table dcs_category (
 	category_id	varchar2(20),
-	catalog_id	constraint dcs_cata_fk references dcs_catalog(catalog_id) on delete cascade,
+	catalog_id	constraint dcs_cata_fk references dcs_catalog(catalog_id),
 	display_name	varchar2(40)	null,
 	long_description	clob	null,
 	parent_cat_id	constraint dcs_par_cata_fk references dcs_category(category_id),
@@ -35,7 +34,7 @@ create index dcs_prd_type_idx on dcs_product (product_type);
 create table dcs_category_products (
   category_id constraint dcs_cat_prod_fk references dcs_category(category_id),
   product_id constraint dcs_prod_cat_fk references dcs_product(product_id),
-  constraint dcs_cat_prod_pk primary key(category_id, product_id));
+constraint dcs_cat_prod_pk primary key(category_id, product_id));
 
 create table dcs_claimable (
   claimable_id	number(8,0),
@@ -51,13 +50,16 @@ create table dcs_price_list (
   description	varchar2(80) null,
   creation_date	timestamp	null,
   locale	varchar2(5)  not null,
+  currency	varchar2(3)  not null,
 constraint dcs_price_list_pk primary key (price_list_id));
 
 create table dcs_price (
   price_id	number(8,0),
-  price_list_id constraint dcs_price_fk references dcs_price_list(price_list_id),
+  price_list_id constraint dcs_price_fk references dcs_price_list(price_list_id) not null,
   list_price	number(8, 4) not null,
-  product_id	constraint dcs_price_prod_fk references dcs_product(product_id) on delete cascade,
-constraint dcs_price_pk primary key (price_list_id));
+  product_id	constraint dcs_price_prod_fk references dcs_product(product_id) on delete cascade not null,
+constraint dcs_price_pk primary key (price_id));
+
+create index dcs_price_prd_idx on dcs_price(product_id);
 
 create sequence catalog_seq start with 200 increment by 10;

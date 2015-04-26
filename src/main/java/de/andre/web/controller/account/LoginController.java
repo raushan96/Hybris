@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class LoginController {
 
     @RequestMapping(value ="/login", method = RequestMethod.GET)
-    public String loginPage(Model model) {
+    public String loginPage() {
         return "account/login";
     }
 
     @RequestMapping("/login-error")
-    public String loginError(Model model) {
+    public String loginError(final Model model) {
         model.addAttribute("loginError", true);
         return "account/login";
     }

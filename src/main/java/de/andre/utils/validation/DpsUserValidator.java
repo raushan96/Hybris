@@ -14,12 +14,12 @@ import org.springframework.validation.Validator;
 @Component
 public class DpsUserValidator implements Validator {
 	@Override
-	public boolean supports(Class<?> clazz) {
+	public boolean supports(final Class<?> clazz) {
 		return DpsUser.class.equals(clazz);
 	}
 
 	@Override
-	public void validate(Object target, Errors errors) {
+	public void validate(final Object target, final Errors errors) {
 		ValidationUtils.rejectIfEmpty(errors, "firstName", "name.empty");
 		DpsUser dpsUser = (DpsUser) target;
 		if (StringUtils.isEmpty(dpsUser.getLastName())) {

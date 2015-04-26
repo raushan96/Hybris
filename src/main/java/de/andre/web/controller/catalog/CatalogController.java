@@ -23,7 +23,7 @@ public class CatalogController {
 	private final CatalogTools catalogTools;
 
 	@Autowired
-	public CatalogController(CatalogTools catalogTools) {
+	public CatalogController(final CatalogTools catalogTools) {
 		this.catalogTools = catalogTools;
 	}
 
@@ -35,7 +35,7 @@ public class CatalogController {
 	}
 
 	@RequestMapping(value = "/{catalogLink}", method = RequestMethod.GET)
-	public ModelAndView showCategory(@PathVariable("catalogLink") String catalogLink) {
+	public ModelAndView showCategory(@PathVariable("catalogLink") final String catalogLink) {
 		final ModelAndView mav = new ModelAndView("catalog/category");
 		final String catId = catalogLink.split("-")[1];
 		catalogTools.populateCategoryMap(catId, mav);

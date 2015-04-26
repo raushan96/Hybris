@@ -27,19 +27,19 @@ public class AddressController {
 	private final ObjectMapper objectMapper;
 
 	@Autowired
-	public AddressController(AddressCardsTools addressCardsTools, ObjectMapper objectMapper) {
+	public AddressController(final AddressCardsTools addressCardsTools, final ObjectMapper objectMapper) {
 		this.addressCardsTools = addressCardsTools;
 		this.objectMapper = objectMapper;
 	}
 
 	@RequestMapping(value = "/getEditAddress", method = RequestMethod.GET)
-	public DpsAddress getEditAddress(@RequestParam("addressId") String addressId) {
+	public DpsAddress getEditAddress(@RequestParam("addressId") final String addressId) {
 		final DpsAddress dpsAddress = addressCardsTools.getAddressById(addressId);
 		return dpsAddress;
 	}
 
 	@RequestMapping(value = "/deleteAddress", method = RequestMethod.POST)
-	public ObjectNode deleteAddress(@RequestParam("addressId") String addressId) {
+	public ObjectNode deleteAddress(@RequestParam("addressId") final String addressId) {
 		try {
 			addressCardsTools.deleteAdressById(addressId);
 			final ObjectNode response = objectMapper.createObjectNode();
@@ -54,7 +54,7 @@ public class AddressController {
 	}
 
 	@RequestMapping(value = "/modifyAddress", method = RequestMethod.POST)
-	public ObjectNode deleteAddress(@Valid DpsAddress dpsAddress, @RequestParam(value = "userId") String userId) throws JsonProcessingException {
+	public ObjectNode deleteAddress(@Valid final DpsAddress dpsAddress, @RequestParam(value = "userId") final String userId) throws JsonProcessingException {
 		try {
 			final Integer newAddressId = addressCardsTools.createAddress(dpsAddress, userId);
 			return objectMapper.createObjectNode().put("success", true).put("newAddressId", newAddressId);

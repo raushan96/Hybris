@@ -25,6 +25,8 @@ public class DcsProduct {
 	private Date startDate;
 	private Date expirationDate;
 	private String brand;
+	private Double basePrice;
+	private Double salePrice;
 	private List<DcsCategory> parentCategories;
 
 	@Id
@@ -121,6 +123,24 @@ public class DcsProduct {
 
 	public void setBrand(String brand) {
 		this.brand = brand;
+	}
+
+	@Transient
+	public Double getBasePrice() {
+		return basePrice;
+	}
+
+	public void setBasePrice(Double basePrice) {
+		this.basePrice = basePrice;
+	}
+
+	@Transient
+	public Double getSalePrice() {
+		return salePrice;
+	}
+
+	public void setSalePrice(Double salePrice) {
+		this.salePrice = salePrice;
 	}
 
 	@Override
