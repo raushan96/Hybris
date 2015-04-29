@@ -1,6 +1,8 @@
 --core
 insert into dps_user(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
 values (1, '$2a$10$zdP5J.iGZkWAhLjuGGQww.l7X.m2datdggOd9mMkzliDj2NY6hbAS', 'andre', 'evans', 0, 'andrey.evans@gmail.com', to_date('03-MAR-1994'), 1);
+insert into dps_user(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
+values (2, '$2a$10$zdP5J.iGZkWAhLjuGGQww.l7X.m2datdggOd9mMkzliDj2NY6hbAS', 'andre1', 'evans1', 1, 'andre@gmail.com', to_date('02-MAR-1991'), 0);
 insert into dps_user_address(address_id, user_id, company_name, city, postal_code, country, address)
 values(1, 1, 'ExpertSoft', 'Minsk', '123123', 'Belarus', 'korzh 5 d');
 insert into dps_user_address(address_id, user_id, company_name, city, postal_code, country, address)

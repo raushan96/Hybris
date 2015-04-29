@@ -5,6 +5,7 @@ import de.andre.entity.core.utils.ForgotPasswordForm;
 import de.andre.service.account.AccountTools;
 import de.andre.utils.validation.DpsUserValidator;
 import de.andre.utils.validation.ForgotPasswordFormValidator;
+import de.andre.web.beans.cart.OrderHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class AccountController {
 	private final AccountTools accountTools;
 	private final DpsUserValidator dpsUserValidator;
 	private final ForgotPasswordFormValidator forgotPasswordFormValidator;
+
+	@Autowired
+	private OrderHolder orderHolder;
 
 	@Autowired
 	public AccountController(final AccountTools accountTools, final DpsUserValidator dpsUserValidator,
