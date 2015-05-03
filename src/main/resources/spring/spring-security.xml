@@ -14,7 +14,7 @@
 		<intercept-url pattern="/secure" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/account/**" access="hasRole('ROLE_USER')"/>
 
-		<form-login login-page="/login" authentication-failure-url="/login-error" default-target-url="/index"/>
+		<form-login login-page="/login" authentication-success-handler-ref="authSuccessHandler" authentication-failure-url="/login-error" default-target-url="/index"/>
 		<logout logout-success-url="/login?logout" logout-url="/logout" delete-cookies="JSESSIONID"/>
 		<remember-me key="hybris123" token-validity-seconds="86400" remember-me-parameter="remember-me"/>
 		<!--        <session-management invalid-session-url="/timeout.jsp">
@@ -29,4 +29,5 @@
 	</authentication-manager>
 
 	<beans:bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	<beans:bean name="authSuccessHandler" class="de.andre.service.security.AuthenticationSuccessHandlerImpl"/>
 </beans:beans>

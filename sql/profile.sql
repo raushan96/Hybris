@@ -12,12 +12,11 @@ constraint dps_user_un_email unique (email),
 constraint dps_user_ch_gender check(gender in (0, 1)),
 constraint dps_user_ch_acmail check(accept_emails in (0, 1)));
 
-create index dps_user_email_idx on dps_user(email);
 create index dps_user_dob_idx on dps_user(date_of_birth);
 
 create table dps_user_address (
 	address_id	number(8,0),
-  user_id constraint address_user_fk references dps_user(user_id) on delete cascade,
+  user_id constraint address_user_fk references dps_user(user_id) on delete cascade not null,
 	company_name	varchar2(40)	null,
 	city	varchar2(40) not null,
 	postal_code	varchar2(15)	not null,
@@ -31,7 +30,7 @@ create index dps_addr_user_idx on dps_user_address(user_id);
 
 create table dps_credit_card (
 	credit_id number(8,0),
-	user_id	constraint credit_user_fk	references dps_user(user_id) on delete cascade,
+	user_id	constraint credit_user_fk	references dps_user(user_id) on delete cascade not null,
 	credit_card_number	varchar2(40)	not null,
 	expiration_date	date not null,
 	billing_addr constraint credit_address_fk references dps_user_address(address_id),

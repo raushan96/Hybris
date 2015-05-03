@@ -159,8 +159,7 @@ public class DpsUser {
 		if (lastName != null ? !lastName.equals(dpsUser.lastName) : dpsUser.lastName != null) return false;
 		if (gender != dpsUser.gender) return false;
 		if (email != null ? !email.equals(dpsUser.email) : dpsUser.email != null) return false;
-		if (dateOfBirth != null ? !dateOfBirth.equals(dpsUser.dateOfBirth) : dpsUser.dateOfBirth != null) return false;
-		return !(acceptEmails != null ? !acceptEmails.equals(dpsUser.acceptEmails) : dpsUser.acceptEmails != null);
+		return !(dateOfBirth != null ? !dateOfBirth.equals(dpsUser.dateOfBirth) : dpsUser.dateOfBirth != null) && !(acceptEmails != null ? !acceptEmails.equals(dpsUser.acceptEmails) : dpsUser.acceptEmails != null);
 	}
 
 	@Override

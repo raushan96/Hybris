@@ -22,7 +22,6 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/address")
 public class AddressController {
-
 	private final AddressCardsTools addressCardsTools;
 	private final ObjectMapper objectMapper;
 
@@ -54,7 +53,7 @@ public class AddressController {
 	}
 
 	@RequestMapping(value = "/modifyAddress", method = RequestMethod.POST)
-	public ObjectNode deleteAddress(@Valid final DpsAddress dpsAddress, @RequestParam(value = "userId") final String userId) throws JsonProcessingException {
+	public ObjectNode modifyAddress(@Valid final DpsAddress dpsAddress, @RequestParam(value = "userId") final String userId) throws JsonProcessingException {
 		try {
 			final Integer newAddressId = addressCardsTools.createAddress(dpsAddress, userId);
 			return objectMapper.createObjectNode().put("success", true).put("newAddressId", newAddressId);

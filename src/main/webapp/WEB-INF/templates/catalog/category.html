@@ -3,7 +3,7 @@
 	<body>
 	<div th:remove="tag" layout:fragment="content">
 	<div class="row">
-
+		<!--<span th:text="${session}"/>-->
 		<div class="col-md-3">
 			<p class="lead">Categories</p>
 			<div class="list-group" th:if="${parentCat.categoryId ne 'root-cat'}">
@@ -27,7 +27,8 @@
 							</h4>
 							<p th:text="${prd.description}">See more</p>
 							<p>
-								<a href="#" class="btn btn-primary">Add to cart</a> <a th:href="@{${#httpServletRequest.servletPath}} + '/prd-' + ${prd.productId}" class="btn btn-default">Product Page</a>
+								<a th:href="@{${#httpServletRequest.servletPath}} + '/pId-' + ${prd.productId}" class="btn btn-primary">Add to cart</a>
+								<a th:href="@{${#httpServletRequest.servletPath}} + '/prd-' + ${prd.productId}" class="btn btn-default">Product Page</a>
 							</p>
 						</div>
 						<div class="ratings">

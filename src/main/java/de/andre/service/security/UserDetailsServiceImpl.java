@@ -1,4 +1,4 @@
-package de.andre.service;
+package de.andre.service.security;
 
 import de.andre.entity.core.DpsUser;
 import de.andre.repository.UserRepository;

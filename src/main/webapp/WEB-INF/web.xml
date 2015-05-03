@@ -8,7 +8,7 @@
 	<!--Spring MVC -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring/mvc-core-config.xml, classpath:spring/spring-security.xml</param-value>
+		<param-value>classpath:spring/mvc-core-config.xml, classpath:spring/spring-security.xml, classpath:spring/hybris-beans.xml</param-value>
 	</context-param>
 
 	<servlet>

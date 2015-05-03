@@ -6,7 +6,7 @@ constraint dcs_catalog_p primary key (catalog_id));
 
 create table dcs_category (
 	category_id	varchar2(20),
-	catalog_id	constraint dcs_cata_fk references dcs_catalog(catalog_id),
+	catalog_id	constraint dcs_cata_fk references dcs_catalog(catalog_id) not null,
 	display_name	varchar2(40)	null,
 	long_description	clob	null,
 	parent_cat_id	constraint dcs_par_cata_fk references dcs_category(category_id),
