@@ -4,10 +4,9 @@ import de.andre.entity.core.DpsUser;
 import de.andre.entity.enums.OrderState;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by andreika on 5/2/2015.
@@ -24,9 +23,9 @@ public class DcsppOrder {
 	private Date submittedDate;
 	private Date lastModifiedDate;
 	private DpsUser dpsUser;
-	private List<DcsppShipGroup> shippingGroups;
-	private List<DcsppPayGroup> paymentGroups;
-	private List<DcsppItem> commerceItems;
+	private Set<DcsppShipGroup> shippingGroups;
+	private Set<DcsppPayGroup> paymentGroups;
+	private Set<DcsppItem> commerceItems;
 	private DcsppAmountInfo amountInfo;
 
 	@Id
@@ -52,51 +51,52 @@ public class DcsppOrder {
 	}
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-	public List<DcsppShipGroup> getShippingGroups() {
+//	@Fetch(value = FetchMode.SUBSELECT)
+	public Set<DcsppShipGroup> getShippingGroups() {
 		return shippingGroups;
 	}
 
-	public void setShippingGroups(List<DcsppShipGroup> shippingGroups) {
+	public void setShippingGroups(Set<DcsppShipGroup> shippingGroups) {
 		this.shippingGroups = shippingGroups;
 	}
 
 	public void addShippingGroup(DcsppShipGroup shipGroup) {
 		if (getShippingGroups() == null) {
-			shippingGroups = new ArrayList<>();
+			shippingGroups = new HashSet<>();
 		}
 		this.getShippingGroups().add(shipGroup);
 		shipGroup.setOrder(this);
 	}
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-	public List<DcsppPayGroup> getPaymentGroups() {
+	public Set<DcsppPayGroup> getPaymentGroups() {
 		return paymentGroups;
 	}
 
-	public void setPaymentGroups(List<DcsppPayGroup> paymentGroups) {
+	public void setPaymentGroups(Set<DcsppPayGroup> paymentGroups) {
 		this.paymentGroups = paymentGroups;
 	}
 
 	public void addPaymentGroup(DcsppPayGroup payGroup) {
 		if (getPaymentGroups() == null) {
-			paymentGroups = new ArrayList<>();
+			paymentGroups = new HashSet<>();
 		}
 		this.getPaymentGroups().add(payGroup);
 		payGroup.setOrder(this);
 	}
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-	public List<DcsppItem> getCommerceItems() {
+	public Set<DcsppItem> getCommerceItems() {
 		return commerceItems;
 	}
 
-	public void setCommerceItems(List<DcsppItem> commerceItems) {
+	public void setCommerceItems(Set<DcsppItem> commerceItems) {
 		this.commerceItems = commerceItems;
 	}
 
 	public void addCommerceItem(DcsppItem commerceItem) {
 		if (getCommerceItems() == null) {
-			commerceItems = new ArrayList<>();
+			commerceItems = new HashSet<>();
 		}
 		this.getCommerceItems().add(commerceItem);
 		commerceItem.setOrder(this);
@@ -210,7 +210,6 @@ public class DcsppOrder {
 	public int hashCode() {
 		int result = (orderNumber != null ? orderNumber.hashCode() : 0);
 		result = 31 * result + (couponId != null ? couponId.hashCode() : 0);
-		result = 31 * result + (version != null ? version.hashCode() : 0);
 		result = 31 * result + (state != null ? state.hashCode() : 0);
 		result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
 		result = 31 * result + (submittedDate != null ? submittedDate.hashCode() : 0);

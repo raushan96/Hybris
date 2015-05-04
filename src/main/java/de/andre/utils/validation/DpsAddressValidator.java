@@ -39,7 +39,7 @@ public class DpsAddressValidator implements Validator {
 		this.orderRepository = orderRepository;
 		this.userRepository = userRepository;
 		this.productRepository = productRepository;
-/*		DpsUser user = userRepository.getOne(1);
+		DpsUser user = userRepository.getOne(1);
 		DcsProduct product = productRepository.getOne(103);
 
 		DcsppOrder order = new DcsppOrder();
@@ -77,7 +77,7 @@ public class DpsAddressValidator implements Validator {
 		item.setQuantity(2);
 		order.addCommerceItem(item);
 
-		orderRepository.save(order);*/
+		orderRepository.save(order);
 	}
 
 	@Override

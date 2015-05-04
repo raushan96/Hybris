@@ -107,8 +107,7 @@ public class DcsppPriceAdjust {
 
 	@Override
 	public int hashCode() {
-		int result = (version != null ? version.hashCode() : 0);
-		result = 31 * result + (adjDescription != null ? adjDescription.hashCode() : 0);
+		int result = (adjDescription != null ? adjDescription.hashCode() : 0);
 		result = 31 * result + (adjustment != null ? adjustment.hashCode() : 0);
 		result = 31 * result + (qtyAdjusted != null ? qtyAdjusted.hashCode() : 0);
 		result = 31 * result + (sequence != null ? sequence * 17 : 0);

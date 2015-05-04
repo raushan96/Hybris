@@ -135,8 +135,7 @@ public class DcsppShipGroup {
 
 	@Override
 	public int hashCode() {
-		int result = (version != null ? version.hashCode() : 0);
-		result = 31 * result + (shippingMethod != null ? shippingMethod.hashCode() : 0);
+		int result = (shippingMethod != null ? shippingMethod.hashCode() : 0);
 		result = 31 * result + (shippingType != null ? shippingType.hashCode() : 0);
 		result = 31 * result + (shipOnDate != null ? shipOnDate.hashCode() : 0);
 		result = 31 * result + (state != null ? state.hashCode() : 0);

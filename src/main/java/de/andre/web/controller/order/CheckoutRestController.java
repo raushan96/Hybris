@@ -29,6 +29,6 @@ public class CheckoutRestController {
 
 	@RequestMapping(value = "catalog/category-{catId}/pId-{pId}")
 	public void addProductToCart(@PathVariable("pId") final String pId) {
-		commerceItemTools.addItemToOrder(Integer.valueOf(pId), orderHolder.getOrder());
+		commerceItemTools.addItemToOrder(Integer.valueOf(pId), orderHolder.getOrder(), 1);
 	}
 }
