@@ -9,6 +9,7 @@
 						<thead>
 							<tr>
 								<th>Product</th>
+								<th>Type</th>
 								<th>Quantity</th>
 								<th class="text-center">Per unit</th>
 								<th class="text-center">Total</th>
@@ -16,25 +17,26 @@
 							</tr>
 						</thead>
 						<tbody>
-						<tr>
+						<tr th:each="ci : ${cIs}">
 							<td class="col-md-6">
 								<div class="media">
 									<a class="thumbnail pull-left" href="#"> <img class="media-object" src="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/72/product-icon.png" style="width: 72px; height: 72px;"/> </a>
 									<div class="media-body">
-										<h4 class="media-heading"><a href="#">Product name</a></h4>
-										<h5 class="media-heading"> by <a href="#">Brand name</a></h5>
+										<h4 class="media-heading" th:text="${ci.product.displayName}"></h4>
+										<h5 class="media-heading"> by <span th:text="${ci.product.brand}"></span></h5>
 										<span>Status: </span><span class="text-success"><strong>In Stock</strong></span>
 									</div>
 								</div></td>
+							<td class="col-sm-1 col-md-1 text-center"><strong><span th:text="${ci.product.productType}"></span></strong></td>
 							<td class="col-sm-1 col-md-1" style="text-align: center">
-								<input type="text" class="form-control" value="3"/>
+								<input type="text" class="form-control" th:value="${ci.quantity}"/>
 							</td>
 							<td class="col-sm-1 col-md-1 text-center"><strong>$4.87</strong></td>
 							<td class="col-sm-1 col-md-1 text-center"><strong>$14.61</strong></td>
 							<td class="col-sm-1 col-md-1">
-								<button type="button" class="btn btn-danger">
+								<a type="button" class="btn btn-danger" th:href="@{/cart/del-} + ${ci.commerceItemId}">
 									<span class="glyphicon glyphicon-remove"></span> Remove
-								</button></td>
+								</a></td>
 						</tr>
 						<tr>
 							<td></td>
@@ -62,13 +64,13 @@
 							<td></td>
 							<td></td>
 							<td>
-								<button type="button" class="btn btn-default">
+								<a th:href="@{/catalog}" type="button" class="btn btn-default">
 									<span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
-								</button></td>
+								</a></td>
 							<td>
-								<button type="button" class="btn btn-success">
+								<a th:href="@{/checkout/shipping}" type="button" class="btn btn-success">
 									Checkout <span class="glyphicon glyphicon-play"></span>
-								</button></td>
+								</a></td>
 						</tr>
 						</tbody>
 					</table>
