@@ -6,6 +6,7 @@ import de.andre.entity.enums.ShippingType;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by andreika on 5/2/2015.
@@ -135,10 +136,6 @@ public class DcsppShipGroup {
 
 	@Override
 	public int hashCode() {
-		int result = (shippingMethod != null ? shippingMethod.hashCode() : 0);
-		result = 31 * result + (shippingType != null ? shippingType.hashCode() : 0);
-		result = 31 * result + (shipOnDate != null ? shipOnDate.hashCode() : 0);
-		result = 31 * result + (state != null ? state.hashCode() : 0);
-		return result;
+		return Objects.hash(shippingMethod, shippingType, state, shipOnDate);
 	}
 }

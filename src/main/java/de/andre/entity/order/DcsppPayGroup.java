@@ -5,6 +5,7 @@ import de.andre.entity.enums.PaymentStatus;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by andreika on 5/2/2015.
@@ -159,14 +160,6 @@ public class DcsppPayGroup {
 
 	@Override
 	public int hashCode() {
-		int result = (paymentMethod != null ? paymentMethod.hashCode() : 0);
-		result = 31 * result + (amount != null ? amount.hashCode() : 0);
-		result = 31 * result + (amountAuthorized != null ? amountAuthorized.hashCode() : 0);
-		result = 31 * result + (amountDebited != null ? amountDebited.hashCode() : 0);
-		result = 31 * result + (amountCredited != null ? amountCredited.hashCode() : 0);
-		result = 31 * result + (currencyCode != null ? currencyCode.hashCode() : 0);
-		result = 31 * result + (state != null ? state.hashCode() : 0);
-		result = 31 * result + (submittedDate != null ? submittedDate.hashCode() : 0);
-		return result;
+		return Objects.hash(paymentMethod, amount, amountAuthorized, amountCredited, amountDebited, currencyCode, state, submittedDate);
 	}
 }

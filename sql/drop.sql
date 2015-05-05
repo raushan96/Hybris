@@ -1,7 +1,6 @@
 drop sequence global_seq;
 
 drop sequence order_seq;
-drop table dcspp_amtinfo_adj;
 drop table dcspp_price_adjust;
 drop table dcspp_item;
 drop table dcspp_pay_group;

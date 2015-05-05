@@ -89,6 +89,7 @@ create table dcspp_item (
 	--catalog_ref_id	constraint dcspp_item_cat_fk references dcs_catalog(catalog_id) not null,
 	product_id	constraint dcspp_item_prod_fk references dcs_product(product_id) not null,
 	quantity	number(19,0)	null,
+	creation_date	timestamp null,
 	price_info	constraint dcspp_item_amount_fk references dcspp_amount_info(amount_info_id),
 	order_id	constraint dcspp_item_order_fk references dcspp_order(order_id) on delete cascade not null,
 constraint dcspp_item_pk primary key (commerce_item_id));

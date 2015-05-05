@@ -14,10 +14,12 @@ import de.andre.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -33,6 +35,9 @@ public class CommerceItemTools {
 	private final CommerceItemRepository commerceItemRepository;
 	private final OrderManager orderManager;
 	private final PriceRepository priceRepository;
+
+	@Autowired
+	HibernateJpaSessionFactoryBean sessionFactory;
 
 	@Autowired
 	public CommerceItemTools(final ObjectMapper objectMapper, final ProductRepository productRepository,
@@ -51,30 +56,44 @@ public class CommerceItemTools {
 			throw new IllegalArgumentException("Incorrect params adding item.");
 		}
 		final ObjectNode response = objectMapper.createObjectNode().put("success", true);
+		DcsppItem ci = null;
+		boolean isUpdate = false;
 
 		try {
-			for (final DcsppItem commerceItem : pOrder.getCommerceItems()) {
-				if (commerceItem.getProduct().getProductId().equals(pId)) {
-					Integer currentQuantity = commerceItem.getQuantity();
-					if (currentQuantity + quantity < 8) {
-						commerceItem.setQuantity(currentQuantity + quantity);
-					} else {
-						response.put("success", false)
-								.put("message", "Quantity is too big.");
-						return response;
+			//add quantity if exists
+			if (null != pOrder.getCommerceItems() && pOrder.getCommerceItems().size() > 0) {
+				for (final DcsppItem commerceItem : pOrder.getCommerceItems()) {
+					if (commerceItem.getProduct().getProductId().equals(pId)) {
+						isUpdate = true;
+						ci = commerceItem;
+						Integer currentQuantity = commerceItem.getQuantity();
+						if (currentQuantity + quantity < 8) {
+							commerceItem.setQuantity(currentQuantity + quantity);
+						} else {
+							response.put("success", false)
+									.put("message", "Quantity is too big.");
+							return response;
+						}
 					}
 				}
 			}
 
-			DcsProduct commerceProduct = productRepository.getOne(pId);
-			if (null == commerceProduct) {
-				logger.error("Didn't found product for pid {0}", pId);
-				response.put("success", false)
-						.put("message", "Product wasn't found.");
-				return response;
+			if (!isUpdate) {
+				//create new ci
+				DcsProduct commerceProduct = productRepository.getOne(pId);
+				if (null == commerceProduct) {
+					logger.error("Didn't found product for pid {0}", pId);
+					response.put("success", false)
+							.put("message", "Product wasn't found.");
+					return response;
+				}
+				ci = createCommerceItemFromProduct(commerceProduct, quantity);
+				pOrder.addCommerceItem(ci);
 			}
-			pOrder.addCommerceItem(createCommerceItemFromProduct(commerceProduct, quantity));
-			orderManager.persistOrder(pOrder);
+
+			commerceItemRepository.save(ci);
+			sessionFactory.getObject().openSession().refresh(ci);
+			//orderManager.persistOrder(pOrder);
 		} catch (Exception e) {
 			logger.error(e.toString());
 			response.put("success", false);
@@ -85,8 +104,9 @@ public class CommerceItemTools {
 
 	private DcsppItem createCommerceItemFromProduct(final DcsProduct commerceProduct, final Integer quantity) {
 		DcsppItem commerceItem = new DcsppItem();
-		commerceItem.setQuantity(quantity);
+		commerceItem.setQuantity(quantity > 8 ? 8 : quantity);
 		commerceItem.setProduct(commerceProduct);
+		commerceItem.setCreationDate(Calendar.getInstance().getTime());
 
 		DcsppAmountInfo amountInfo = new DcsppAmountInfo();
 		amountInfo.setCurrencyCode("EUR");

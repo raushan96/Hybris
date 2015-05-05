@@ -68,6 +68,6 @@ public class OrderTools {
 
 	@Transactional
 	public void persistOrder(final DcsppOrder pOrder) {
-		orderRepository.save(pOrder);
+		orderRepository.saveAndFlush(pOrder);
 	}
 }

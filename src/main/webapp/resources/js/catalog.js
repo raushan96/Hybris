@@ -20,7 +20,7 @@ $(document).ready(function() {
 
 	$('.addQuantity').bind('click', function(event) {
 		event.preventDefault();
-		var quantity = parseInt($(this).prev('input').val());
+		var quantity = parseInt($(this).parent().find("input[name=quantity]").val());
 		var link = $(this).attr('href');
 		var ajaxData = {};
 		ajaxData['quantity'] = quantity;

@@ -25,6 +25,10 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory"/>
 	</bean>
 
+	<bean id="sessionFactory" class="org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
 	<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
@@ -41,8 +45,4 @@
 		<property name="defaultErrorView" value="error"/>
 		<property name="warnLogCategory" value="warn"/>
 	</bean>
-	<!--
-		<bean id="sessionFactory" class="org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean">
-			<property name="entityManagerFactory" ref="entityManagerFactory" />
-		</bean>-->
 </beans>

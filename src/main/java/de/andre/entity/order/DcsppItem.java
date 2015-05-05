@@ -3,6 +3,8 @@ package de.andre.entity.order;
 import de.andre.entity.catalog.DcsProduct;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by andreika on 5/2/2015.
@@ -13,6 +15,7 @@ public class DcsppItem {
 	private Integer commerceItemId;
 	private Long version;
 	private Integer quantity;
+	private Date creationDate;
 	private DcsProduct product;
 	private DcsppOrder order;
 	private DcsppAmountInfo amountInfo;
@@ -79,6 +82,16 @@ public class DcsppItem {
 		this.quantity = quantity;
 	}
 
+	@Column(name = "CREATION_DATE")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -94,7 +107,6 @@ public class DcsppItem {
 
 	@Override
 	public int hashCode() {
-		int result = 3 + 31 *(quantity != null ? quantity.hashCode() : 0);
-		return result;
+		return Objects.hash(quantity, creationDate);
 	}
 }
