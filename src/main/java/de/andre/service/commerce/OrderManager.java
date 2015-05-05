@@ -31,7 +31,7 @@ public class OrderManager {
 	@Transactional(readOnly = true)
 	public DcsppOrder getUserCurrentOrder(final DpsUser dpsUser) {
 		final List<DcsppOrder> orders = orderRepository.getCurrentOrdersByUser(dpsUser);
-		if (null == orders) {
+		if (orders.size() == 0) {
 			logger.info("No orders for user {0}", dpsUser.getUserId());
 			return null;
 		} else if (orders.size() > 1) {

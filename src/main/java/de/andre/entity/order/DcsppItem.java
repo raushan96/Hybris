@@ -94,9 +94,7 @@ public class DcsppItem {
 
 	@Override
 	public int hashCode() {
-		int result = commerceItemId;
-		result = 31 * result + (version != null ? version.hashCode() : 0);
-		result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
+		int result = 3 + 31 *(quantity != null ? quantity.hashCode() : 0);
 		return result;
 	}
 }

@@ -174,7 +174,6 @@ public class DcsppAmountInfo {
 	@Override
 	public int hashCode() {
 		int result = (type != null ? type.hashCode() : 0);
-		result = 31 * result + (version != null ? version.hashCode() : 0);
 		result = 31 * result + (currencyCode != null ? currencyCode.hashCode() : 0);
 		result = 31 * result + (amount != null ? amount.hashCode() : 0);
 		result = 31 * result + (rawAmount != null ? rawAmount.hashCode() : 0);
