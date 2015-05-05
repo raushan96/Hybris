@@ -1,7 +1,6 @@
 package de.andre.entity.order;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 /**
  * Created by andreika on 5/2/2015.

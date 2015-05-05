@@ -4,7 +4,6 @@ import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
 

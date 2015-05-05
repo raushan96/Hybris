@@ -5,9 +5,7 @@ import de.andre.web.beans.order.OrderHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by andreika on 5/3/2015.
@@ -27,8 +25,8 @@ public class CheckoutRestController {
 		this.commerceItemTools = commerceItemTools;
 	}
 
-	@RequestMapping(value = "catalog/category-{catId}/pId-{pId}")
-	public void addProductToCart(@PathVariable("pId") final String pId) {
-		commerceItemTools.addItemToOrder(Integer.valueOf(pId), orderHolder.getOrder());
+	@RequestMapping(value = "catalog/category-{catId}/pId-{pId}", method = RequestMethod.POST)
+	public void addProductToCart(@PathVariable("pId") final String pId, @RequestParam("quantity") String quantity) {
+		commerceItemTools.addItemToOrder(Integer.valueOf(pId), orderHolder.getOrder(), 2);
 	}
 }

@@ -4,8 +4,6 @@ import de.andre.entity.enums.AmountType;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 
 /**

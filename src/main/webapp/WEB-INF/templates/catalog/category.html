@@ -26,10 +26,14 @@
 							<h4><a href="#" th:text="${prd.displayName}">Product</a>
 							</h4>
 							<p th:text="${prd.description}">See more</p>
-							<p>
-								<a th:href="@{${#httpServletRequest.servletPath}} + '/pId-' + ${prd.productId}" class="btn btn-primary">Add to cart</a>
+							<div class="number-controls size-sm">
+								<span class="number-minus">-</span>
+								<input type="text" data-min="1" data-maxallowed="8" value="1" readonly="readonly"/>
+								<span class="number-plus">+</span>
+							</div>
+							<br/>
+								<a th:href="@{${#httpServletRequest.servletPath}} + '/pId-' + ${prd.productId}" class="btn btn-primary addQuantity">Add to cart</a>
 								<a th:href="@{${#httpServletRequest.servletPath}} + '/prd-' + ${prd.productId}" class="btn btn-default">Product Page</a>
-							</p>
 						</div>
 						<div class="ratings">
 							<p class="pull-right">15 reviews</p>

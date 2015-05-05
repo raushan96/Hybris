@@ -150,3 +150,27 @@ footer {
 }
 
 footer .payments {display: inline-block}
+
+input.number-controls { padding: 0!important; margin: 0!important; visibility: hidden!important; }
+div.number-controls { overflow: hidden; border: 1px solid transparent; border-top-color: #dfdfdf; border-left-color: #e2e2e2; border-right-color: #e2e2e2; border-bottom-color: #dedede; }
+
+.number-controls.size-sm { width: 39px; height: 16px; border-radius: 10px; }
+.number-controls.size-sm span,
+.number-controls.size-sm input { width: 12px; height: 14px; line-height: 14px; font-size: 9px; }
+
+.number-controls.size-rg { width: 60px; height: 20px; border-radius: 12px; }
+.number-controls.size-rg span,
+.number-controls.size-rg input { width: 19px; height: 20px; line-height: 20px; font-size: 10px; }
+
+.number-controls.size-md { width: 69px; height: 26px; border-radius: 14px; }
+.number-controls.size-md span,
+.number-controls.size-md input { width: 22px; height: 24px; line-height: 24px; font-size: 10px; }
+
+.number-controls input,
+.number-controls span { float: left; font-family: GillSans, Verdana; background: #eeeeee; border: 1px solid transparent; border-top-color: #f3f3f3; border-bottom-color: #f2f2f2; text-align: center; }
+
+.number-controls span { position: relative; cursor: pointer; }
+.number-controls span.number-plus { border-left-color: #d9d9d9; border-right: none; border-top-right-radius: 100%; border-bottom-right-radius: 100%; }
+.number-controls span.number-minus { border-left: none; border-right-color: #dfe0e0; border-top-left-radius: 100%; border-bottom-left-radius: 100%; }
+
+.number-controls input { border-left-color: #e5e5e5; border-right: none; }

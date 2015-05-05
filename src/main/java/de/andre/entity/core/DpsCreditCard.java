@@ -1,6 +1,5 @@
 package de.andre.entity.core;
 
-import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 

@@ -1,16 +1,6 @@
 package de.andre.utils.validation;
 
-import de.andre.entity.catalog.DcsProduct;
 import de.andre.entity.core.DpsAddress;
-import de.andre.entity.core.DpsUser;
-import de.andre.entity.enums.OrderState;
-import de.andre.entity.enums.ShippingMethod;
-import de.andre.entity.enums.ShippingState;
-import de.andre.entity.enums.ShippingType;
-import de.andre.entity.order.DcsppAmountInfo;
-import de.andre.entity.order.DcsppItem;
-import de.andre.entity.order.DcsppOrder;
-import de.andre.entity.order.DcsppShipGroup;
 import de.andre.repository.OrderRepository;
 import de.andre.repository.ProductRepository;
 import de.andre.repository.UserRepository;
@@ -19,9 +9,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Andrei on 4/14/2015.

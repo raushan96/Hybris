@@ -14,7 +14,7 @@ $(document).ready(function() {
 				populateAddrForm(form, res);
 			}
 		});
-	};
+	}
 
 	function populateAddrForm(form, addrObj) {
 		form.find('#modal_addrCompany').val(addrObj.companyName);

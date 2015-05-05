@@ -1,7 +1,6 @@
 package de.andre.service.security;
 
 import de.andre.entity.core.DpsUser;
-import de.andre.repository.UserRepository;
 import de.andre.service.account.AccountTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

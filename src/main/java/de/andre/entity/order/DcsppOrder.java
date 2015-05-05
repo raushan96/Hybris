@@ -4,7 +4,6 @@ import de.andre.entity.core.DpsUser;
 import de.andre.entity.enums.OrderState;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

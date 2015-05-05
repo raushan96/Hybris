@@ -1,6 +1,5 @@
 package de.andre.entity.order;
 
-import de.andre.entity.catalog.DcsCatalog;
 import de.andre.entity.catalog.DcsProduct;
 
 import javax.persistence.*;

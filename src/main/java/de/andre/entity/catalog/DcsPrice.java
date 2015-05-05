@@ -3,7 +3,6 @@ package de.andre.entity.catalog;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
