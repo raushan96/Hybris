@@ -5,6 +5,8 @@ import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Immutable
 @Table(name = "DCS_PRODUCT", schema = "HYBRIS")
-public class DcsProduct {
+public class DcsProduct implements Comparable<DcsProduct> {
 	private Integer productId;
 	private String displayName;
 	private String description;
@@ -150,7 +152,7 @@ public class DcsProduct {
 
 		DcsProduct that = (DcsProduct) o;
 
-		if (productId != that.productId) return false;
+		if (!Objects.equals(productId, that.productId)) return false;
 		if (displayName != null ? !displayName.equals(that.displayName) : that.displayName != null) return false;
 		if (description != null ? !description.equals(that.description) : that.description != null) return false;
 		if (image != null ? !image.equals(that.image) : that.image != null) return false;
@@ -167,5 +169,24 @@ public class DcsProduct {
 	@Override
 	public int hashCode() {
 		return Objects.hash(productId, displayName, description, image, productType, discountable, startDate, expirationDate, brand);
+	}
+
+	private static class ProductTypeOrder implements Comparator<DcsProduct>, Serializable {
+		private static final long serialVersionUID = -8013165364488905721L;
+
+		@Override
+		public int compare(DcsProduct o1, DcsProduct o2) {
+			return o1.productType.ordinal() - o2.productType.ordinal();
+		}
+	}
+
+	private static Comparator<DcsProduct> PRODUCT_TYPE_COMPARATOR = new ProductTypeOrder();
+
+	@Override
+	public int compareTo(DcsProduct o) {
+		int brandDiff = brand.compareTo(o.brand);
+		if (brandDiff != 0)
+			return brandDiff;
+		return displayName.compareTo(o.displayName);
 	}
 }

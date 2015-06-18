@@ -49,6 +49,6 @@ public class OrderManager {
 
 	@Transactional
 	public DcsppOrder createOrder(final DpsUser profile) {
-		return orderTools.createOrder(profile);
+		return orderTools.getOrderInstance(profile);
 	}
 }

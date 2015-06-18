@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,9 +52,11 @@ public class CatalogToolsImpl implements CatalogTools {
 			mav.addObject("error", true);
 			return;
 		}
-		List<DcsProduct> allProducts = getProductsByCatId(catId);
+		final List<DcsProduct> allProducts = getProductsByCatId(catId);
 		if (allProducts == null || allProducts.size() == 0) {
 			logger.warn("Category {0} has no products", catId);
+		} else {
+			Collections.sort(allProducts);
 		}
 
 		final Map<String, String> categoryIdNameMap = getSubcategoriesNames(filterCatId);;
