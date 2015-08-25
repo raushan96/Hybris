@@ -7,7 +7,7 @@
 						<a th:with="catId=${rootCats.get(__${innerCount}__).categoryId}, catName=${rootCats.get(__${innerCount}__).displayName}"
 						   th:href="@{/catalog/category-} + ${catId}" th:title="${catName}"
 						   th:unless="${innerCount} >= ${rcats}">
-								<img th:src="@{/resources/images/catalog/img-} + ${catId} + '.jpg'" th:alt-title="${catName}"/>
+								<img th:src="@{/static/images/catalog/img-} + ${catId} + '.jpg'" th:alt-title="${catName}"/>
 						</a>
 				</div>
 			</div>

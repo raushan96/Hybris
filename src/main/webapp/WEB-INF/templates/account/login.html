@@ -8,10 +8,10 @@
 		<img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
 		<p id="profile-name" class="profile-name-card"></p>
 		<p th:if="${loginError}">Wrong email or password</p>
-		<form class="form-signin" th:action="@{/j_spring_security_check}" method="post">
+		<form class="form-signin" th:action="@{/login}" method="post">
 			<span id="reauth-email" class="reauth-email"></span>
-			<input type="email" id="inputEmail" name="j_username" class="form-control" placeholder="Email address" required="" autofocus=""/>
-			<input type="password" id="inputPassword" name="j_password" class="form-control" placeholder="Password" required=""/>
+			<input type="email" id="inputEmail" name="username" class="form-control" placeholder="Email address" required="" autofocus=""/>
+			<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required=""/>
 			<div id="remember-me" class="checkbox">
 				<label><input type="checkbox" name="remember-me"/> Remember me	</label>
 			</div>

@@ -7,19 +7,23 @@
            http://www.springframework.org/schema/security/spring-security.xsd">
 	<global-method-security pre-post-annotations="enabled"/>
 
-	<http security="none" pattern="/resources/**"/>
+	<http security="none" pattern="/static/**"/>
+	<!-- creates FilterChainProxy -->
 	<http use-expressions="true">
 		<intercept-url pattern="/login" access="permitAll"/>
 		<intercept-url pattern="/index" access="permitAll"/>
-		<intercept-url pattern="/secure" access="hasRole('ROLE_USER')"/>
-		<intercept-url pattern="/account/**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/account/**" access="hasRole('USER')" method="GET"/>
+		<intercept-url pattern="/account/**" access="isFullyAuthenticated()" method="POST"/>
 
-		<form-login login-page="/login" authentication-success-handler-ref="authSuccessHandler" authentication-failure-url="/login-error" default-target-url="/index"/>
-		<logout logout-success-url="/login?logout" logout-url="/logout" delete-cookies="JSESSIONID"/>
+		<form-login login-page="/login" authentication-success-handler-ref="authSuccessHandler"
+					authentication-failure-url="/login-error" default-target-url="/index"/>
+		<logout logout-success-url="/index" logout-url="/logout" delete-cookies="JSESSIONID" invalidate-session="true"/>
+		<session-management invalid-session-url="/login-error" session-fixation-protection="migrateSession"/>
 		<remember-me key="hybris123" token-validity-seconds="86400" remember-me-parameter="remember-me"/>
-		<!--        <session-management invalid-session-url="/timeout.jsp">
-					<concurrency-control max-sessions="1"/>
-				</session-management>-->
+		<session-management invalid-session-url="/error">
+			<concurrency-control max-sessions="1"/>
+		</session-management>
+		<csrf/>
 	</http>
 
 	<authentication-manager alias="authenticationManager">
