@@ -52,9 +52,11 @@ public class CatalogToolsImpl implements CatalogTools {
 			mav.addObject("error", true);
 			return;
 		}
-		List<DcsProduct> allProducts = getProductsByCatId(catId);
+		final List<DcsProduct> allProducts = getProductsByCatId(catId);
 		if (allProducts == null || allProducts.size() == 0) {
 			logger.warn("Category {0} has no products", catId);
+		} else {
+			Collections.sort(allProducts);
 		}
 
 		final Map<String, String> categoryIdNameMap = getSubcategoriesNames(filterCatId);;

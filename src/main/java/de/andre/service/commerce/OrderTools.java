@@ -34,7 +34,7 @@ public class OrderTools {
 	}
 
 	@Transactional
-	public DcsppOrder createOrder(DpsUser profile) {
+	public DcsppOrder getOrderInstance(DpsUser profile) {
 		try {
 			DcsppOrder order = new DcsppOrder();
 			order.setCreationDate(Calendar.getInstance().getTime());
