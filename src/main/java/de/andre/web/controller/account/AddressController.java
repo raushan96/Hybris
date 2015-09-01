@@ -51,9 +51,9 @@ public class AddressController {
 	}
 
 	@RequestMapping(value = "/modifyAddress", method = RequestMethod.POST)
-	public ObjectNode modifyAddress(@Valid final DpsAddress dpsAddress, @RequestParam(value = "userId") final String userId) throws JsonProcessingException {
+	public ObjectNode modifyAddress(@Valid final DpsAddress dpsAddress) throws JsonProcessingException {
 		try {
-			final Integer newAddressId = addressCardsTools.createAddress(dpsAddress, userId);
+			final Integer newAddressId = addressCardsTools.createAddress(dpsAddress);
 			return objectMapper.createObjectNode().put("success", true).put("newAddressId", newAddressId);
 		} catch (Exception e) {
 			return objectMapper.createObjectNode().put("success", false).put("err", e.toString());

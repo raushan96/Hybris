@@ -11,6 +11,7 @@
 
 	<context:component-scan base-package="de.andre.web de.andre.utils"/>
 	<mvc:annotation-driven/>
+	<mvc:resources mapping="/static/**" location="static/"/>
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 
 	<bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
@@ -26,7 +27,7 @@
 		<property name="templateResolver" ref="templateResolver"/>
 		<property name="additionalDialects">
 			<set>
-				<bean class="org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect"/>
+				<bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect"/>
 				<bean class="nz.net.ultraq.thymeleaf.LayoutDialect"/>
 			</set>
 		</property>
@@ -37,6 +38,4 @@
 		<property name="order" value="1"/>
 		<property name="characterEncoding" value="UTF-8"/>
 	</bean>
-
-	<mvc:resources mapping="/resources/**" location="/resources/"/>
 </beans>

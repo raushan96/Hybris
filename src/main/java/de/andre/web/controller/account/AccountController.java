@@ -10,11 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -25,7 +26,6 @@ import java.security.Principal;
 
 @Controller
 @RequestMapping(value = "/account")
-@SessionAttributes(value = "dpsUser")
 public class AccountController {
 	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
@@ -53,35 +53,32 @@ public class AccountController {
 	}
 
 	@RequestMapping("/profile")
-	public String showAccount(final Model map, final Principal principal) {
-		final DpsUser dpsUser = accountTools.findUserByEmail(principal.getName());
-		map.addAttribute("dpsUser", accountTools.findUserByEmail(principal.getName()));
+	public String showAccount(final Model map) {
+		final DpsUser dpsUser = accountTools.getCommerceUser();
+		map.addAttribute("dpsUser", dpsUser);
 		map.addAttribute("addresses", accountTools.findAddressesByUser(dpsUser));
 		map.addAttribute("creditCard", accountTools.findCardByUser(dpsUser));
 		return "account/profile";
 	}
 
 	@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
-	public String editAccount(@RequestParam("userId") final String id, final ModelMap map) {
-		if (!map.containsKey("dpsUser")) {
-			map.addAttribute("dpsUser", accountTools.getUserById(Integer.valueOf(id)));
-		}
-		map.addAttribute("forgotPasswordForm", new ForgotPasswordForm());
+	public String editAccount() {
 		return "account/editProfile";
 	}
 
+
+
 	@RequestMapping(value = "/editProfile", method = RequestMethod.POST)
-	public String updateAccount(@Valid final DpsUser dpsUser, final BindingResult result, final SessionStatus status) {
+	public String updateAccount(@Valid final DpsUser dpsUser, final BindingResult result) {
 		if (result.hasErrors()) {
 			return "account/editProfile";
 		} else {
 			accountTools.saveUser(dpsUser);
-			status.setComplete();
 			return "redirect:/account/profile";
 		}
 	}
 
-	@RequestMapping(value = "/account/resetPassword", method = RequestMethod.POST)
+	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
 	public String savePassword(@Valid final ForgotPasswordForm forgotPasswordForm, final BindingResult result, final Principal principal) {
 		if (result.hasErrors()) {
 			return "account/editProfile";
@@ -89,5 +86,15 @@ public class AccountController {
 			accountTools.updatePassword(principal.getName(), forgotPasswordForm.getEnteredPassword());
 			return "redirect:/account/profile";
 		}
+	}
+
+	@ModelAttribute("dpsUser")
+	public DpsUser populateUserForm() {
+		return accountTools.getCommerceUser();
+	}
+
+	@ModelAttribute("forgotPasswordForm")
+	public ForgotPasswordForm populatePasswordForm() {
+		return new ForgotPasswordForm();
 	}
 }

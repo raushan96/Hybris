@@ -115,7 +115,8 @@ public class CatalogToolsImpl implements CatalogTools {
 		} catch (Exception e) {
 			logger.error(e.toString());
 		}
-		return null;
+
+		return Collections.emptyList();
 	}
 
 	private Map<String, String> getSubcategoriesNames(final String catId) {
@@ -129,7 +130,7 @@ public class CatalogToolsImpl implements CatalogTools {
 					return null;
 				}
 
-				for (Object[] dcsCategory : childCategories) {
+				for (final Object[] dcsCategory : childCategories) {
 					categoryIdNameMap.put((String) dcsCategory[0], (String) dcsCategory[1]);
 				}
 				return categoryIdNameMap;
@@ -137,7 +138,8 @@ public class CatalogToolsImpl implements CatalogTools {
 				logger.error(e.toString());
 			}
 		}
-		return null;
+
+		return Collections.emptyMap();
 	}
 
 	@Transactional(readOnly = true)

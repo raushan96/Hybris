@@ -1,8 +1,8 @@
 package de.andre.web.beans.order;
 
 import de.andre.entity.order.DcsppOrder;
+import de.andre.service.account.AccountTools;
 import de.andre.service.commerce.OrderManager;
-import de.andre.web.beans.account.ProfileHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -18,19 +18,19 @@ public class OrderHolder {
 	private DcsppOrder order;
 
 	private final OrderManager orderManager;
-	private final ProfileHolder profileHolder;
+	private final AccountTools accountTools;
 
 	@Autowired
-	public OrderHolder(final OrderManager orderManager, final ProfileHolder profileHolder) {
+	public OrderHolder(final OrderManager orderManager, final AccountTools accountTools) {
 		this.orderManager = orderManager;
-		this.profileHolder = profileHolder;
+		this.accountTools = accountTools;
 	}
 
 	public DcsppOrder getOrder() {
 		if (this.order == null) {
-			order = orderManager.getUserCurrentOrder(profileHolder.getProfile());
+			order = orderManager.getUserCurrentOrder(accountTools.getCommerceUser());
 			if (null == order) {
-				order = orderManager.createOrder(profileHolder.getProfile());
+				order = orderManager.createOrder(accountTools.getCommerceUser());
 			}
 		}
 		return order;

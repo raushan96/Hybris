@@ -1,7 +1,6 @@
 package de.andre.web.controller.order;
 
 import de.andre.service.account.AccountTools;
-import de.andre.web.beans.account.ProfileHolder;
 import de.andre.web.beans.order.OrderHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,13 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class CheckoutController {
-	private final AccountTools accountTools;
-
 	@Autowired
 	private OrderHolder orderHolder;
 
 	@Autowired
-	private ProfileHolder profileHolder;
+	private AccountTools accountTools;
 
 	@Autowired
 	public CheckoutController (final AccountTools accountTools) {
@@ -38,7 +35,7 @@ public class CheckoutController {
 	@RequestMapping(value = "/checkout/shipping")
 	public ModelAndView shippingStep() {
 		final ModelAndView mav = new ModelAndView("checkout/shipping");
-		mav.addObject("addresses", accountTools.findAddressesByUser(profileHolder.getProfile()));
+		mav.addObject("addresses", accountTools.findAddressesByUser(accountTools.getCommerceUser()));
 		return mav;
 	}
 

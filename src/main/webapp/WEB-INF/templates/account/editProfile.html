@@ -59,13 +59,13 @@
 		<div class="col-md-3">
 			<h2>Change password</h2>
 			<form th:action="@{/account/resetPassword}" th:method="post" th:object="${forgotPasswordForm}">
-				<div class="form-group" th:classappend="${#fields.hasErrors('enteredPassword')} ? error">
+				<div class="form-group">
 					<label for="edit_password">Enter password</label>
 					<input type="password" id="edit_password" class="form-control" placeholder="Enter password" th:field="*{enteredPassword}"/>
 					<span class="help-inline" th:errors="*{enteredPassword}">[error]</span>
 				</div>
 
-				<div class="form-group" th:classappend="${#fields.hasErrors('confirmedPassword')} ? error">
+				<div class="form-group">
 					<label for="confirm-password">Re-enter password</label>
 					<input type="password" id="confirm-password" class="form-control" placeholder="Confirm password" th:field="*{confirmedPassword}"/>
 					<span class="help-inline" th:errors="*{confirmedPassword}">[error]</span>

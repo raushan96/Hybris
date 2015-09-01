@@ -23,5 +23,5 @@ public interface UserRepository extends JpaRepository<DpsUser, Integer> {
 	void updateUserPassword(@Param("email") String email, @Param("newPassword") String newPassword);
 
 	@Query("select c from DpsCreditCard c where c.dpsUser = :dpsUser")
-	DpsCreditCard findCardByUser(@Param("dpsUser")DpsUser dpsUser);
+	DpsCreditCard findCardByUser(@Param("dpsUser") DpsUser dpsUser);
 }

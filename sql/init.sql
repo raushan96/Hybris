@@ -1,4 +1,5 @@
 --core
+--password - andre
 insert into dps_user(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
 values (1, '$2a$10$zdP5J.iGZkWAhLjuGGQww.l7X.m2datdggOd9mMkzliDj2NY6hbAS', 'andre', 'evans', 0, 'andrey.evans@gmail.com', to_date('03-MAR-1994'), 1);
 insert into dps_user(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
