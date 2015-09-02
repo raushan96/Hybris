@@ -1,4 +1,4 @@
-package de.andre;
+package de.andre.springTests;
 
 import de.andre.entity.core.DpsUser;
 import org.springframework.beans.BeanWrapper;

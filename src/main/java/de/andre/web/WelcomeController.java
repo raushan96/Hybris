@@ -2,6 +2,8 @@ package de.andre.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +20,17 @@ public class WelcomeController {
 	private static final Logger logger = LoggerFactory.getLogger(WelcomeController.class);
 	private final String template = "Ga, %s!";
 	private final AtomicLong counter = new AtomicLong();
+
+	@Autowired
+	private MessageSource messageSource;
+
+	public MessageSource getMessageSource() {
+		return messageSource;
+	}
+
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
 
 	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
 	public ModelAndView welcome(@RequestParam(value = "name", defaultValue = "world") final String name) {
