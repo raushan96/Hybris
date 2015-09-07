@@ -4,13 +4,13 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="quoter" class="de.andre.springTests.TerminatorQuoter">
+	<bean id="quoter" class="de.andre.TerminatorQuoter">
 		<property name="message" value="be back"/>
 	</bean>
 
-	<bean class="de.andre.springTests.InjectRandomBeanPostProcessor" />
+	<bean class="de.andre.InjectRandomBeanPostProcessor" />
 
-	<bean id="andre" class="de.andre.springTests.Andre">
+	<bean id="andre" class="de.andre.Andre">
 		<property name="name" value="andre"/>
 		<property name="age" value="15"/>
 		<property name="address" ref="address"/>
@@ -26,7 +26,7 @@
 
 	<alias name="andre" alias="haha"/>
 
-	<bean id="address" class="de.andre.springTests.Address">
+	<bean id="address" class="de.andre.Address">
 		<property name="city" value="Minsk"/>
 	</bean>
 

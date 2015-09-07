@@ -1,4 +1,4 @@
-package de.andre.springTests;
+package de.andre;
 
 import java.util.HashMap;
 import java.util.List;

@@ -13,10 +13,11 @@
 	</appender>
 
 <!--	<appender name="hybrisLog" class="ch.qos.logback.core.FileAppender">
-		<file>c:\\Users\\andreika\\IdeaProjects\\Hybris\\src\\main\\resources\\hybris.log</file>
+		<file>${rebel.workspace.path}\\src\\main\\resources\\hybris.log</file>
 		<encoder>
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
 		</encoder>
+		<param name="Append" value="false" />
 	</appender>-->
 
 	<logger name="de.andre" level="DEBUG" additivity="false">
@@ -25,6 +26,7 @@
 
 	<root level="debug">
 		<appender-ref ref="stdout"/>
+		<!--<appender-ref ref="hybrisLog"/>-->
 	</root>
 
 

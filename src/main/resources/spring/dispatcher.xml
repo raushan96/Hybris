@@ -12,6 +12,7 @@
 	<context:component-scan base-package="de.andre.web de.andre.utils"/>
 	<mvc:annotation-driven/>
 	<mvc:resources mapping="/static/**" location="static/"/>
+	<mvc:default-servlet-handler />
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 
 	<bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
@@ -37,5 +38,21 @@
 		<property name="templateEngine" ref="templateEngine"/>
 		<property name="order" value="1"/>
 		<property name="characterEncoding" value="UTF-8"/>
+	</bean>
+
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>/WEB-INF/messages/CommonMessages</value>
+				<value>/WEB-INF/messages/UtilMessages</value>
+			</list>
+		</property>
+		<property name="defaultEncoding" value="UTF-8"/>
+		<property name="cacheSeconds" value="1"/>
+	</bean>
+
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="defaultErrorView" value="error"/>
+		<property name="warnLogCategory" value="warn"/>
 	</bean>
 </beans>

@@ -1,4 +1,4 @@
-package de.andre.springTests;
+package de.andre;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;

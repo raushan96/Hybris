@@ -1,4 +1,4 @@
-package de.andre.springTests;
+package de.andre;
 
 /**
  * Created by andreika on 9/1/2015.

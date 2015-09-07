@@ -1,4 +1,4 @@
-package de.andre.springTests;
+package de.andre;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
