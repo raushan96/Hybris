@@ -6,6 +6,7 @@ import de.andre.entity.core.DpsUser;
 import de.andre.repository.AddressRepository;
 import de.andre.repository.UserRepository;
 import de.andre.service.security.HybrisUser;
+import de.andre.utils.AccountHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Random;
 
 /**
  * Created by andreika on 4/12/2015.
@@ -70,6 +73,18 @@ public class AccountTools {
 	public void updatePassword(final String email, final String newPassword) {
 		final String hashedPassword = bCryptPasswordEncoder.encode(newPassword);
 		userRepository.updateUserPassword(email, hashedPassword);
+	}
+
+	@Transactional
+	public void forgotPassword(final String pEmail) {
+		if (userRepository.countByEmail(pEmail) < 1) {
+			log.debug("Cannot find users with {0} email.", pEmail);
+		}
+
+		final String randomPassword = AccountHelper.generateRandomString();
+		final String hashedPassword = bCryptPasswordEncoder.encode(randomPassword);
+		userRepository.updateUserPassword(pEmail, hashedPassword);
+		//send email
 	}
 
 	@Transactional(readOnly = true)

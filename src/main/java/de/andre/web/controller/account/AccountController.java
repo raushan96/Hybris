@@ -12,10 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -86,6 +83,12 @@ public class AccountController {
 			accountTools.updatePassword(principal.getName(), forgotPasswordForm.getEnteredPassword());
 			return "redirect:/account/profile";
 		}
+	}
+
+	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
+	public String forgotPassword(@RequestParam("email") final String pEmail) {
+		accountTools.forgotPassword(pEmail);
+		return "redirect:index";
 	}
 
 	@ModelAttribute("dpsUser")
