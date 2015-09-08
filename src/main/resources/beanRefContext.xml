@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+	<bean id="myroot" class="org.springframework.context.support.ClassPathXmlApplicationContext">
+		<constructor-arg>
+			<list>
+				<value>classpath:spring/hybris-beans.xml</value>
+			</list>
+		</constructor-arg>
+	</bean>
+
+<!--	<bean id="appScope" class="org.springframework.context.support.ClassPathXmlApplicationContext">
+		<constructor-arg>
+			<list>
+				<value>classpath:spring/mvc-core-config.xml</value>
+				<value>classpath:spring/spring-security.xml</value>
+			</list>
+		</constructor-arg>
+		<constructor-arg ref="myroot"/>
+	</bean>
+
+	<bean id="mvc" class="org.springframework.context.support.ClassPathXmlApplicationContext">
+		<constructor-arg>
+			<list>
+				<value>classpath:spring/dispatcher.xml</value>
+			</list>
+		</constructor-arg>
+		<constructor-arg ref="appScope"/>
+	</bean>-->
+</beans>
+ 

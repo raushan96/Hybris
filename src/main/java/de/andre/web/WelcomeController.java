@@ -3,6 +3,7 @@ package de.andre.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletContext;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicLong;
@@ -23,6 +25,12 @@ public class WelcomeController {
 
 	@Autowired
 	private MessageSource messageSource;
+
+	@Autowired
+	ServletContext servletContext;
+
+	@Autowired
+	private ApplicationContext appContext;
 
 	public MessageSource getMessageSource() {
 		return messageSource;
