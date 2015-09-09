@@ -15,14 +15,18 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
-@Service
 public class EmailService {
 
-	@Autowired
-	private JavaMailSender mailSender;
+	private final JavaMailSender mailSender;
 
-	@Autowired
-	private TemplateEngine templateEngine;
+	private final TemplateEngine templateEngine;
+
+	private String defaultFrom;
+
+	public EmailService(JavaMailSender mailSender, TemplateEngine templateEngine) {
+		this.mailSender = mailSender;
+		this.templateEngine = templateEngine;
+	}
 
 	public void sendSimpleEmail(final String pRecipientName, final String pRecipientEmail, final Locale locale)
 			throws MessagingException {
@@ -92,5 +96,13 @@ public class EmailService {
 		message.addInline(imageResourceName, imageSource, imageContentType);
 
 		mailSender.send(mimeMessage);
+	}
+
+	public String getDefaultFrom() {
+		return defaultFrom;
+	}
+
+	public void setDefaultFrom(String defaultFrom) {
+		this.defaultFrom = defaultFrom;
 	}
 }

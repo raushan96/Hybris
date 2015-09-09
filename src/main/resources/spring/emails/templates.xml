@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/util
+     http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<description>
+		Thymeleaf and emails(processed by it) configurations.
+		Belongs to the root web context.
+	</description>
+
+	<bean id="emailTemplateResolver" class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
+		<property name="prefix" value="email/" />
+		<property name="templateMode" value="HTML5" />
+		<property name="characterEncoding" value="UTF-8" />
+		<property name="order" value="1" />
+		<!-- Template cache is true by default. Set to false if you want -->
+		<!-- templates to be automatically updated when modified.        -->
+		<property name="cacheable" value="false" />
+	</bean>
+
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.server.host}" />
+		<property name="port" value="${mail.server.port}" />
+		<property name="protocol" value="${mail.server.protocol}" />
+		<property name="username" value="${mail.server.username}" />
+		<property name="password" value="${mail.server.password}" />
+		<property name="javaMailProperties">
+			<util:properties location="classpath:javamail.properties" />
+		</property>
+	</bean>
+
+	<bean id="emailService" class="de.andre.service.account.EmailService">
+		<constructor-arg ref="mailSender" index="0"/>
+		<constructor-arg ref="templateEngine" index="1"/>
+		<property name="defaultFrom" value="andrey.evans@gmail.com"/>
+	</bean>
+	
+	<bean class="de.andre.utils.EmailTemplateInfo" abstract="true" scope="prototype">
+		<property name="messageFrom" value="#{emailService.defaultFrom}"/>
+		<property name="mimeMessage" value="#{mailSender.createMimeMessage()}"/>
+		<property name="encoding" value="UTF-8"/>
+		<property name="templateEngine" ref="templateEngine"/>
+	</bean>
+</beans>

@@ -9,6 +9,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
+	<description>MVC dispatcher context, has root context as a parent.</description>
+
 	<context:component-scan base-package="de.andre.web de.andre.utils"/>
 
 	<mvc:annotation-driven/>

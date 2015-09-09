@@ -91,7 +91,7 @@ public class AccountController {
 
 	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
 	@ResponseBody
-	public ObjectNode forgotPassword(@RequestParam("email") final String pEmail, final Locale locale) {
+	public ObjectNode forgotPassword(@RequestParam("email") final String pEmail) {
 		return accountTools.forgotPassword(pEmail);
 	}
 

@@ -86,14 +86,14 @@ public class AccountTools {
 		ObjectNode response = objectMapper.createObjectNode();
 		if (userRepository.countByEmail(pEmail) < 1) {
 			log.debug("Cannot find users with {0} email.", pEmail);
-			return response.put("result", "User not found.");
+			return response.put("success", "false").put("message", "User not found.");
 		}
 
 		final String randomPassword = AccountHelper.generateRandomString();
 		final String hashedPassword = bCryptPasswordEncoder.encode(randomPassword);
 		userRepository.updateUserPassword(pEmail, hashedPassword);
 //		emailService.sendSimpleEmail();
-		return response.put("result", "success");
+		return response.put("success", "true");
 	}
 
 	@Transactional(readOnly = true)
