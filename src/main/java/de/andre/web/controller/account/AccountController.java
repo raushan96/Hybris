@@ -1,5 +1,6 @@
 package de.andre.web.controller.account;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.andre.entity.core.DpsUser;
 import de.andre.entity.core.utils.ForgotPasswordForm;
 import de.andre.service.account.AccountTools;
@@ -13,9 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Locale;
 
 /**
  * Created by andreika on 3/22/2015.
@@ -76,7 +80,7 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
-	public String savePassword(@Valid final ForgotPasswordForm forgotPasswordForm, final BindingResult result, final Principal principal) {
+	public String updatePassword(@Valid final ForgotPasswordForm forgotPasswordForm, final BindingResult result, final Principal principal) {
 		if (result.hasErrors()) {
 			return "account/editProfile";
 		} else {
@@ -86,9 +90,9 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
-	public String forgotPassword(@RequestParam("email") final String pEmail) {
-		accountTools.forgotPassword(pEmail);
-		return "redirect:index";
+	@ResponseBody
+	public ObjectNode forgotPassword(@RequestParam("email") final String pEmail, final Locale locale) {
+		return accountTools.forgotPassword(pEmail);
 	}
 
 	@ModelAttribute("dpsUser")

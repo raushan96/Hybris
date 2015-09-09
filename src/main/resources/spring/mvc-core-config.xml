@@ -3,15 +3,23 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans.xsd
      http://www.springframework.org/schema/data/jpa
      http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
      http://www.springframework.org/schema/context
-     http://www.springframework.org/schema/context/spring-context.xsd">
+     http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/util
+     http://www.springframework.org/schema/util/spring-util-3.0.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<context:component-scan
 			base-package="de.andre.service"/>
+	<context:property-placeholder location="classpath:configuration.properties"/>
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
 	<jpa:repositories base-package="de.andre.repository"
 					  entity-manager-factory-ref="entityManagerFactory"
 					  transaction-manager-ref="transactionManager"/>
@@ -29,5 +37,66 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>/WEB-INF/messages/CommonMessages</value>
+				<value>/WEB-INF/messages/UtilMessages</value>
+			</list>
+		</property>
+		<property name="defaultEncoding" value="UTF-8"/>
+		<property name="cacheSeconds" value="1"/>
+	</bean>
+
+	<bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
+		<property name="prefix" value="/WEB-INF/templates/"/>
+		<property name="suffix" value=".html"/>
+		<property name="templateMode" value="HTML5"/>
+		<property name="characterEncoding" value="UTF-8"/>
+		<!-- dev mode -->
+		<property name="cacheable" value="false"/>
+	</bean>
+
+	<bean id="emailTemplateResolver" class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
+		<property name="prefix" value="email/" />
+		<property name="templateMode" value="HTML5" />
+		<property name="characterEncoding" value="UTF-8" />
+		<property name="order" value="1" />
+		<!-- Template cache is true by default. Set to false if you want -->
+		<!-- templates to be automatically updated when modified.        -->
+		<property name="cacheable" value="false" />
+	</bean>
+
+	<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+		<property name="templateResolvers" >
+			<set>
+				<ref bean="templateResolver"/>
+				<ref bean="emailTemplateResolver"/>
+			</set>
+		</property>
+		<property name="additionalDialects">
+			<set>
+				<bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect"/>
+				<bean class="nz.net.ultraq.thymeleaf.LayoutDialect"/>
+			</set>
+		</property>
+	</bean>
+
 	<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+
+	<bean id="multipartResolver"
+		  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="10485760" /> <!-- 10 Mb -->
+	</bean>
+
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.server.host}" />
+		<property name="port" value="${mail.server.port}" />
+		<property name="protocol" value="${mail.server.protocol}" />
+		<property name="username" value="${mail.server.username}" />
+		<property name="password" value="${mail.server.password}" />
+		<property name="javaMailProperties">
+			<util:properties location="classpath:javamail.properties" />
+		</property>
+	</bean>
 </beans>

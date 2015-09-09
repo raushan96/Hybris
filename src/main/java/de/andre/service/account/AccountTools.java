@@ -1,5 +1,7 @@
 package de.andre.service.account;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.andre.entity.core.DpsAddress;
 import de.andre.entity.core.DpsCreditCard;
 import de.andre.entity.core.DpsUser;
@@ -17,10 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Random;
 
 /**
  * Created by andreika on 4/12/2015.
@@ -34,12 +34,18 @@ public class AccountTools {
 	private final UserRepository userRepository;
 	private final AddressRepository addressRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final ObjectMapper objectMapper;
 
 	@Autowired
-	public AccountTools(final UserRepository userRepository, final AddressRepository addressRepository, final BCryptPasswordEncoder bCryptPasswordEncoder) {
+	private EmailService emailService;
+
+	@Autowired
+	public AccountTools(final UserRepository userRepository, final AddressRepository addressRepository, final BCryptPasswordEncoder bCryptPasswordEncoder,
+						final ObjectMapper objectMapper) {
 		this.userRepository = userRepository;
 		this.addressRepository = addressRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+		this.objectMapper = objectMapper;
 	}
 
 	@Transactional(readOnly = true)
@@ -76,15 +82,18 @@ public class AccountTools {
 	}
 
 	@Transactional
-	public void forgotPassword(final String pEmail) {
+	public ObjectNode forgotPassword(final String pEmail) {
+		ObjectNode response = objectMapper.createObjectNode();
 		if (userRepository.countByEmail(pEmail) < 1) {
 			log.debug("Cannot find users with {0} email.", pEmail);
+			return response.put("result", "User not found.");
 		}
 
 		final String randomPassword = AccountHelper.generateRandomString();
 		final String hashedPassword = bCryptPasswordEncoder.encode(randomPassword);
 		userRepository.updateUserPassword(pEmail, hashedPassword);
-		//send email
+//		emailService.sendSimpleEmail();
+		return response.put("result", "success");
 	}
 
 	@Transactional(readOnly = true)

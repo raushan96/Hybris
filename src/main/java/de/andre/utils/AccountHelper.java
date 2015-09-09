@@ -11,12 +11,11 @@ import static de.andre.utils.HybrisConstants.passwordLength;
 
 public class AccountHelper {
 	private static final Logger log = LoggerFactory.getLogger(AccountHelper.class);
-	private static final Random sRandom = new SecureRandom();
 
 	private AccountHelper() {}
 
 	public static String generateRandomString() {
 		String uuid = UUID.randomUUID().toString();
-		return  uuid.replaceAll("-", "").substring(0, passwordLength + 1);
+		return  uuid.replaceAll("-", "").substring(0, passwordLength);
 	}
 }
