@@ -3,19 +3,25 @@ package de.andre.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 public class EmailTemplateInfo {
 	private static final Logger log = LoggerFactory.getLogger(EmailTemplateInfo.class);
+	private static final int MAX_ATTACHMENTS = 4;
 
 	private Map<String, Object> templateParams = new HashMap<>();
 
@@ -28,9 +34,11 @@ public class EmailTemplateInfo {
 	private String messageTo;
 	private Locale locale;
 
+	private ArrayList<MultipartFile> multipartFiles;
+
 	private TemplateEngine templateEngine;
 
-	public MimeMessageHelper createMessage() throws MessagingException {
+	public MimeMessageHelper createMessage() throws MessagingException, IOException {
 		final Context ctx = new Context(locale != null ? locale : LocaleContextHolder.getLocale());
 		ctx.setVariables(templateParams);
 
@@ -42,7 +50,46 @@ public class EmailTemplateInfo {
 		final String htmlContent = templateEngine.process(templateUrl, ctx);
 		message.setText(htmlContent, true);
 
+		addAttachments(message);
+
+		log.debug("Sending email: " + message.toString());
+
 		return message;
+	}
+
+	private void addAttachments(final MimeMessageHelper pMessage) throws IOException, MessagingException {
+		for (final MultipartFile multipartFile : multipartFiles) {
+			final InputStreamSource attachmentSource = new ByteArrayResource(multipartFile.getBytes());
+			if ("file".equals(multipartFile.getContentType())) {
+				pMessage.addAttachment(
+						multipartFile.getOriginalFilename(),
+						attachmentSource,
+						multipartFile.getContentType());
+			} else if ("image".equals(multipartFile.getContentType())) {
+				pMessage.addInline(
+						multipartFile.getName(),
+						attachmentSource,
+						multipartFile.getContentType());
+			} else {
+				log.warn("Unexpected multipart type: " + multipartFile.getContentType());
+			}
+		}
+	}
+
+	public void addMultipartFile(final MultipartFile pMultipartFile) {
+		if (pMultipartFile == null)
+			throw new IllegalArgumentException("Multipart file cannot be null");
+
+		if (multipartFiles == null) {
+			multipartFiles = new ArrayList<>(MAX_ATTACHMENTS);
+			multipartFiles.add(pMultipartFile);
+		} else {
+			if (multipartFiles.size() < MAX_ATTACHMENTS) {
+				multipartFiles.add(pMultipartFile);
+			} else {
+				log.warn("Exceeded maximum attachments number, skipping");
+			}
+		}
 	}
 
 	@Override
@@ -103,24 +150,12 @@ public class EmailTemplateInfo {
 		this.encoding = encoding;
 	}
 
-	public Locale getLocale() {
-		return locale;
-	}
-
 	public void setLocale(Locale locale) {
 		this.locale = locale;
 	}
 
-	public MimeMessage getMimeMessage() {
-		return mimeMessage;
-	}
-
 	public void setMimeMessage(MimeMessage mimeMessage) {
 		this.mimeMessage = mimeMessage;
-	}
-
-	public TemplateEngine getTemplateEngine() {
-		return templateEngine;
 	}
 
 	public void setTemplateEngine(TemplateEngine templateEngine) {
