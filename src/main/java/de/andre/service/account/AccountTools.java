@@ -7,13 +7,12 @@ import de.andre.entity.core.DpsCreditCard;
 import de.andre.entity.core.DpsUser;
 import de.andre.repository.AddressRepository;
 import de.andre.repository.UserRepository;
+import de.andre.service.emails.EmailService;
 import de.andre.service.security.HybrisUser;
 import de.andre.utils.AccountHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.*;
+
+import static de.andre.utils.HybrisConstants.FORGOT_PASSWORD;
 
 /**
  * Created by andreika on 4/12/2015.
@@ -101,7 +102,7 @@ public class AccountTools {
 		templateParams.put("password", randomPassword);
 
 		try {
-			emailService.sendEmail(templateParams, pEmail);
+			emailService.sendEmail(FORGOT_PASSWORD, templateParams, pEmail);
 		} catch (final IOException | MessagingException e) {
 			log.error("Email exception sending forgot password email.", e);
 		}

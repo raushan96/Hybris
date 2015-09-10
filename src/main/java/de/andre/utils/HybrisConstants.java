@@ -16,4 +16,6 @@ public class HybrisConstants {
 	public static final Pattern MASK_MAIL = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
 
 	public static final int passwordLength = 6;
+
+	public static final String FORGOT_PASSWORD = "forgotPassword";
 }

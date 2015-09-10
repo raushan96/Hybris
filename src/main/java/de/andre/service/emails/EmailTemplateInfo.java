@@ -1,4 +1,4 @@
-package de.andre.utils;
+package de.andre.service.emails;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,6 @@ import org.thymeleaf.context.Context;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -27,9 +26,11 @@ public class EmailTemplateInfo {
 
 	private String templateUrl;
 	private String messageFrom;
-	private String messageSubject;
 	private String encoding;
 	private MimeMessage mimeMessage;
+
+	private String templateName;
+	private String messageSubject;
 
 	private String messageTo;
 	private Locale locale;
@@ -54,7 +55,9 @@ public class EmailTemplateInfo {
 		addAttachments(message);
 		addInlineImages(message);
 
-		log.debug("Sending email: {0}", message.toString());
+		if (log.isDebugEnabled()) {
+			log.debug("Sending email: {0}", message.toString());
+		}
 
 		return mimeMessage;
 	}
@@ -173,5 +176,13 @@ public class EmailTemplateInfo {
 
 	public void setTemplateEngine(TemplateEngine templateEngine) {
 		this.templateEngine = templateEngine;
+	}
+
+	public String getTemplateName() {
+		return templateName;
+	}
+
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
 	}
 }
