@@ -23,7 +23,7 @@
 	<context:property-placeholder location="classpath:configuration.properties"/>
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 
-	<task:annotation-driven executor="myExecutor"/>
+	<task:annotation-driven executor="myExecutor" proxy-target-class="true"/>
 	<task:executor id="myExecutor" pool-size="5"/>
 
 	<jpa:repositories base-package="de.andre.repository"

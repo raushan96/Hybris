@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,27 +38,16 @@ public class AccountTools {
 	private final AddressRepository addressRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final ObjectMapper objectMapper;
-
-	@Autowired(required = false)
-	@Qualifier(value = "emailService")
-	private EmailService emailService;
-
-	public EmailService getEmailService() {
-		return emailService;
-	}
-
-	public void setEmailService(EmailService emailService) {
-		this.emailService = emailService;
-	}
+	private final EmailService emailService;
 
 	@Autowired
 	public AccountTools(final UserRepository userRepository, final AddressRepository addressRepository, final BCryptPasswordEncoder bCryptPasswordEncoder,
-						final ObjectMapper objectMapper) {
+						final EmailService emailService, final ObjectMapper objectMapper) {
 		this.userRepository = userRepository;
 		this.addressRepository = addressRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.objectMapper = objectMapper;
-//		this.emailService = emailService;
+		this.emailService = emailService;
 	}
 
 	@Transactional(readOnly = true)
@@ -109,6 +99,7 @@ public class AccountTools {
 		templateParams.put("user", userRepository.findByLogin(pEmail));
 		templateParams.put("date", new Date());
 		templateParams.put("password", randomPassword);
+
 		try {
 			emailService.sendEmail(templateParams, pEmail);
 		} catch (final IOException | MessagingException e) {

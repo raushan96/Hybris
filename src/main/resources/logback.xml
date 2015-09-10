@@ -24,7 +24,11 @@
 		<appender-ref ref="stdout" />
 	</logger>
 
-	<root level="debug">
+	<logger name="org.springframework" level="DEBUG" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<root level="warn">
 		<appender-ref ref="stdout"/>
 		<!--<appender-ref ref="hybrisLog"/>-->
 	</root>
