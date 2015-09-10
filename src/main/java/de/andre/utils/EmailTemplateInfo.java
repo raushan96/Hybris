@@ -34,11 +34,12 @@ public class EmailTemplateInfo {
 	private String messageTo;
 	private Locale locale;
 
-	private ArrayList<MultipartFile> multipartFiles;
+	private MultipartFile[] attachments;
+	private MultipartFile[] inlineImages;
 
 	private TemplateEngine templateEngine;
 
-	public MimeMessageHelper createMessage() throws MessagingException, IOException {
+	public MimeMessage createMessage() throws MessagingException, IOException {
 		final Context ctx = new Context(locale != null ? locale : LocaleContextHolder.getLocale());
 		ctx.setVariables(templateParams);
 
@@ -51,41 +52,53 @@ public class EmailTemplateInfo {
 		message.setText(htmlContent, true);
 
 		addAttachments(message);
+		addInlineImages(message);
 
-		log.debug("Sending email: " + message.toString());
+		log.debug("Sending email: {0}", message.toString());
 
-		return message;
+		return mimeMessage;
 	}
 
 	private void addAttachments(final MimeMessageHelper pMessage) throws IOException, MessagingException {
-		for (final MultipartFile multipartFile : multipartFiles) {
-			final InputStreamSource attachmentSource = new ByteArrayResource(multipartFile.getBytes());
-			if ("file".equals(multipartFile.getContentType())) {
+		for (final MultipartFile attachment : attachments) {
+			final InputStreamSource attachmentSource = new ByteArrayResource(attachment.getBytes());
+			if ("file".equals(attachment.getContentType())) {
 				pMessage.addAttachment(
-						multipartFile.getOriginalFilename(),
+						attachment.getOriginalFilename(),
 						attachmentSource,
-						multipartFile.getContentType());
-			} else if ("image".equals(multipartFile.getContentType())) {
-				pMessage.addInline(
-						multipartFile.getName(),
-						attachmentSource,
-						multipartFile.getContentType());
+						attachment.getContentType());
 			} else {
-				log.warn("Unexpected multipart type: " + multipartFile.getContentType());
+				log.warn("Unexpected multipart type: {0}", attachment.getContentType());
 			}
 		}
 	}
 
-	public void addMultipartFile(final MultipartFile pMultipartFile) {
+	private void addInlineImages(final MimeMessageHelper pMessage) throws IOException, MessagingException {
+		for (final MultipartFile inlineImage : inlineImages) {
+			final InputStreamSource attachmentSource = new ByteArrayResource(inlineImage.getBytes());
+			if ("image".equals(inlineImage.getContentType())) {
+				pMessage.addInline(
+						inlineImage.getName(),
+						attachmentSource,
+						inlineImage.getContentType());
+				templateParams.put(inlineImage.getName(), inlineImage.getName());
+			} else {
+				log.warn("Unexpected multipart type: {0}", inlineImage.getContentType());
+			}
+		}
+	}
+
+	public void addAttachment(final MultipartFile pMultipartFile) {
 		if (pMultipartFile == null)
 			throw new IllegalArgumentException("Multipart file cannot be null");
 
-		if (multipartFiles == null) {
-			multipartFiles = new ArrayList<>(MAX_ATTACHMENTS);
-			multipartFiles.add(pMultipartFile);
+		if (attachments == null) {
+			attachments = new MultipartFile[MAX_ATTACHMENTS];
+			attachments[0] = pMultipartFile;
 		} else {
-			if (multipartFiles.size() < MAX_ATTACHMENTS) {
-				multipartFiles.add(pMultipartFile);
+			int length = attachments.length;
+			if (length < MAX_ATTACHMENTS) {
+				attachments[length] = pMultipartFile;
 			} else {
 				log.warn("Exceeded maximum attachments number, skipping");
 			}
@@ -95,10 +108,10 @@ public class EmailTemplateInfo {
 	@Override
 	public String toString() {
 		return new ToStringCreator(this)
-				.append("template url", this.templateUrl)
-				.append("message to", this.messageTo)
-				.append("message from", this.messageFrom)
-				.append("message subject", this.messageSubject)
+				.append("template url", this.getTemplateUrl())
+				.append("message to", this.getMessageTo())
+				.append("message from", this.getMessageFrom())
+				.append("message subject", this.getMessageSubject())
 				.toString();
 	}
 

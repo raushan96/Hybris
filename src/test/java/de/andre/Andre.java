@@ -8,10 +8,11 @@ import java.util.Set;
 /**
  * Created by andreika on 8/30/2015.
  */
-public class Andre {
+public abstract class Andre {
 	private String name;
 	private int age;
-	private Address address;
+
+	protected abstract Address createAddress();
 
 	private List<String> list;
 
@@ -33,14 +34,6 @@ public class Andre {
 
 	public void setAge(int age) {
 		this.age = age;
-	}
-
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
 	}
 
 	public List<String> getList() {

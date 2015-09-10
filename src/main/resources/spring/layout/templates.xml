@@ -2,10 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans.xsd
      http://www.springframework.org/schema/util
-     http://www.springframework.org/schema/util/spring-util.xsd">
+     http://www.springframework.org/schema/util/spring-util.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 	<description>
 		Thymeleaf and emails(processed by it) configurations.
@@ -34,15 +37,21 @@
 	</bean>
 
 	<bean id="emailService" class="de.andre.service.account.EmailService">
-		<constructor-arg ref="mailSender" index="0"/>
-		<constructor-arg ref="templateEngine" index="1"/>
+		<constructor-arg index="0" ref="mailSender"/>
+		<constructor-arg index="1" ref="templateEngine"/>
 		<property name="defaultFrom" value="andrey.evans@gmail.com"/>
+		<lookup-method name="createForgotPasswordTemplate" bean="forgostPasswordTemplate"/>
 	</bean>
 	
-	<bean class="de.andre.utils.EmailTemplateInfo" abstract="true" scope="prototype">
+	<bean id="baseTemplate" class="de.andre.utils.EmailTemplateInfo" abstract="true" scope="prototype">
 		<property name="messageFrom" value="#{emailService.defaultFrom}"/>
 		<property name="mimeMessage" value="#{mailSender.createMimeMessage()}"/>
 		<property name="encoding" value="UTF-8"/>
 		<property name="templateEngine" ref="templateEngine"/>
+	</bean>
+
+	<bean id="forgostPasswordTemplate" parent="baseTemplate">
+		<property name="messageSubject" value="New password."/>
+		<!--<aop:scoped-proxy/>-->
 	</bean>
 </beans>

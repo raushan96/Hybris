@@ -1,21 +1,26 @@
 package de.andre.service.account;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import de.andre.utils.EmailTemplateInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Async;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
-public class EmailService {
+public abstract class EmailService {
+	private static final Logger log = LoggerFactory.getLogger(EmailService.class);
 
 	private final JavaMailSender mailSender;
 
@@ -26,6 +31,24 @@ public class EmailService {
 	public EmailService(JavaMailSender mailSender, TemplateEngine templateEngine) {
 		this.mailSender = mailSender;
 		this.templateEngine = templateEngine;
+	}
+
+	@Async
+	public void sendEmail(final EmailTemplateInfo pTemplateInfo) throws IOException, MessagingException {
+		log.debug("Sending {0} email.", pTemplateInfo.getTemplateUrl());
+
+		mailSender.send(pTemplateInfo.createMessage());
+	}
+
+	@Async
+	public void sendEmail(final Map<String, Object> pParams, final String pMessageTo) throws IOException, MessagingException {
+		log.debug("Creating new email.");
+		EmailTemplateInfo template = createForgotPasswordTemplate();
+
+		template.setMessageTo(pMessageTo);
+		template.setTemplateParams(pParams);
+
+//		mailSender.send(pTemplateInfo.createMessage());
 	}
 
 	public void sendSimpleEmail(final String pRecipientName, final String pRecipientEmail, final Locale locale)
@@ -105,4 +128,7 @@ public class EmailService {
 	public void setDefaultFrom(String defaultFrom) {
 		this.defaultFrom = defaultFrom;
 	}
+
+	protected abstract EmailTemplateInfo createForgotPasswordTemplate();
+
 }

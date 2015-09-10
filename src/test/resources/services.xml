@@ -10,24 +10,23 @@
 
 	<bean class="de.andre.InjectRandomBeanPostProcessor" />
 
+	<bean id="address" class="de.andre.Address" scope="prototype">
+		<property name="city" value="Minsk"/>
+	</bean>
+
 	<bean id="andre" class="de.andre.Andre">
 		<property name="name" value="andre"/>
 		<property name="age" value="15"/>
-		<property name="address" ref="address"/>
-		<property name="address.town" value="xrinsk"/>
-
+		<lookup-method name="createAddress" bean="address"/>
+<!--
 		<property name="map">
 			<map>
 				<entry key="test" value="123" value-type="int"/>
 				<entry key="test1" value="chlex"/>
 			</map>
 		</property>
+-->
 	</bean>
 
 	<alias name="andre" alias="haha"/>
-
-	<bean id="address" class="de.andre.Address">
-		<property name="city" value="Minsk"/>
-	</bean>
-
 </beans>

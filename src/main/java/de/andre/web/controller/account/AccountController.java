@@ -14,19 +14,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Locale;
 
-/**
- * Created by andreika on 3/22/2015.
- */
 
 @Controller
-@RequestMapping(value = "/account")
+@RequestMapping(value = "/")
 public class AccountController {
 	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
@@ -89,7 +83,7 @@ public class AccountController {
 		}
 	}
 
-	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
+	@RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
 	@ResponseBody
 	public ObjectNode forgotPassword(@RequestParam("email") final String pEmail) {
 		return accountTools.forgotPassword(pEmail);

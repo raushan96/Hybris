@@ -4,22 +4,27 @@
 	   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	   xmlns:context="http://www.springframework.org/schema/context"
 	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:task="http://www.springframework.org/schema/task"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans.xsd
      http://www.springframework.org/schema/data/jpa
      http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
      http://www.springframework.org/schema/context
      http://www.springframework.org/schema/context/spring-context.xsd
-     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
 	<description>Root web app context, with core beans.</description>
 
-	<import resource="classpath:spring/thymeleaf.xml"/>
+	<import resource="classpath:spring/layout/thymeleaf.xml"/>
 
 	<context:component-scan
 			base-package="de.andre.service"/>
 	<context:property-placeholder location="classpath:configuration.properties"/>
 	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+	<task:annotation-driven executor="myExecutor"/>
+	<task:executor id="myExecutor" pool-size="5"/>
 
 	<jpa:repositories base-package="de.andre.repository"
 					  entity-manager-factory-ref="entityManagerFactory"

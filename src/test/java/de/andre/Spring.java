@@ -1,6 +1,7 @@
 package de.andre;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 /**
@@ -9,11 +10,15 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 public class Spring {
 
 	public static void main(String[] args) {
-		ApplicationContext context = new FileSystemXmlApplicationContext(new String[] {
+/*		ApplicationContext context = new FileSystemXmlApplicationContext(new String[] {
 				"file:c:\\Users\\andreika\\IdeaProjects\\Hybris\\src\\main\\java\\de\\andre\\springTests\\services.xml",
-				"file:c:\\Users\\andreika\\IdeaProjects\\Hybris\\src\\main\\java\\de\\andre\\springTests\\daos.xml"});
+				"file:c:\\Users\\andreika\\IdeaProjects\\Hybris\\src\\main\\java\\de\\andre\\springTests\\daos.xml"});*/
+		ApplicationContext context = new ClassPathXmlApplicationContext("services.xml");
 		Andre andre = context.getBean("haha", Andre.class);
 		System.out.println(andre.getName());
+		System.out.println(andre.createAddress().getCity());
+		System.out.println(andre.createAddress().getCity());
+		System.out.println(andre.createAddress().getCity());
 	}
 
 }

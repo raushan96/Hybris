@@ -12,7 +12,7 @@
 		Belongs to the root web context.
 	</description>
 
-	<import resource="classpath:spring/emails/templates.xml"/>
+	<import resource="classpath:spring/layout/templates.xml"/>
 
 	<bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
 		<property name="prefix" value="/WEB-INF/templates/"/>
@@ -57,9 +57,5 @@
 		<property name="javaMailProperties">
 			<util:properties location="classpath:javamail.properties" />
 		</property>
-	</bean>
-
-	<bean id="emailService" class="de.andre.service.account.EmailService">
-		<property name=""></property>
 	</bean>
 </beans>
