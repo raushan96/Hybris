@@ -14,7 +14,7 @@
      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
      http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
-	<description>Root web app context, with core beans.</description>
+	<description>Root web app context, core beans.</description>
 
 	<import resource="classpath:spring/layout/thymeleaf.xml"/>
 

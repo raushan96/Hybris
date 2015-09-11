@@ -38,8 +38,7 @@
 
 	<bean id="emailService" class="de.andre.service.emails.EmailService">
 		<constructor-arg index="0" ref="mailSender"/>
-		<constructor-arg index="1" ref="templateEngine"/>
-		<constructor-arg index="2" ref="templateFactory"/>
+		<constructor-arg index="1" ref="templateFactory"/>
 		<property name="defaultFrom" value="andrey.evans@gmail.com"/>
 	</bean>
 
