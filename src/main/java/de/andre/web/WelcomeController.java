@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @RestController
 public class WelcomeController {
 
-	private static final Logger logger = LoggerFactory.getLogger(WelcomeController.class);
+	private static final Logger log = LoggerFactory.getLogger(WelcomeController.class);
 	private final String template = "Ga, %s!";
 	private final AtomicLong counter = new AtomicLong();
 
@@ -42,7 +42,7 @@ public class WelcomeController {
 
 	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
 	public ModelAndView welcome(@RequestParam(value = "name", defaultValue = "world") final String name) {
-		logger.debug("welcome() - name {}", name);
+		log.debug("welcome() - name {}", name);
 		final ModelAndView model = new ModelAndView();
 		model.setViewName("index");
 		model.addObject("name", String.format(template, name) + "nda");

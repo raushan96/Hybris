@@ -55,6 +55,7 @@
 
 	<bean id="forgotPasswordTemplate" parent="baseTemplate">
 		<property name="messageSubject" value="New password."/>
+		<property name="templateUrl" value="forgot-password.html"/>
 		<property name="templateName" value="#{T(de.andre.utils.HybrisConstants).FORGOT_PASSWORD}"/>
 	</bean>
 </beans>

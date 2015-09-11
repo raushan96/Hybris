@@ -88,7 +88,7 @@ public class AccountTools {
 	public ObjectNode forgotPassword(final String pEmail) {
 		ObjectNode response = objectMapper.createObjectNode();
 		if (userRepository.countByEmail(pEmail) < 1) {
-			log.debug("Cannot find users with {0} email.", pEmail);
+			log.debug("Cannot find users with {} email.", pEmail);
 			return response.put("success", "false").put("message", "User not found.");
 		}
 

@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 public class OrderManager {
-	private static final Logger logger = LoggerFactory.getLogger(OrderManager.class);
+	private static final Logger log = LoggerFactory.getLogger(OrderManager.class);
 
 	private final OrderRepository orderRepository;
 	private final OrderTools orderTools;
@@ -32,10 +32,10 @@ public class OrderManager {
 	public DcsppOrder getUserCurrentOrder(final DpsUser dpsUser) {
 		final List<DcsppOrder> orders = orderRepository.getCurrentOrdersByUser(dpsUser);
 		if (orders.size() == 0) {
-			logger.info("No orders for user {0}", dpsUser.getUserId());
+			log.info("No orders for user {}", dpsUser.getUserId());
 			return null;
 		} else if (orders.size() > 1) {
-			logger.warn("More than one order for user {0}", dpsUser.getUserId());
+			log.warn("More than one order for user {}", dpsUser.getUserId());
 			return orders.get(0);
 		} else {
 			return orders.get(0);

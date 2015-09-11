@@ -20,9 +20,9 @@ import java.security.Principal;
 
 
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = "/account")
 public class AccountController {
-	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
+	private static final Logger log = LoggerFactory.getLogger(AccountController.class);
 
 	private final AccountTools accountTools;
 	private final DpsUserValidator dpsUserValidator;
@@ -34,7 +34,7 @@ public class AccountController {
 		this.accountTools = accountTools;
 		this.dpsUserValidator = dpsUserValidator;
 		this.forgotPasswordFormValidator = forgotPasswordFormValidator;
-		logger.info("Account controller initialized..");
+		log.info("Account controller initialized..");
 	}
 
 	@InitBinder(value = "forgotPasswordForm")
@@ -81,12 +81,6 @@ public class AccountController {
 			accountTools.updatePassword(principal.getName(), forgotPasswordForm.getEnteredPassword());
 			return "redirect:/account/profile";
 		}
-	}
-
-	@RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
-	@ResponseBody
-	public ObjectNode forgotPassword(@RequestParam("email") final String pEmail) {
-		return accountTools.forgotPassword(pEmail);
 	}
 
 	@ModelAttribute("dpsUser")

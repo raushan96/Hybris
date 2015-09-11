@@ -62,6 +62,28 @@ $(document).ready(function() {
 		$('#modal_addressId').val('');
 	});
 
+	$('#modal_forgotPass').submit(function(event) {
+		event.preventDefault();
+		var ajaxData = {};
+		ajaxData['email'] = $('#modal_forgotPass').find('#modal_forgot_email').val();
+
+		$.ajax({
+			type: 'POST',
+			url: '/forgotPassword',
+			dataType: 'json',
+			data: $.param(ajaxData),
+			success: function(res) {
+				if (res.success) {
+
+
+				} else {
+					console.log(res.message);
+				}
+			}
+		});
+		$('#modal_forgotPass').modal('hide');
+	});
+
 	$('#modal_addrForm').submit(function(event) {
 		event.preventDefault();
 		var ajaxData = {};

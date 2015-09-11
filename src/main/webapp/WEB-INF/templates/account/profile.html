@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html layout:decorator="index">
+<!DOCTYPE html >
+<html layout:decorator="index" xmlns:th="http://www.thymeleaf.org">
 <body>
 
 <div layout:fragment="content" th:remove="tag">
@@ -79,7 +79,7 @@
 				</table>
 				<button type="button" id="add_address" name="add_address" class="btn btn-default" data-toggle="modal" data-target="#addressModal">Add address</button>
 
-				<div th:replace="fragments/addressModal :: addressModal"></div>
+				<div th:replace="fragments/modals :: addressModal"></div>
 			</div>
 
 			<div role="tabpanel" class="tab-pane" id="creditCard">

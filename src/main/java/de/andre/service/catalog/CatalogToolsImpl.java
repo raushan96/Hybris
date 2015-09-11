@@ -25,7 +25,7 @@ import java.util.Map;
 
 @Service
 public class CatalogToolsImpl implements CatalogTools {
-	private static final Logger logger = LoggerFactory.getLogger(CatalogTools.class);
+	private static final Logger log = LoggerFactory.getLogger(CatalogTools.class);
 	private static final String ROOT_CAT_ID = "root-cat";
 	private static final String BASE_PRICE_LIST = "base-list";
 	private static final String SALE_PRICE_LIST = "sales-list";
@@ -54,14 +54,14 @@ public class CatalogToolsImpl implements CatalogTools {
 		}
 		final List<DcsProduct> allProducts = getProductsByCatId(catId);
 		if (allProducts == null || allProducts.size() == 0) {
-			logger.warn("Category {0} has no products", catId);
+			log.warn("Category {} has no products", catId);
 		} else {
 			Collections.sort(allProducts);
 		}
 
 		final Map<String, String> categoryIdNameMap = getSubcategoriesNames(filterCatId);;
 		if (categoryIdNameMap == null || categoryIdNameMap.isEmpty()) {
-			logger.warn("No subcategories found for category {0}, returning without processing", catId);
+			log.warn("No subcategories found for category {}, returning without processing", catId);
 		}
 		mav.addObject("products", allProducts);
 		mav.addObject("catsNameId", categoryIdNameMap);
@@ -107,13 +107,13 @@ public class CatalogToolsImpl implements CatalogTools {
 							}
 						}
 					} else {
-						logger.warn("Price list wasn't found for: " + productPrice.getProductId());
+						log.warn("Price list wasn't found for: " + productPrice.getProductId());
 					}
 				}
 			}
 			return allProducts;
 		} catch (Exception e) {
-			logger.error(e.toString());
+			log.error(e.toString());
 		}
 
 		return Collections.emptyList();
@@ -126,7 +126,7 @@ public class CatalogToolsImpl implements CatalogTools {
 				final Map<String, String> categoryIdNameMap = new LinkedHashMap<>();
 
 				if(childCategories.isEmpty()) {
-					logger.warn("No child categories found for category: ", catId);
+					log.warn("No child categories found for category: ", catId);
 					return null;
 				}
 
@@ -135,7 +135,7 @@ public class CatalogToolsImpl implements CatalogTools {
 				}
 				return categoryIdNameMap;
 			} catch (Exception e) {
-				logger.error(e.toString());
+				log.error(e.toString());
 			}
 		}
 

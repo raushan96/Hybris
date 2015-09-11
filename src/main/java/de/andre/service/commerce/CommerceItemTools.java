@@ -28,7 +28,7 @@ import java.util.List;
 
 @Service
 public class CommerceItemTools {
-	private final static Logger logger = LoggerFactory.getLogger(CommerceItemTools.class);
+	private final static Logger log = LoggerFactory.getLogger(CommerceItemTools.class);
 
 	private final ObjectMapper objectMapper;
 	private final ProductRepository productRepository;
@@ -82,7 +82,7 @@ public class CommerceItemTools {
 				//create new ci
 				DcsProduct commerceProduct = productRepository.getOne(pId);
 				if (null == commerceProduct) {
-					logger.error("Didn't found product for pid {0}", pId);
+					log.error("Didn't found product for pid {}", pId);
 					response.put("success", false)
 							.put("message", "Product wasn't found.");
 					return response;
@@ -95,7 +95,7 @@ public class CommerceItemTools {
 			sessionFactory.getObject().openSession().refresh(ci);
 			//orderManager.persistOrder(pOrder);
 		} catch (Exception e) {
-			logger.error(e.toString());
+			log.error(e.toString());
 			response.put("success", false);
 		}
 
@@ -126,7 +126,7 @@ public class CommerceItemTools {
 			amountInfo.setRawAmount(leastPrice*quantity);
 			amountInfo.setAmount(leastPrice*quantity);
 		} else {
-			logger.warn("No price was found for {0}", commerceProduct.getProductId());
+			log.warn("No price was found for {}", commerceProduct.getProductId());
 		}
 
 		commerceItem.setAmountInfo(amountInfo);
@@ -151,7 +151,7 @@ public class CommerceItemTools {
 				}
 			}
 		} catch (Exception e) {
-			logger.error(e.toString());
+			log.error(e.toString());
 			response.put("success", false);
 		}
 		return response;
@@ -173,7 +173,7 @@ public class CommerceItemTools {
 			orderManager.persistOrder(pOrder);
 			return response;
 		} catch (Exception e) {
-			logger.error(e.toString());
+			log.error(e.toString());
 			response.put("success", false)
 					.put("message", "Error persisting order.");
 			return response;

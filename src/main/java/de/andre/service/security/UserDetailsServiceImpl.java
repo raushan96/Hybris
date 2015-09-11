@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
 	@Autowired
 	AccountTools accountTools;
@@ -25,8 +25,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(final String pEmail) throws UsernameNotFoundException {
 		final DpsUser user = accountTools.findUserByEmail(pEmail);
-		if (logger.isDebugEnabled()) {
-			logger.debug("Found user with " + user.getUserId() + " id and " + user.getEmail() + " email.");
+		if (log.isDebugEnabled()) {
+			log.debug("Found user with {} id and {} email", user.getUserId(), user.getEmail());
 		}
 
 		if (null == user) {

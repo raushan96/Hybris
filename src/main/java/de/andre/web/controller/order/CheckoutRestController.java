@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CheckoutRestController {
-	private final static Logger logger = LoggerFactory.getLogger(CheckoutRestController.class);
+	private final static Logger log = LoggerFactory.getLogger(CheckoutRestController.class);
 
 	private final CommerceItemTools commerceItemTools;
 

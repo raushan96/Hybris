@@ -24,7 +24,7 @@ import java.util.Random;
  */
 @Service
 public class OrderTools {
-	private static final Logger logger = LoggerFactory.getLogger(OrderTools.class);
+	private static final Logger log = LoggerFactory.getLogger(OrderTools.class);
 
 	private final OrderRepository orderRepository;
 
@@ -61,7 +61,7 @@ public class OrderTools {
 
 			return order;
 		} catch (Exception e) {
-			logger.error(e.toString());
+			log.error(e.toString());
 		}
 		return null;
 	}

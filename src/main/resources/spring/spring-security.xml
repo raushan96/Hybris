@@ -23,7 +23,7 @@
 		<session-management invalid-session-url="/error">
 			<concurrency-control max-sessions="1"/>
 		</session-management>
-		<csrf/>
+		<csrf disabled="true"/>
 	</http>
 
 	<authentication-manager alias="authenticationManager">
