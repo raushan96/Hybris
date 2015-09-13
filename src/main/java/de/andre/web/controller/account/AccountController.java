@@ -69,7 +69,9 @@ public class AccountController {
 		if (result.hasErrors()) {
 			return "account/editProfile";
 		} else {
+			dpsUser.setUserId(accountTools.getCommerceUser().getUserId());
 			accountTools.saveUser(dpsUser);
+			accountTools.updateCommerceUser(dpsUser);
 			return "redirect:/account/profile";
 		}
 	}

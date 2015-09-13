@@ -7,9 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * Created by andreika on 4/21/2015.
- */
 public interface ProductRepository extends JpaRepository<DcsProduct, Integer> {
 	@Query(value = "select * from dcs_product prd where prd.product_id in" +
 			"(select product_id from dcs_category_products where category_id in" +

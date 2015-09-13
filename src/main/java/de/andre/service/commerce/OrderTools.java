@@ -19,9 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.Random;
 
-/**
- * Created by andreika on 5/3/2015.
- */
 @Service
 public class OrderTools {
 	private static final Logger log = LoggerFactory.getLogger(OrderTools.class);

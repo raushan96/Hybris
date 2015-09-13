@@ -11,10 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Created by andreika on 5/2/2015.
- */
-
 @Service
 public class OrderManager {
 	private static final Logger log = LoggerFactory.getLogger(OrderManager.class);

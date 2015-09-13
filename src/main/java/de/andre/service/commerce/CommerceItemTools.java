@@ -22,10 +22,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- * Created by andreika on 5/3/2015.
- */
-
 @Service
 public class CommerceItemTools {
 	private final static Logger log = LoggerFactory.getLogger(CommerceItemTools.class);
@@ -123,8 +119,8 @@ public class CommerceItemTools {
 					leastPrice = price.getPrice();
 				}
 			}
-			amountInfo.setRawAmount(leastPrice*quantity);
-			amountInfo.setAmount(leastPrice*quantity);
+			amountInfo.setRawAmount(leastPrice * quantity);
+			amountInfo.setAmount(leastPrice * quantity);
 		} else {
 			log.warn("No price was found for {}", commerceProduct.getProductId());
 		}

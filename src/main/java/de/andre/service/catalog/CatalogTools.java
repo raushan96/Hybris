@@ -6,9 +6,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-/**
- * Created by andreika on 4/20/2015.
- */
 public interface CatalogTools {
 	void populateCategoryMap(String catId, ModelAndView mav);
 

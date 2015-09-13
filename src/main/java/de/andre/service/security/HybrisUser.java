@@ -13,7 +13,8 @@ public class HybrisUser extends User {
 	private static final GrantedAuthority USER_AUTHORITY = new SimpleGrantedAuthority("ROLE_USER");
 	private static final long serialVersionUID = 4728380174114325367L;
 
-	private DpsUser commerceUser;
+	//todo AtomicReference ?
+	private volatile DpsUser commerceUser;
 
 	public HybrisUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);

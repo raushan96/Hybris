@@ -6,9 +6,6 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
-/**
- * Created by andreika on 4/21/2015.
- */
 @Entity
 @Immutable
 @Table(name = "DCS_CATALOG", schema = "HYBRIS")

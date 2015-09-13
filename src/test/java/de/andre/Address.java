@@ -1,8 +1,5 @@
 package de.andre;
 
-/**
- * Created by andreika on 8/30/2015.
- */
 public class Address {
 	private String city;
 	private String town;

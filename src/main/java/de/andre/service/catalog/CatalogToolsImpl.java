@@ -19,10 +19,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by andreika on 4/20/2015.
- */
-
 @Service
 public class CatalogToolsImpl implements CatalogTools {
 	private static final Logger log = LoggerFactory.getLogger(CatalogTools.class);

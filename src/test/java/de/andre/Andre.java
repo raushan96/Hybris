@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by andreika on 8/30/2015.
- */
 public abstract class Andre {
 	private String name;
 	private int age;

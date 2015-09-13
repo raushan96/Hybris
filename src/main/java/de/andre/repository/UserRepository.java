@@ -7,10 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Created by andreika on 3/15/2015.
- */
-
 public interface UserRepository extends JpaRepository<DpsUser, Integer> {
 
 	@Query("select u from DpsUser u where u.email = :email")

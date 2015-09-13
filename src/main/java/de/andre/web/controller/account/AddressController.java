@@ -13,10 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-/**
- * Created by andreika on 3/29/2015.
- */
-
 @RestController
 @RequestMapping(value = "/address")
 public class AddressController {

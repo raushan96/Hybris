@@ -25,9 +25,6 @@ import java.util.*;
 
 import static de.andre.utils.HybrisConstants.FORGOT_PASSWORD;
 
-/**
- * Created by andreika on 4/12/2015.
- */
 
 @Service
 public class AccountTools {
@@ -95,6 +92,7 @@ public class AccountTools {
 		final String hashedPassword = bCryptPasswordEncoder.encode(randomPassword);
 		userRepository.updateUserPassword(pEmail, hashedPassword);
 
+		//send email
 		Map<String, Object> templateParams = new HashMap<>();
 		templateParams.put("user", userRepository.findByLogin(pEmail));
 		templateParams.put("date", new Date());
@@ -122,6 +120,18 @@ public class AccountTools {
 
 		log.warn("User is not authorized, returning null.");
 		return null;
+	}
+
+	public void updateCommerceUser(final DpsUser dpsUser) {
+		if (SecurityContextHolder.getContext().getAuthentication() != null) {
+			final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+			if (principal instanceof HybrisUser) {
+				((HybrisUser) principal).setCommerceUser(dpsUser);
+			} else {
+				log.warn("Unknown principal instance, cannot update.");
+			}
+		}
 	}
 
 	public boolean isSoftLogged() {

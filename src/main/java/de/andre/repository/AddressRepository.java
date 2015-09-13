@@ -8,9 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * Created by andreika on 3/22/2015.
- */
 public interface AddressRepository extends JpaRepository<DpsAddress, Integer> {
 
 	@Query("select a from DpsAddress a where a.dpsUser = :dpsUser")

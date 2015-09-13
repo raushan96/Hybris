@@ -7,9 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * Created by andreika on 4/21/2015.
- */
 public interface CatalogRepository extends JpaRepository<DcsCategory, String> {
 	@Query("select c from DcsCategory c where c.parentCategory.rootCategory = true")
 	List<DcsCategory> getRootChildCategories();
