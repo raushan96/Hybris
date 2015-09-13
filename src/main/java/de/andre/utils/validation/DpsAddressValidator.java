@@ -10,10 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-/**
- * Created by Andrei on 4/14/2015.
- */
-
 @Component
 @Scope(value = "singleton")
 public class DpsAddressValidator implements Validator {

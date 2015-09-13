@@ -17,6 +17,7 @@
 	<description>Root web app context, core beans.</description>
 
 	<import resource="classpath:spring/layout/thymeleaf.xml"/>
+	<import resource="classpath:spring/utils/validation.xml"/>
 
 	<context:component-scan
 			base-package="de.andre.service"/>

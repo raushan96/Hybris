@@ -8,9 +8,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by andreika on 5/2/2015.
- */
 @Entity
 @Table(name = "DCSPP_ORDER", schema = "HYBRIS")
 public class DcsppOrder {

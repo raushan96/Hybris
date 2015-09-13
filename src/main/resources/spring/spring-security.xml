@@ -12,11 +12,12 @@
 	<http use-expressions="true">
 		<intercept-url pattern="/login" access="permitAll"/>
 		<intercept-url pattern="/index" access="permitAll"/>
+		<intercept-url pattern="/register" access="permitAll"/>
 		<intercept-url pattern="/account/**" access="hasRole('USER')" method="GET"/>
-		<intercept-url pattern="/account/**" access="isFullyAuthenticated()" method="POST"/>
+		<intercept-url pattern="/account/**" access="isFullyAuthenticated()" method="PUT"/>
 
 		<form-login login-page="/login" authentication-success-handler-ref="authSuccessHandler"
-					authentication-failure-url="/login-error" default-target-url="/index"/>
+					authentication-failure-url="/login-error"/>
 		<logout logout-success-url="/index" logout-url="/logout" delete-cookies="JSESSIONID" invalidate-session="true"/>
 		<session-management invalid-session-url="/login-error" session-fixation-protection="migrateSession"/>
 		<remember-me key="hybris123" token-validity-seconds="86400" remember-me-parameter="remember-me"/>

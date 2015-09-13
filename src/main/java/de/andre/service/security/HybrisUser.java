@@ -8,9 +8,6 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collection;
 import java.util.Collections;
 
-/**
- * Created by andreika on 8/3/2015.
- */
 public class HybrisUser extends User {
 
 	private static final GrantedAuthority USER_AUTHORITY = new SimpleGrantedAuthority("ROLE_USER");

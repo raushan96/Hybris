@@ -3,11 +3,11 @@
 
 <beans>
 	<bean id="myroot" class="org.springframework.context.support.ClassPathXmlApplicationContext">
-		<constructor-arg>
+<!--		<constructor-arg>
 			<list>
 				<value>classpath:spring/hybris-beans.xml</value>
 			</list>
-		</constructor-arg>
+		</constructor-arg>-->
 	</bean>
 
 <!--	<bean id="appScope" class="org.springframework.context.support.ClassPathXmlApplicationContext">

@@ -32,10 +32,8 @@
 
 		<div class="jumbotron hero-spacer">
 			<h1>Spices!</h1>
-			<p th:text="#{common.welcome(${name}, ${user['email']})}">hmm</p>
-			<p th:text="${#locale.country}">hmm</p>
+			<p th:text="#{common.welcome(${name})}">hmm</p>
 			<p th:text="${#calendars.format(date, 'dd MM yyyy')}">hmm</p>
-			<p>The year is <span th:text="${session.user} ?: 'chmo'">1492</span>.</p>
 		</div>
 
 		<hr/>

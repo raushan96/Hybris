@@ -2,26 +2,24 @@ package de.andre.utils.validation;
 
 import de.andre.entity.core.DpsUser;
 import de.andre.service.account.AccountTools;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import java.util.Calendar;
+import java.util.Map;
 
-/**
- * Created by andreika on 4/11/2015.
- */
+import static de.andre.utils.HybrisConstants.MASK_MAIL;
 
-@Component
 public class DpsUserValidator implements Validator {
 
 	private AccountTools accountTools;
 
-	@Autowired
-	public DpsUserValidator(final AccountTools accountTools) {
+	private Map<String, String> requiredFields;
+
+	public DpsUserValidator(final AccountTools accountTools, final Map<String, String> requiredFields) {
 		this.accountTools = accountTools;
+		this.requiredFields = requiredFields;
 	}
 
 	@Override
@@ -31,21 +29,28 @@ public class DpsUserValidator implements Validator {
 
 	@Override
 	public void validate(final Object target, final Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "email.empty");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password.empty");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "firstName.empty");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dateOfBirth", "dateOfBirth.empty");
+		for (final Map.Entry<String, String> requiredField : requiredFields.entrySet()) {
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, requiredField.getKey(), requiredField.getValue());
+		}
 
 		DpsUser dpsUser = (DpsUser) target;
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 10);
-		if (dpsUser.getDateOfBirth().after(calendar.getTime())) {
+		if (errors.getFieldError("dateOfBirth") == null &&
+				dpsUser.getDateOfBirth().after(calendar.getTime())) {
 			errors.rejectValue("dateOfBirth", "date.invalid");
 		}
 
-		if (accountTools.findUserByEmail(dpsUser.getEmail()) != null) {
-			errors.rejectValue("email", "email.alreadyUsed");
+		if (MASK_MAIL.matcher(dpsUser.getEmail()).matches()) {
+			final String oldEmail = accountTools.getCommerceUser().getEmail();
+			if (errors.getFieldError("email") == null &&
+					!oldEmail.equals(dpsUser.getEmail()) &&
+					accountTools.findUserByEmail(dpsUser.getEmail()) != null) {
+				errors.rejectValue("email", "email.alreadyUsed");
+			}
+		} else {
+			errors.rejectValue("email", "email.invalidFormat");
 		}
 	}
 }

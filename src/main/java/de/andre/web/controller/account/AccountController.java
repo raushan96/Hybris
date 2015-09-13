@@ -36,7 +36,6 @@ public class AccountController {
 		this.accountTools = accountTools;
 		this.dpsUserValidator = dpsUserValidator;
 		this.forgotPasswordFormValidator = forgotPasswordFormValidator;
-		log.info("Account controller initialized..");
 	}
 
 	@InitBinder(value = "forgotPasswordForm")
@@ -58,7 +57,8 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
-	public String editAccount() {
+	public String editAccount(final Model map) {
+		map.addAttribute("dpsUser", accountTools.getCommerceUser());
 		return "account/editProfile";
 	}
 
@@ -82,11 +82,6 @@ public class AccountController {
 			accountTools.updatePassword(principal.getName(), forgotPasswordForm.getEnteredPassword());
 			return "redirect:/account/profile";
 		}
-	}
-
-	@ModelAttribute("dpsUser")
-	public DpsUser populateUserForm() {
-		return accountTools.getCommerceUser();
 	}
 
 	@ModelAttribute("forgotPasswordForm")

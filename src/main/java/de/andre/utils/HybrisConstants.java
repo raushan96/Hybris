@@ -2,9 +2,6 @@ package de.andre.utils;
 
 import java.util.regex.Pattern;
 
-/**
- * Created by andreika on 8/5/2015.
- */
 public class HybrisConstants {
 
 	public static final Pattern MASK_PASSWORD = Pattern.compile(".{6,15}");

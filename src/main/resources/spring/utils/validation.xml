@@ -1,0 +1,20 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="forgotPasswordFormValidator" class="de.andre.utils.validation.ForgotPasswordFormValidator"/>
+	<!--<bean id="dpsAddressValidator" class="de.andre.utils.validation.DpsAddressValidator"/>-->
+
+	<bean id="dpsUserValidator" class="de.andre.utils.validation.DpsUserValidator">
+		<constructor-arg index="0" ref="accountTools"/>
+		<constructor-arg index="1" name="requiredFields">
+			<map>
+				<description>Required fields names to error codes map.</description>
+				<entry key="email" value="email.empty"/>
+				<entry key="firstName" value="firstName.empty"/>
+				<entry key="dateOfBirth" value="dateOfBirth.empty"/>
+			</map>
+		</constructor-arg>
+	</bean>
+</beans>
