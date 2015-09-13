@@ -1,6 +1,5 @@
 package de.andre.web.controller.account;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.andre.entity.core.DpsUser;
 import de.andre.entity.core.utils.ForgotPasswordForm;
 import de.andre.service.account.AccountTools;
@@ -13,7 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -52,7 +54,6 @@ public class AccountController {
 		final DpsUser dpsUser = accountTools.getCommerceUser();
 		map.addAttribute("dpsUser", dpsUser);
 		map.addAttribute("addresses", accountTools.findAddressesByUser(dpsUser));
-		map.addAttribute("creditCard", accountTools.findCardByUser(dpsUser));
 		return "account/profile";
 	}
 

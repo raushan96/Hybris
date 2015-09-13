@@ -15,9 +15,6 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * Created by andreika on 2/28/2015.
- */
 @Entity
 @Table(name = "DPS_USER", schema = "HYBRIS")
 public class DpsUser {
@@ -29,7 +26,6 @@ public class DpsUser {
 	private String email;
 	private Date dateOfBirth;
 	private Boolean acceptEmails;
-	private Set<DpsCreditCard> dpsCreditCard;
 	private Set<DpsAddress> dpsAddresses;
 	private DpsGiftlist dpsGiftlist;
 
@@ -43,16 +39,6 @@ public class DpsUser {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
-	}
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "dpsUser")
-	public Set<DpsCreditCard> getDpsCreditCard() {
-		return dpsCreditCard;
-	}
-
-	public void setDpsCreditCard(Set<DpsCreditCard> dpsCreditCard) {
-		this.dpsCreditCard = dpsCreditCard;
 	}
 
 	@JsonIgnore

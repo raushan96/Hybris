@@ -7,9 +7,8 @@
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" class="active"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal info</a></li>
 			<li role="presentation"><a href="#addresses" aria-controls="addresses" role="tab" data-toggle="tab">Adresses</a></li>
-			<li role="presentation"><a href="#creditCard" aria-controls="creditCard" role="tab" data-toggle="tab">Credits</a></li>
-			<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Orders</a></li>
-			<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Gift list</a></li>
+			<li role="presentation"><a href="#orders" aria-controls="settings" role="tab" data-toggle="tab">Orders</a></li>
+			<!--<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Gift list</a></li>-->
 		</ul>
 
 		<div class="tab-content">
@@ -82,27 +81,7 @@
 				<div th:replace="fragments/modals :: addressModal"></div>
 			</div>
 
-			<div role="tabpanel" class="tab-pane" id="creditCard">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Credit card</h3>
-					</div>
-					<div class="panel-body">
-						<table class="table" th:object="${creditCard}">
-							<tr>
-								<th>Card Number</th>
-								<th>Expiration date</th>
-								<th>Address</th>
-							</tr>
-								<td th:text="'Card number: ' + *{creditCardNumber}">Card Number</td>
-								<td th:text="'Expiration date: ' + *{expirationDate}">Expiration date</td>
-								<td th:id="'creditAddr_' + *{dpsAddress.addressId}" th:text="'Address: ' + *{dpsAddress.address}">Address</td>
-						</table>
-					</div>
-				</div>
-			</div>
-
-			<div role="tabpanel" class="tab-pane" id="settings">4</div>
+			<div role="tabpanel" class="tab-pane" id="orders">3</div>
 		</div>
 	</div>
 </div>

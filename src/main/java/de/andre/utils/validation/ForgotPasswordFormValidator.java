@@ -2,6 +2,7 @@ package de.andre.utils.validation;
 
 import de.andre.entity.core.utils.ForgotPasswordForm;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -22,14 +23,17 @@ public class ForgotPasswordFormValidator implements Validator{
 	@Override
 	public void validate(final Object target, final Errors errors) {
 		ForgotPasswordForm passwordForm = (ForgotPasswordForm) target;
+		final String enteredPassword = passwordForm.getEnteredPassword();
+		final String confirmedPassword = passwordForm.getConfirmedPassword();
+
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "enteredPassword", "password.entered.empty");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmedPassword", "password.confirmed.empty");
 
-		if (!MASK_PASSWORD.matcher(passwordForm.getEnteredPassword()).matches()) {
+		if (!MASK_PASSWORD.matcher(enteredPassword).matches()) {
 			errors.reject("enteredPassword", "passwords.notValid");
 		}
 
-		if (!passwordForm.getConfirmedPassword().equals(passwordForm.getEnteredPassword())) {
+		if (StringUtils.hasText(enteredPassword) && StringUtils.hasText(confirmedPassword) && !confirmedPassword.equals(enteredPassword)) {
 			errors.reject("enteredPassword", "passwords.notEquals");
 		}
 	}

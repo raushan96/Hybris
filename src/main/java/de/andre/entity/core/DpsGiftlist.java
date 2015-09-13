@@ -7,9 +7,6 @@ import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * Created by Andrei on 3/30/2015.
- */
 @Entity
 @Table(name = "DPS_GIFTLIST", schema = "HYBRIS")
 public class DpsGiftlist {

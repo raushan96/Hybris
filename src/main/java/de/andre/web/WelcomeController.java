@@ -1,5 +1,7 @@
 package de.andre.web;
 
+import de.andre.entity.core.DpsUser;
+import de.andre.entity.enums.Gender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.ServletContext;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -48,8 +51,14 @@ public class WelcomeController {
 		model.addObject("name", String.format(template, name) + "nda");
 
 		final Calendar calInstance = Calendar.getInstance();
-		model.addObject("date", new SimpleDateFormat().format(calInstance.getTime()));
+		model.addObject("date", calInstance.getTime());
 		model.addObject("name", "lox");
+		DpsUser user = new DpsUser();
+		user.setEmail("lox@gmail.com");
+		user.setDateOfBirth(new Date());
+		user.setAcceptEmails(true);
+		user.setGender(Gender.MALE);
+		model.addObject("user", user);
 
 		return model;
 

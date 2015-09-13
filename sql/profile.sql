@@ -27,17 +27,6 @@ constraint dps_user_address_pk primary key(address_id));
 create index dps_addr_comp_idx on dps_user_address(company_name);
 create index dps_addr_user_idx on dps_user_address(user_id);
 
-
-create table dps_credit_card (
-	credit_id number(8,0),
-	user_id	constraint credit_user_fk	references dps_user(user_id) on delete cascade not null,
-	credit_card_number	varchar2(40)	not null,
-	expiration_date	date not null,
-	billing_addr constraint credit_address_fk references dps_user_address(address_id),
-constraint dps_credit_card_pk primary key(credit_id));
-
-create index dps_credit_addr_idx on dps_credit_card(billing_addr);
-
 --not used for now
 
 create table dps_giftlist (

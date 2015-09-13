@@ -30,7 +30,7 @@ dependencies {
     //thymeleaf
     compile 'org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE'
     compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE'
-    compile files('./src/main/resources/extraLibs/thymeleaf-layout-dialect-1.2.7.jar')
+    compile 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:1.3.0'
 
     //hibernate
     compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'

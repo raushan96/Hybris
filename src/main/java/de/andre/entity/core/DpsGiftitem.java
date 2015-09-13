@@ -3,9 +3,6 @@ package de.andre.entity.core;
 import javax.persistence.*;
 import java.util.Objects;
 
-/**
- * Created by Andrei on 3/30/2015.
- */
 @Entity
 @Table(name = "DPS_GIFTITEM", schema = "HYBRIS")
 public class DpsGiftitem {

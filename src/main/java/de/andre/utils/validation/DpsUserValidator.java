@@ -31,7 +31,8 @@ public class DpsUserValidator implements Validator {
 
 	@Override
 	public void validate(final Object target, final Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "name.empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "email.empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password.empty");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "firstName.empty");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dateOfBirth", "dateOfBirth.empty");
 

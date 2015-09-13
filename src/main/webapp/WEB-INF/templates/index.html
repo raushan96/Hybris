@@ -1,5 +1,7 @@
-<!doctype html>
-<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html class="no-js" lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 	<title>Andre's Market | Welcome</title>
@@ -9,7 +11,7 @@
 	<script th:src="@{/static/js/catalog.js}"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"/>
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
 	<link rel="stylesheet" th:href="@{/static/css/hybris.css}"/>
 	<link rel="icon" type="image/png" th:href="@{/static/images/favicon.png}"/>
 	<script>
@@ -30,9 +32,10 @@
 
 		<div class="jumbotron hero-spacer">
 			<h1>Spices!</h1>
-			<p th:text="#{common.welcome(${name})}">hmm</p>
-			<p><a class="btn btn-primary btn-large">Start now!</a>
-			</p>
+			<p th:text="#{common.welcome(${name}, ${user['email']})}">hmm</p>
+			<p th:text="${#locale.country}">hmm</p>
+			<p th:text="${#calendars.format(date, 'dd MM yyyy')}">hmm</p>
+			<p>The year is <span th:text="${session.user} ?: 'chmo'">1492</span>.</p>
 		</div>
 
 		<hr/>

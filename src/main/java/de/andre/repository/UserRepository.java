@@ -1,6 +1,5 @@
 package de.andre.repository;
 
-import de.andre.entity.core.DpsCreditCard;
 import de.andre.entity.core.DpsUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,7 +23,4 @@ public interface UserRepository extends JpaRepository<DpsUser, Integer> {
 
 	@Query("select count(*) from DpsUser u where u.email = :email")
 	int countByEmail(@Param("email") String pEmail);
-
-	@Query("select c from DpsCreditCard c where c.dpsUser = :dpsUser")
-	DpsCreditCard findCardByUser(@Param("dpsUser") DpsUser dpsUser);
 }

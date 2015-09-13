@@ -3,7 +3,6 @@ package de.andre.service.account;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.andre.entity.core.DpsAddress;
-import de.andre.entity.core.DpsCreditCard;
 import de.andre.entity.core.DpsUser;
 import de.andre.repository.AddressRepository;
 import de.andre.repository.UserRepository;
@@ -107,11 +106,6 @@ public class AccountTools {
 			log.error("Email exception sending forgot password email.", e);
 		}
 		return response.put("success", "true");
-	}
-
-	@Transactional(readOnly = true)
-	public DpsCreditCard findCardByUser(final DpsUser dpsUser) {
-		return userRepository.findCardByUser(dpsUser);
 	}
 
 	public DpsUser getCommerceUser() {

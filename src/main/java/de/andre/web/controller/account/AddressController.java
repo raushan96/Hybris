@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.andre.entity.core.DpsAddress;
-import de.andre.service.account.AddressCardsTools;
+import de.andre.service.account.AddressTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,11 +20,11 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/address")
 public class AddressController {
-	private final AddressCardsTools addressCardsTools;
+	private final AddressTools addressCardsTools;
 	private final ObjectMapper objectMapper;
 
 	@Autowired
-	public AddressController(final AddressCardsTools addressCardsTools, final ObjectMapper objectMapper) {
+	public AddressController(final AddressTools addressCardsTools, final ObjectMapper objectMapper) {
 		this.addressCardsTools = addressCardsTools;
 		this.objectMapper = objectMapper;
 	}

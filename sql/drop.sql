@@ -10,7 +10,6 @@ drop table dcspp_order;
 drop table dcspp_amount_info;
 
 drop sequence profile_seq;
-drop table dps_credit_card;
 drop table dps_giftitem;
 drop table dps_giftlist;
 drop table dps_user_address;
