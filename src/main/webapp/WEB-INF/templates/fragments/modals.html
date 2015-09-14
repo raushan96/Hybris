@@ -15,8 +15,10 @@
 					</div>
 
 					<div class="form-group">
-						<label for="modal_addrCountry">Country</label>
-						<input type="text" class="form-control" id="modal_addrCountry" placeholder="Country"/>
+						<label for="modal_addrState">State</label>
+						<select id="modal_addrState" class="form-control">
+							<option th:each="st : ${states}" th:text="${st.name}" th:value="${st.code}">[option]</option>
+						</select>
 					</div>
 
 					<div class="form-group">

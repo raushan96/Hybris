@@ -4,10 +4,10 @@ insert into dps_user(user_id, password, first_name, last_name, gender, email, da
 values (1, '$2a$10$zdP5J.iGZkWAhLjuGGQww.l7X.m2datdggOd9mMkzliDj2NY6hbAS', 'andre', 'evans', 0, 'andrey.evans@gmail.com', to_date('03-MAR-1994'), 1);
 insert into dps_user(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
 values (2, '$2a$10$zdP5J.iGZkWAhLjuGGQww.l7X.m2datdggOd9mMkzliDj2NY6hbAS', 'andre1', 'evans1', 1, 'andre@gmail.com', to_date('02-MAR-1991'), 0);
-insert into dps_user_address(address_id, user_id, company_name, city, postal_code, country, address)
-values(1, 1, 'ExpertSoft', 'Minsk', '123123', 'Belarus', 'korzh 5 d');
-insert into dps_user_address(address_id, user_id, company_name, city, postal_code, country, address)
-values(2, 1, 'ExpertSoft', 'Grodno', '123412', 'Belarus', 'malin 6 c');
+insert into dps_user_address(address_id, user_id, company_name, city, postal_code, country_code, address, state)
+values(1, 1, 'ExpertSoft', 'Minsk', '123123', 'US', 'korzh 5 d', '2');
+insert into dps_user_address(address_id, user_id, company_name, city, postal_code, country_code, address, state)
+values(2, 1, 'ExpertSoft', 'Grodno', '123412', 'US', 'malin 6 c', '3');
 
 insert into dps_giftlist(gift_list_id, is_published, creation_date, shipping_addr_id)
 values (1, 1, to_date('01-MAR-2018'), 1);

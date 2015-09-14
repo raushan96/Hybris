@@ -60,14 +60,14 @@
 				<table class="table table-striped" id="account_addresses">
 					<tr>
 						<th>Company</th>
-						<th>Country</th>
+						<th>State</th>
 						<th>City</th>
 						<th>Postal code</th>
 						<th>Actions</th>
 					</tr>
 					<tr th:each="address : ${addresses}">
-						<td th:text="${address.companyName}">Company</td>
-						<td th:text="${address.country}">Country</td>
+						<td th:text="${address.companyName ?: 'None.'}">Company</td>
+						<td th:text="${address.state?.getName()}">State</td>
 						<td th:text="${address.city}">City</td>
 						<td th:text="${address.postalCode}">Postal code</td>
 						<td>

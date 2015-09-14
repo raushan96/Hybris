@@ -17,4 +17,6 @@ public class HybrisConstants {
 
 	public static final String FORGOT_PASSWORD_EMAIL = "forgotPassword";
 	public static final String WELCOME_EMAIL = "welcome";
+
+	public static final String ISO_COUNTRY = "US";
 }

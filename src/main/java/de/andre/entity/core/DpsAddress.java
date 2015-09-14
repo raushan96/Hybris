@@ -1,15 +1,13 @@
 package de.andre.entity.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.andre.entity.enums.UState;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Objects;
 
-/**
- * Created by andreika on 2/28/2015.
- */
 @Entity
 @Table(name = "DPS_USER_ADDRESS", schema = "HYBRIS")
 public class DpsAddress {
@@ -18,8 +16,9 @@ public class DpsAddress {
 	private String city;
 	private String postalCode;
 	private String address;
-	private String country;
+	private String countryCode;
 	private DpsUser dpsUser;
+	private UState state;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profileSeq")
@@ -45,7 +44,6 @@ public class DpsAddress {
 	}
 
 	@Column(name = "COMPANY_NAME")
-	@Length(min = 3, max = 20)
 	public String getCompanyName() {
 		return companyName;
 	}
@@ -75,15 +73,14 @@ public class DpsAddress {
 		this.postalCode = postalCode;
 	}
 
-	@Column(name = "COUNTRY")
-	@Length(min = 3, max = 20)
+	@Column(name = "COUNTRY_CODE")
 	@NotEmpty
-	public String getCountry() {
-		return country;
+	public String getCountryCode() {
+		return countryCode;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setCountryCode(String country) {
+		this.countryCode = country;
 	}
 
 	@Column(name = "ADDRESS")
@@ -95,6 +92,16 @@ public class DpsAddress {
 		this.address = address;
 	}
 
+	@Column(name = "STATE")
+	@Enumerated(EnumType.ORDINAL)
+	public UState getState() {
+		return state;
+	}
+
+	public void setState(UState state) {
+		this.state = state;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -104,7 +111,7 @@ public class DpsAddress {
 
 		if (city != null ? !city.equals(that.city) : that.city != null) return false;
 		if (companyName != null ? !companyName.equals(that.companyName) : that.companyName != null) return false;
-		if (country != null ? !country.equals(that.country) : that.country != null) return false;
+		if (countryCode != null ? !countryCode.equals(that.countryCode) : that.countryCode != null) return false;
 		if (postalCode != null ? !postalCode.equals(that.postalCode) : that.postalCode != null) return false;
 		if (address != null ? !address.equals(that.address) : that.address != null) return false;
 
@@ -113,6 +120,6 @@ public class DpsAddress {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(companyName, city, postalCode, country, address);
+		return Objects.hash(companyName, city, postalCode, countryCode, address);
 	}
 }

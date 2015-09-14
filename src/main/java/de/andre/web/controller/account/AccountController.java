@@ -2,6 +2,7 @@ package de.andre.web.controller.account;
 
 import de.andre.entity.core.DpsUser;
 import de.andre.entity.core.utils.ForgotPasswordForm;
+import de.andre.entity.enums.UState;
 import de.andre.service.account.AccountTools;
 import de.andre.utils.validation.DpsUserValidator;
 import de.andre.utils.validation.ForgotPasswordFormValidator;
@@ -89,5 +90,10 @@ public class AccountController {
 	@ModelAttribute("forgotPasswordForm")
 	public ForgotPasswordForm populatePasswordForm() {
 		return new ForgotPasswordForm();
+	}
+
+	@ModelAttribute(value = "states")
+	public UState[] populateStates() {
+		return UState.values();
 	}
 }

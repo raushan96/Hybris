@@ -20,8 +20,9 @@ create table dps_user_address (
 	company_name	varchar2(40)	null,
 	city	varchar2(40) not null,
 	postal_code	varchar2(15)	not null,
-	country	varchar2(40)	not null,
+	country_code	varchar2(2)	not null,
 	address	varchar2(80)	null,
+	state integer null,
 constraint dps_user_address_pk primary key(address_id));
 
 create index dps_addr_comp_idx on dps_user_address(company_name);
@@ -52,8 +53,13 @@ constraint dps_giftitem_pk primary key (gift_item_id));
 
 create index giftitem_prod_idx on dps_giftitem (product_id);
 
+create sequence profile_seq start with 100 increment by 10;
+create sequence global_seq start with 30 increment by 1;
+
+
+
 --needs rework
-create table dps_role (
+/*create table dps_role (
 	role_id	number(8,0),
 	name	varchar2(40)	not null,
 	description	varchar2(254)	null,
@@ -67,7 +73,4 @@ create table dps_user_role (
 	hybris_role constraint role_user_fk references dps_role (role_id) on delete cascade,
 constraint dps_user_role_pk primary key (user_id, hybris_role));
 
-create index dps_usr_roles_idx on dps_user_role (hybris_role);
-
-create sequence profile_seq start with 100 increment by 10;
-create sequence global_seq start with 30 increment by 1;
+create index dps_usr_roles_idx on dps_user_role (hybris_role);*/

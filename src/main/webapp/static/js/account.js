@@ -21,7 +21,7 @@ $(document).ready(function() {
 		form.find('#modal_addrCity').val(addrObj.city);
 		form.find('#modal_addrPostalCode').val(addrObj.postalCode);
 		form.find('#modal_addrAddress').val(addrObj.address);
-		form.find('#modal_addrCountry').val(addrObj.country);
+		form.find('#modal_addrState').val(addrObj.state);
 		form.find('#modal_addressId').val(addrObj.addressId);
 	}
 
@@ -30,7 +30,7 @@ $(document).ready(function() {
 		ajaxData['city'] = form.find('#modal_addrCity').val();
 		ajaxData['postalCode'] = form.find('#modal_addrPostalCode').val();
 		ajaxData['address'] = form.find('#modal_addrAddress').val();
-		ajaxData['country'] = form.find('#modal_addrCountry').val();
+		ajaxData['countryCode'] = form.find('#modal_addrCountryCode').val();
 		ajaxData['addressId'] = form.find('#modal_addressId').val();
 	}
 
