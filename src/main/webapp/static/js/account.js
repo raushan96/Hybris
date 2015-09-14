@@ -46,7 +46,7 @@ $(document).ready(function() {
 				if (res.success) {
 					$('#deleteAddress_' + res.deletedId).parent().parent().remove();
 				} else {
-					console.log(res.err);
+					console.log(res.error);
 				}
 			}
 		});
@@ -94,7 +94,7 @@ $(document).ready(function() {
 			dataType: 'json',
 			data: $.param(ajaxData),
 			success: function(res) {
-				if (res.success) {
+				if (res.success && res.isNew) {
 					$('#account_addresses').find('tbody')
 						.append($('<tr>')
 							.append($('<td>')
@@ -108,9 +108,9 @@ $(document).ready(function() {
 							.append($('<td>')
 								.append($('<button>')
 									.attr('type', 'button')
-									.attr('id', 'editAddress_')
+									.attr('id', 'editAddress_' + res.newAddressId)
 									.attr('class', 'btn btn-primary')
-									.attr('name', 'edit_address' + res.newAddressId)
+									.attr('name', 'edit_address')
 									.attr('data-toggle', 'modal')
 									.attr('data-target', '#addressModal')
 									.text('Edit'))
@@ -122,8 +122,10 @@ $(document).ready(function() {
 									.attr('name', 'delete_address')
 									.text('Delete')))
 					);
+				} else if (res.success) {
+					//$('#account_addresses').find(button['id=editAddress_']);
 				} else {
-					console.log(res.err);
+					console.log(res.error);
 				}
 			}
 		});

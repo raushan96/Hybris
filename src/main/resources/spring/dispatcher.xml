@@ -16,6 +16,7 @@
 	<mvc:annotation-driven/>
 	<mvc:resources mapping="/static/**" location="static/"/>
 	<mvc:default-servlet-handler />
+	<mvc:view-controller path="/login" view-name="account/login"/>
 
 	<bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
 		<property name="templateEngine" ref="templateEngine"/>

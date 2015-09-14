@@ -13,17 +13,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
 
-import static de.andre.utils.HybrisConstants.FORGOT_PASSWORD;
+import static de.andre.utils.HybrisConstants.FORGOT_PASSWORD_EMAIL;
+import static de.andre.utils.HybrisConstants.WELCOME_EMAIL;
 
 
 @Service
@@ -75,6 +79,29 @@ public class AccountTools {
 	}
 
 	@Transactional
+	public void createUser(final DpsUser dpsUser, final HttpServletRequest pRequest) {
+		final String hashedPassword = bCryptPasswordEncoder.encode(dpsUser.getPassword());
+		dpsUser.setPassword(hashedPassword);
+		userRepository.save(dpsUser);
+
+		final UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+				new HybrisUser(dpsUser.getEmail(), dpsUser.getPassword(), Collections.singleton(HybrisUser.USER_AUTHORITY)),
+				null,
+				Collections.singleton(HybrisUser.USER_AUTHORITY));
+		auth.setDetails(new WebAuthenticationDetails(pRequest));
+		SecurityContextHolder.getContext().setAuthentication(auth);
+
+		final Map<String, Object> templateParams = new HashMap<>();
+		templateParams.put("user", dpsUser);
+
+		try {
+			emailService.sendEmail(WELCOME_EMAIL, templateParams, dpsUser.getEmail());
+		} catch (final IOException | MessagingException e) {
+			log.error("Email exception sending welcome email.", e);
+		}
+	}
+
+	@Transactional
 	public void updatePassword(final String email, final String newPassword) {
 		final String hashedPassword = bCryptPasswordEncoder.encode(newPassword);
 		userRepository.updateUserPassword(email, hashedPassword);
@@ -82,7 +109,7 @@ public class AccountTools {
 
 	@Transactional
 	public ObjectNode forgotPassword(final String pEmail) {
-		ObjectNode response = objectMapper.createObjectNode();
+		final ObjectNode response = objectMapper.createObjectNode();
 		if (userRepository.countByEmail(pEmail) < 1) {
 			log.debug("Cannot find users with {} email.", pEmail);
 			return response.put("success", "false").put("message", "User not found.");
@@ -92,14 +119,13 @@ public class AccountTools {
 		final String hashedPassword = bCryptPasswordEncoder.encode(randomPassword);
 		userRepository.updateUserPassword(pEmail, hashedPassword);
 
-		//send email
-		Map<String, Object> templateParams = new HashMap<>();
+		final Map<String, Object> templateParams = new HashMap<>();
 		templateParams.put("user", userRepository.findByLogin(pEmail));
 		templateParams.put("date", new Date());
 		templateParams.put("password", randomPassword);
 
 		try {
-			emailService.sendEmail(FORGOT_PASSWORD, templateParams, pEmail);
+			emailService.sendEmail(FORGOT_PASSWORD_EMAIL, templateParams, pEmail);
 		} catch (final IOException | MessagingException e) {
 			log.error("Email exception sending forgot password email.", e);
 		}

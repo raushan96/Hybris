@@ -4,63 +4,24 @@ import de.andre.entity.core.DpsAddress;
 import de.andre.repository.OrderRepository;
 import de.andre.repository.ProductRepository;
 import de.andre.repository.UserRepository;
+import de.andre.service.account.AddressTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-@Component
-@Scope(value = "singleton")
+import java.util.Map;
+
 public class DpsAddressValidator implements Validator {
-	private final OrderRepository orderRepository;
-	private final UserRepository userRepository;
-	private final ProductRepository productRepository;
+	private final AddressTools addressTools;
 
-	@Autowired
-	public DpsAddressValidator(OrderRepository orderRepository, UserRepository userRepository, ProductRepository productRepository) {
-		this.orderRepository = orderRepository;
-		this.userRepository = userRepository;
-		this.productRepository = productRepository;
-/*		DpsUser user = userRepository.getOne(1);
-		DcsProduct product = productRepository.getOne(103);
+	private Map<String, String> requiredFields;
 
-		DcsppOrder order = new DcsppOrder();
-		order.setCreationDate(Calendar.getInstance().getTime());
-		order.setLastModifiedDate(Calendar.getInstance().getTime());
-		order.setOrderNumber("test123");
-		order.setState(OrderState.INCOMPLETE);
-		order.setDpsUser(user);
-
-		DcsppAmountInfo amountInfo = new DcsppAmountInfo();
-		amountInfo.setCurrencyCode("EUR");
-		amountInfo.setAmount(23.0);
-		amountInfo.setQuantity(1);
-		order.setAmountInfo(amountInfo);
-
-		DcsppShipGroup shipGroup = new DcsppShipGroup();
-		shipGroup.setShipOnDate(Calendar.getInstance().getTime());
-		shipGroup.setShippingMethod(ShippingMethod.GROUND);
-		shipGroup.setShippingType(ShippingType.NORMAL);
-		shipGroup.setState(ShippingState.INITIAL);
-		DcsppAmountInfo amountInfoShihpping = new DcsppAmountInfo();
-		amountInfo.setCurrencyCode("EUR");
-		amountInfo.setAmount(23.0);
-		amountInfo.setQuantity(1);
-		shipGroup.setAmountInfo(amountInfoShihpping);
-		order.addShippingGroup(shipGroup);
-
-		DcsppItem item = new DcsppItem();
-		DcsppAmountInfo amountInfoItem = new DcsppAmountInfo();
-		amountInfo.setCurrencyCode("EUR");
-		amountInfo.setAmount(23.0);
-		amountInfo.setQuantity(1);
-		shipGroup.setAmountInfo(amountInfoItem);
-		item.setProduct(product);
-		item.setQuantity(2);
-		order.addCommerceItem(item);
-
-		orderRepository.save(order);*/
+	public DpsAddressValidator(final AddressTools addressTools, final Map<String, String> requiredFields) {
+		this.addressTools = addressTools;
+		this.requiredFields = requiredFields;
 	}
 
 	@Override
@@ -70,6 +31,10 @@ public class DpsAddressValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
+		for (final Map.Entry<String, String> requiredField : requiredFields.entrySet()) {
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, requiredField.getKey(), requiredField.getValue());
+		}
+
 		DpsAddress dpsAddress = (DpsAddress) target;
 	}
 }

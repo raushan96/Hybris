@@ -4,7 +4,15 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="forgotPasswordFormValidator" class="de.andre.utils.validation.ForgotPasswordFormValidator"/>
-	<!--<bean id="dpsAddressValidator" class="de.andre.utils.validation.DpsAddressValidator"/>-->
+	<bean id="dpsAddressValidator" class="de.andre.utils.validation.DpsAddressValidator">
+		<constructor-arg index="0" ref="addressTools"/>
+		<constructor-arg index="1">
+			<map>
+				<description>Required fields names to error codes map.</description>
+				<entry key="city" value="address.city.empty"/>
+			</map>
+		</constructor-arg>
+	</bean>
 
 	<bean id="dpsUserValidator" class="de.andre.utils.validation.DpsUserValidator">
 		<constructor-arg index="0" ref="accountTools"/>

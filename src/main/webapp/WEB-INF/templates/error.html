@@ -2,7 +2,7 @@
 <html layout:decorator="index" xmlns:th="http://www.thymeleaf.org">
 	<body>
 		<div layout:fragment="content" th:remove="tag">
-			<p th:text="${errorMessage}">Error java.lang.NullPointerException</p>
+			<p th:text="'Fuuu ' + ${exception}">exc java.lang.NullPointerException</p>
 		</div>
 	</body>
 </html>

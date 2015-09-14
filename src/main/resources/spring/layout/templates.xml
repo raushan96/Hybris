@@ -51,11 +51,18 @@
 
 	<bean id="templateFactory" class="de.andre.service.emails.TemplatesFactory">
 		<lookup-method name="createForgotPasswordTemplate" bean="forgotPasswordTemplate"/>
+		<lookup-method name="createWelcomeTemplate" bean="welcomeTemplate"/>
 	</bean>
 
 	<bean id="forgotPasswordTemplate" parent="baseTemplate">
 		<property name="messageSubject" value="New password."/>
 		<property name="templateUrl" value="forgot-password.html"/>
-		<property name="templateName" value="#{T(de.andre.utils.HybrisConstants).FORGOT_PASSWORD}"/>
+		<property name="templateName" value="#{T(de.andre.utils.HybrisConstants).FORGOT_PASSWORD_EMAIL}"/>
+	</bean>
+
+	<bean id="welcomeTemplate" parent="baseTemplate">
+		<property name="messageSubject" value="Welcome to the Spice store!"/>
+		<property name="templateUrl" value="welcome.html"/>
+		<property name="templateName" value="#{T(de.andre.utils.HybrisConstants).WELCOME_EMAIL}"/>
 	</bean>
 </beans>

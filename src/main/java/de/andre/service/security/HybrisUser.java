@@ -7,14 +7,14 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class HybrisUser extends User {
 
-	private static final GrantedAuthority USER_AUTHORITY = new SimpleGrantedAuthority("ROLE_USER");
+	public static final GrantedAuthority USER_AUTHORITY = new SimpleGrantedAuthority("ROLE_USER");
 	private static final long serialVersionUID = 4728380174114325367L;
 
-	//todo AtomicReference ?
-	private volatile DpsUser commerceUser;
+	private AtomicReference<DpsUser> commerceUser = new AtomicReference<>();
 
 	public HybrisUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
@@ -29,14 +29,14 @@ public class HybrisUser extends User {
 	 */
 	public HybrisUser(String username, String password, DpsUser dpsUser) {
 		super(username, password, Collections.singleton(USER_AUTHORITY));
-		this.commerceUser = dpsUser;
+		this.commerceUser.set(dpsUser);
 	}
 
 	public DpsUser getCommerceUser() {
-		return commerceUser;
+		return commerceUser.get();
 	}
 
-	public void setCommerceUser(DpsUser commerceUser) {
-		this.commerceUser = commerceUser;
+	public boolean setCommerceUser(DpsUser commerceUser) {
+		return this.commerceUser.compareAndSet(getCommerceUser(), commerceUser);
 	}
 }

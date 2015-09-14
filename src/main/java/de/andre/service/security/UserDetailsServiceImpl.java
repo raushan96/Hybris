@@ -21,12 +21,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(final String pEmail) throws UsernameNotFoundException {
 		final DpsUser user = accountTools.findUserByEmail(pEmail);
-		if (log.isDebugEnabled()) {
-			log.debug("Found user with {} id and {} email", user.getUserId(), user.getEmail());
-		}
 
 		if (null == user) {
 			throw new UsernameNotFoundException("User wasn't found with provided email: " + pEmail);
+		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("Found user with {} id and {} email", user.getUserId(), user.getEmail());
 		}
 
 		return new HybrisUser(user.getEmail(), user.getPassword(), user);

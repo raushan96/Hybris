@@ -32,6 +32,7 @@
 			</form>
 			<ul class="nav navbar-nav navbar-right">
 				<li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
+				<li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Register</a></li>
 				<li sec:authorize="isAuthenticated()"><span sec:authentication="name"></span></li>
 				<li sec:authorize="isAuthenticated()"><a>
 					<form th:action="@{/logout}" th:method="post">

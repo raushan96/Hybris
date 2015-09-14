@@ -10,9 +10,9 @@ import java.util.Calendar;
 import java.util.Map;
 
 import static de.andre.utils.HybrisConstants.MASK_MAIL;
+import static de.andre.utils.HybrisConstants.MIN_AGE;
 
 public class DpsUserValidator implements Validator {
-
 	private AccountTools accountTools;
 
 	private Map<String, String> requiredFields;
@@ -36,21 +36,22 @@ public class DpsUserValidator implements Validator {
 		DpsUser dpsUser = (DpsUser) target;
 
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 10);
+		calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - MIN_AGE);
 		if (errors.getFieldError("dateOfBirth") == null &&
 				dpsUser.getDateOfBirth().after(calendar.getTime())) {
-			errors.rejectValue("dateOfBirth", "date.invalid");
+			errors.rejectValue("dateOfBirth", "user.date.invalid");
 		}
 
 		if (MASK_MAIL.matcher(dpsUser.getEmail()).matches()) {
-			final String oldEmail = accountTools.getCommerceUser().getEmail();
+			final DpsUser currentUser = accountTools.getCommerceUser();
+			final String oldEmail = currentUser != null ? currentUser.getEmail() : null;
 			if (errors.getFieldError("email") == null &&
-					!oldEmail.equals(dpsUser.getEmail()) &&
+					!dpsUser.getEmail().equals(oldEmail) &&
 					accountTools.findUserByEmail(dpsUser.getEmail()) != null) {
-				errors.rejectValue("email", "email.alreadyUsed");
+				errors.rejectValue("email", "user.email.alreadyUsed");
 			}
 		} else {
-			errors.rejectValue("email", "email.invalidFormat");
+			errors.rejectValue("email", "user.email.invalidFormat");
 		}
 	}
 }
