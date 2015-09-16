@@ -27,12 +27,12 @@ $(document).ready(function() {
 
 	function collectAddrForm(form, ajaxData) {
 		ajaxData['companyName'] = form.find('#modal_addrCompany').val();
+		ajaxData['state'] = form.find('#modal_addrState').val();
 		ajaxData['city'] = form.find('#modal_addrCity').val();
 		ajaxData['postalCode'] = form.find('#modal_addrPostalCode').val();
 		ajaxData['address'] = form.find('#modal_addrAddress').val();
 		ajaxData['countryCode'] = form.find('#modal_addrCountryCode').val();
 		ajaxData['addressId'] = form.find('#modal_addressId').val();
-		ajaxData['state'] = form.find('#modal_addrState').val();
 	}
 
 	$('#account_addresses').on('click', 'button[name=delete_address]', function() {
@@ -125,7 +125,11 @@ $(document).ready(function() {
 									.text('Delete')))
 					);
 				} else if (res.success) {
-					//$('#account_addresses').find(button['id=editAddress_']);
+					var addressRow = $('#account_addresses').find('button[id=editAddress_' + res.newAddressId + ']').parent().parent();
+					addressRow.find('[data-name="companyName"]').text(ajaxData['companyName']);
+					addressRow.find('[data-name="state"]').text(res.state);
+					addressRow.find('[data-name="city"]').text(ajaxData['city']);
+					addressRow.find('[data-name="postalCode"]').text(ajaxData['postalCode']);
 				} else {
 					console.log(res.error);
 				}

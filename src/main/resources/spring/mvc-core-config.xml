@@ -1,61 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	   xmlns:context="http://www.springframework.org/schema/context"
-	   xmlns:tx="http://www.springframework.org/schema/tx"
-	   xmlns:cache="http://www.springframework.org/schema/cache"
 	   xmlns:task="http://www.springframework.org/schema/task"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans.xsd
-     http://www.springframework.org/schema/data/jpa
-     http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
      http://www.springframework.org/schema/context
      http://www.springframework.org/schema/context/spring-context.xsd
-     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-     http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
-     http://www.springframework.org/schema/cache
-     http://www.springframework.org/schema/cache/spring-cache.xsd">
+     http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
 	<description>Root web app context, core beans.</description>
 
 	<import resource="classpath:spring/layout/thymeleaf.xml"/>
 	<import resource="classpath:spring/utils/validation.xml"/>
+	<import resource="classpath:spring/data/dao.xml"/>
 
 	<context:component-scan
 			base-package="de.andre.service"/>
 	<context:property-placeholder location="classpath:configuration.properties"/>
-	<tx:annotation-driven transaction-manager="transactionManager"/>
 
 	<task:annotation-driven executor="myExecutor" proxy-target-class="true"/>
 	<task:executor id="myExecutor" pool-size="5"/>
-
-<!--	<cache:annotation-driven proxy-target-class="true"/>
-
-	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-		<property name="cacheManager" ref="ehcache"/>
-	</bean>
-
-	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-		<property name="configLocation" value="classpath:ehcache/ehcache.xml"/>
-	</bean>-->
-
-	<jpa:repositories base-package="de.andre.repository"
-					  entity-manager-factory-ref="entityManagerFactory"
-					  transaction-manager-ref="transactionManager"/>
-
-	<bean id="entityManagerFactory"
-		  class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
-		<property name="persistenceUnitName" value="defaultPersistenceUnit"/>
-	</bean>
-
-	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory"/>
-	</bean>
-
-	<bean id="sessionFactory" class="org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean">
-		<property name="entityManagerFactory" ref="entityManagerFactory"/>
-	</bean>
 
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basenames">

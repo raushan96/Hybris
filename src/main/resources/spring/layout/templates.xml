@@ -32,7 +32,7 @@
 		<property name="username" value="${mail.server.username}"/>
 		<property name="password" value="${mail.server.password}"/>
 		<property name="javaMailProperties">
-			<util:properties location="classpath:javamail.properties"/>
+			<util:properties location="classpath:spring/layout/javamail.properties"/>
 		</property>
 	</bean>
 

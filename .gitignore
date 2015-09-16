@@ -3,5 +3,5 @@ out/
 classes/
 .gradle/
 .idea
-.class
+*.class
 *.iml
