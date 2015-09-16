@@ -41,13 +41,13 @@ public class AddressController {
 	public ObjectNode deleteAddress(@RequestParam("addressId") final String addressId) {
 		try {
 			addressTools.deleteAdressById(addressId);
-			final ObjectNode response = objectMapper.createObjectNode();
-			response.put("success", true);
-			response.put("deletedId", addressId);
-
-			return response;
+			return objectMapper.createObjectNode()
+					.put("success", true)
+					.put("deletedId", addressId);
 		} catch (Exception e) {
-			return objectMapper.createObjectNode().put("success", false).put("error", e.toString());
+			return objectMapper.createObjectNode()
+					.put("success", false)
+					.put("error", e.toString());
 		}
 
 	}
@@ -55,21 +55,27 @@ public class AddressController {
 	@RequestMapping(value = "/modifyAddress", method = RequestMethod.POST)
 	public ObjectNode modifyAddress(final DpsAddress dpsAddress, final BindingResult result) throws JsonProcessingException {
 		try {
-			if (!StringUtils.hasText(dpsAddress.getCountryCode())) {
-				dpsAddress.setCountryCode(ISO_COUNTRY);
-			}
 			dpsAddressValidator.validate(dpsAddress, result);
 
 			if (!result.hasErrors()) {
-				final Integer oldAddressId = dpsAddress.getAddressId();
+				boolean isNew = dpsAddress.getAddressId() == null;
+
 				final Integer newAddressId = addressTools.createAddress(dpsAddress);
-				return objectMapper.createObjectNode().put("success", true).put("newAddressId", newAddressId).put("isNew", !newAddressId.equals(oldAddressId));
+				return objectMapper.createObjectNode()
+						.put("success", true)
+						.put("newAddressId", newAddressId)
+						.put("isNew", isNew)
+						.put("state", dpsAddress.getState().getName());
 			} else {
-				return objectMapper.createObjectNode().put("success", false).put("error", "invalid");
+				return objectMapper.createObjectNode()
+						.put("success", false)
+						.put("error", "invalid");
 			}
 
 		} catch (Exception e) {
-			return objectMapper.createObjectNode().put("success", false).put("error", e.toString());
+			return objectMapper.createObjectNode()
+					.put("success", false)
+					.put("error", e.toString());
 		}
 	}
 }

@@ -32,9 +32,10 @@ $(document).ready(function() {
 		ajaxData['address'] = form.find('#modal_addrAddress').val();
 		ajaxData['countryCode'] = form.find('#modal_addrCountryCode').val();
 		ajaxData['addressId'] = form.find('#modal_addressId').val();
+		ajaxData['state'] = form.find('#modal_addrState').val();
 	}
 
-	$('button[name=delete_address]').bind('click', function() {
+	$('#account_addresses').on('click', 'button[name=delete_address]', function() {
 		var ajaxData = {};
 		ajaxData['addressId'] = this.id.split('_')[1];
 		$.ajax({
@@ -52,7 +53,7 @@ $(document).ready(function() {
 		});
 	});
 
-	$('button[name=edit_address]').bind('click', function() {
+	$('#account_addresses').on('click', 'button[name=edit_address]', function() {
 		openEditPopUp(this.id);
 	});
 
@@ -95,12 +96,13 @@ $(document).ready(function() {
 			data: $.param(ajaxData),
 			success: function(res) {
 				if (res.success && res.isNew) {
+					var companyName = ajaxData['companyName'] ? ajaxData['companyName'] : "None.";
 					$('#account_addresses').find('tbody')
 						.append($('<tr>')
 							.append($('<td>')
-								.append(ajaxData['companyName']))
+								.append(companyName))
 							.append($('<td>')
-								.append(ajaxData['country']))
+								.append(res.state))
 							.append($('<td>')
 								.append(ajaxData['city']))
 							.append($('<td>')

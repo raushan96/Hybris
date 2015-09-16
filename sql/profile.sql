@@ -21,8 +21,8 @@ create table dps_user_address (
 	city	varchar2(40) not null,
 	postal_code	varchar2(15)	not null,
 	country_code	varchar2(2)	not null,
-	address	varchar2(80)	null,
-	state integer null,
+	address	varchar2(80)	not null,
+	state integer not null,
 constraint dps_user_address_pk primary key(address_id));
 
 create index dps_addr_comp_idx on dps_user_address(company_name);

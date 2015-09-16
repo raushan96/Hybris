@@ -112,7 +112,9 @@ public class AccountTools {
 		final ObjectNode response = objectMapper.createObjectNode();
 		if (userRepository.countByEmail(pEmail) < 1) {
 			log.debug("Cannot find users with {} email.", pEmail);
-			return response.put("success", "false").put("message", "User not found.");
+			return response
+					.put("success", "false")
+					.put("message", "User not found.");
 		}
 
 		final String randomPassword = AccountHelper.generateRandomString();
