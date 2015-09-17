@@ -28,6 +28,10 @@
 		<appender-ref ref="stdout" />
 	</logger>
 
+	<logger name="org.springframework.beans.TypeConverterDelegate">
+		<level value="error" />
+	</logger>
+
 	<root level="warn">
 		<appender-ref ref="stdout"/>
 		<!--<appender-ref ref="hybrisLog"/>-->
