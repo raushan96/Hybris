@@ -66,10 +66,10 @@
 						<th>Actions</th>
 					</tr>
 					<tr th:each="address : ${addresses}">
-						<td th:text="${address.companyName ?: 'None.'}">Company</td>
-						<td th:text="${address.state?.getName()}">State</td>
-						<td th:text="${address.city}">City</td>
-						<td th:text="${address.postalCode}">Postal code</td>
+						<td data-name="companyName" th:text="${address.companyName ?: 'None.'}">Company</td>
+						<td data-name="state" th:text="${address.state?.getName()}">State</td>
+						<td data-name="city" th:text="${address.city}">City</td>
+						<td data-name="postalCode" th:text="${address.postalCode}">Postal code</td>
 						<td>
 							<button type="button" th:id="'editAddress_' + ${address.addressId}" name="edit_address" class="btn btn-primary" data-toggle="modal" data-target="#addressModal">Edit</button>
 							<button type="button" th:id="'deleteAddress_' + ${address.addressId}" name="delete_address" class="btn btn-danger">Delete</button>

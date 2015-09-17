@@ -21,7 +21,7 @@
 		<form-login login-page="/login" authentication-success-handler-ref="authSuccessHandler"
 					authentication-failure-url="/login-error"/>
 		<logout logout-success-url="/index" logout-url="/logout" delete-cookies="JSESSIONID" invalidate-session="true"/>
-		<session-management invalid-session-url="/index" session-fixation-protection="migrateSession"/>
+		<session-management invalid-session-url="/index" session-fixation-protection="changeSessionId"/>
 		<remember-me key="hybris123" token-validity-seconds="86400" remember-me-parameter="remember-me"/>
 		<session-management invalid-session-url="/error">
 			<concurrency-control max-sessions="1"/>
