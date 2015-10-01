@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
@@ -40,6 +42,10 @@ public class AccountTools {
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final ObjectMapper objectMapper;
 	private final EmailService emailService;
+
+
+	@PersistenceContext
+	private EntityManager em;
 
 	@Autowired
 	public AccountTools(final UserRepository userRepository, final AddressRepository addressRepository, final BCryptPasswordEncoder bCryptPasswordEncoder,
