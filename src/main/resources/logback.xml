@@ -25,14 +25,12 @@
 	</logger>
 
 	<logger name="org.springframework" level="DEBUG" additivity="false">
-		<appender-ref ref="stdout" />
+		<!--<appender-ref ref="stdout" />-->
 	</logger>
 
-	<logger name="org.springframework.beans.TypeConverterDelegate">
-		<level value="error" />
-	</logger>
+	<logger name="org.springframework.beans.TypeConverterDelegate" level="error"/>
 
-	<root level="warn">
+	<root level="debug">
 		<appender-ref ref="stdout"/>
 		<!--<appender-ref ref="hybrisLog"/>-->
 	</root>

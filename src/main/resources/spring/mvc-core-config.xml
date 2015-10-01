@@ -17,7 +17,9 @@
 
 	<context:component-scan
 			base-package="de.andre.service"/>
-	<context:property-placeholder location="classpath:configuration.properties"/>
+	<context:property-placeholder
+			location="classpath:configuration.properties, classpath:local.properties"
+			ignore-resource-not-found="true"/>
 
 	<task:annotation-driven executor="myExecutor" proxy-target-class="true"/>
 	<task:executor id="myExecutor" pool-size="5"/>

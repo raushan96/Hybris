@@ -32,8 +32,8 @@ public class CommerceItemTools {
 	private final OrderManager orderManager;
 	private final PriceRepository priceRepository;
 
-	@Autowired
-	HibernateJpaSessionFactoryBean sessionFactory;
+//	@Autowired
+//	HibernateJpaSessionFactoryBean sessionFactory;
 
 	@Autowired
 	public CommerceItemTools(final ObjectMapper objectMapper, final ProductRepository productRepository,
@@ -88,7 +88,7 @@ public class CommerceItemTools {
 			}
 
 			commerceItemRepository.save(ci);
-			sessionFactory.getObject().openSession().refresh(ci);
+//			sessionFactory.getObject().openSession().refresh(ci);
 			//orderManager.persistOrder(pOrder);
 		} catch (Exception e) {
 			log.error(e.toString());
