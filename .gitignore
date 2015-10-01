@@ -5,3 +5,4 @@ classes/
 .idea
 *.class
 *.iml
+local.properties

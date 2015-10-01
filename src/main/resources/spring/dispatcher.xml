@@ -13,10 +13,18 @@
 
 	<context:component-scan base-package="de.andre.web de.andre.utils"/>
 
-	<mvc:annotation-driven/>
-	<mvc:resources mapping="/static/**" location="static/"/>
+	<mvc:annotation-driven conversion-service="conversionService"/>
+	<mvc:resources mapping="/static/**" location="/static/"/>
 	<mvc:default-servlet-handler />
 	<mvc:view-controller path="/login" view-name="account/login"/>
+
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="formatters">
+			<set>
+				<bean class="de.andre.entity.enums.StateFormatter"/>
+			</set>
+		</property>
+	</bean>
 
 	<bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
 		<property name="templateEngine" ref="templateEngine"/>
