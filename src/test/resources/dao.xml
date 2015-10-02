@@ -2,15 +2,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans.xsd
      http://www.springframework.org/schema/data/jpa
      http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
-     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<description>Data specific beans.</description>
 
+	<context:component-scan
+			base-package="de.andre.jpa"/>
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 
 	<jpa:repositories base-package="de.andre.repository"
@@ -24,7 +26,7 @@
 		<property name="maxLifetime" value="1800000"/>
 		<property name="dataSourceProperties">
 			<props>
-				<prop key="url">jdbc:oracle:thin:@localhost:1522:xe</prop>
+				<prop key="url">jdbc:oracle:thin:@localhost:1521:xe</prop>
 				<prop key="user">hybris</prop>
 				<prop key="password">hybris</prop>
 				<prop key="connectionCachingEnabled">true</prop>
