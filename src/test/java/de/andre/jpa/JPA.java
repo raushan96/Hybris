@@ -1,9 +1,7 @@
 package de.andre.jpa;
 
-import de.andre.entity.core.DpsAddress;
 import de.andre.entity.core.DpsUser;
 import de.andre.entity.enums.Gender;
-import de.andre.entity.enums.UState;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -15,8 +13,6 @@ import javax.persistence.TypedQuery;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Locale;
 
 public class JPA {
