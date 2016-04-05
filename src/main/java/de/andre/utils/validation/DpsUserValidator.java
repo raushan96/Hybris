@@ -11,8 +11,8 @@ import javax.mail.internet.InternetAddress;
 import java.util.Calendar;
 import java.util.Map;
 
-import static de.andre.utils.HybrisConstants.MIN_AGE;
 import static de.andre.utils.HybrisConstants.MASK_MAIL;
+import static de.andre.utils.HybrisConstants.MIN_AGE;
 
 public class DpsUserValidator implements Validator {
 	private AccountTools accountTools;

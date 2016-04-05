@@ -8,8 +8,8 @@ import org.springframework.validation.Validator;
 
 import java.util.Map;
 
-import static de.andre.utils.HybrisConstants.MASK_CITY;
 import static de.andre.utils.HybrisConstants.ISO_COUNTRY;
+import static de.andre.utils.HybrisConstants.MASK_CITY;
 
 public class DpsAddressValidator implements Validator {
 	public static final Range POSTAL_RANGE = new Range(100000, 999999);

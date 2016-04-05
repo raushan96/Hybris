@@ -55,22 +55,3 @@ create index giftitem_prod_idx on dps_giftitem (product_id);
 
 create sequence profile_seq start with 100 increment by 10;
 create sequence global_seq start with 30 increment by 1;
-
-
-
---needs rework
-/*create table dps_role (
-	role_id	number(8,0),
-	name	varchar2(40)	not null,
-	description	varchar2(254)	null,
-	parent_role	constraint role_parent_fk references dps_role (role_id) on delete cascade,
-constraint dps_role_pk primary key(role_id));
-
-create index dps_parent_role_idx on dps_role (parent_role);
-
-create table dps_user_role (
-	user_id	constraint user_role_fk references dps_user (user_id) on delete cascade,
-	hybris_role constraint role_user_fk references dps_role (role_id) on delete cascade,
-constraint dps_user_role_pk primary key (user_id, hybris_role));
-
-create index dps_usr_roles_idx on dps_user_role (hybris_role);*/

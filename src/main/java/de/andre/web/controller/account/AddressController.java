@@ -7,14 +7,11 @@ import de.andre.entity.core.DpsAddress;
 import de.andre.service.account.AddressTools;
 import de.andre.utils.validation.DpsAddressValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import static de.andre.utils.HybrisConstants.ISO_COUNTRY;
 
 @RestController
 @RequestMapping(value = "/address")
