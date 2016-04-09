@@ -1,12 +1,12 @@
 --core
 --password - andre 9cf7e1
-insert into dps_user(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
+insert into hp_user(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
 values (1, '$2a$10$zdP5J.iGZkWAhLjuGGQww.l7X.m2datdggOd9mMkzliDj2NY6hbAS', 'andre', 'evans', 0, 'andrey.evans@gmail.com', to_date('03-MAR-1994'), 1);
-insert into dps_user(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
+insert into hp_user(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
 values (2, '$2a$10$zdP5J.iGZkWAhLjuGGQww.l7X.m2datdggOd9mMkzliDj2NY6hbAS', 'andre1', 'evans1', 1, 'andre@gmail.com', to_date('02-MAR-1991'), 0);
-insert into dps_user_address(address_id, user_id, company_name, city, postal_code, country_code, address, state)
+insert into hp_user_address(address_id, user_id, company_name, city, postal_code, country_code, address, state)
 values(1, 1, 'ExpertSoft', 'Minsk', '123123', 'US', 'korzh 5 d', '2');
-insert into dps_user_address(address_id, user_id, company_name, city, postal_code, country_code, address, state)
+insert into hp_user_address(address_id, user_id, company_name, city, postal_code, country_code, address, state)
 values(2, 1, 'ExpertSoft', 'Grodno', '123412', 'US', 'malin 6 c', '3');
 
 insert into dps_giftlist(gift_list_id, is_published, creation_date, shipping_addr_id)
@@ -16,7 +16,7 @@ values (1, 1, 'gift item 1', 'test description', 1, 0);
 insert into dps_giftitem(gift_item_id, gift_list_id, display_name, description, quantity_desired, quantity_purchased)
 values (2, 1, 'gift item 2', 'test description new', 3, 0);
 
-insert into dps_user_address(address_id, company_name, city, postal_code, country, address)
+insert into hp_user_address(address_id, company_name, city, postal_code, country, address)
 values(3, 'ExpertSoft', 'Mensk', '123412', 'Belarus', 'xz 8 h');
 
 commit;

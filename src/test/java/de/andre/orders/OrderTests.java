@@ -5,7 +5,7 @@ package de.andre.orders;
  */
 public class OrderTests {
 	public void test() {
-		/*		DpsUser user = userRepository.getOne(1);
+		/*		Profile Profile = ProfileRepository.getOne(1);
 		DcsProduct product = productRepository.getOne(103);
 
 		DcsppOrder order = new DcsppOrder();
@@ -13,7 +13,7 @@ public class OrderTests {
 		order.setLastModifiedDate(Calendar.getInstance().getTime());
 		order.setOrderNumber("test123");
 		order.setState(OrderState.INCOMPLETE);
-		order.setDpsUser(user);
+		order.setProfile(Profile);
 
 		DcsppAmountInfo amountInfo = new DcsppAmountInfo();
 		amountInfo.setCurrencyCode("EUR");

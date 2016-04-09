@@ -1,6 +1,6 @@
 package de.andre;
 
-import de.andre.entity.core.DpsUser;
+import de.andre.entity.profile.Profile;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.PropertyValue;
@@ -20,7 +20,7 @@ public class Tests {
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 10);
-		DpsUser person = new DpsUser();
+		Profile person = new Profile();
 		BeanWrapper beanWrapper = new BeanWrapperImpl(person);
 		beanWrapper.setPropertyValue("email", "lox");
 		PropertyValue lastName = new PropertyValue("lastName", "pidr");

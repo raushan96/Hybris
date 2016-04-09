@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en"
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-	<title>Andre's Market | Welcome</title>
-	<script th:src="@{/static/js/jquery-1.11.2.min.js}"></script>
-	<script th:src="@{/static/js/bootstrap.min.js}"></script>
-	<script th:src="@{/static/js/account.js}"></script>
-	<script th:src="@{/static/js/catalog.js}"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"/>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
-	<link rel="stylesheet" th:href="@{/static/css/hybris.css}"/>
-	<link rel="icon" type="image/png" th:href="@{/static/images/favicon.png}"/>
-	<script>
-		$(document).ready(function(){
-			$('.dropdown-menu').find('form').click(function (e) {
-				e.stopPropagation();
-			});
-		});
-	</script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Andre's Market | Welcome</title>
+    <script th:src="@{/static/js/jquery-1.11.2.min.js}"></script>
+    <script th:src="@{/static/js/bootstrap.min.js}"></script>
+    <script th:src="@{/static/js/account.js}"></script>
+    <script th:src="@{/static/js/catalog.js}"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" th:href="@{/static/css/hybris.css}"/>
+    <link rel="icon" type="image/png" th:href="@{/static/images/favicon.png}"/>
+    <script>
+        $(document).ready(function(){
+            $('.dropdown-menu').find('form').click(function (e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
 </head>
 <body>
 
@@ -28,80 +28,80 @@
 <div th:replace="fragments/header :: header"></div>
 
 <div class="container">
-	<div layout:fragment="content">
+    <div layout:fragment="content">
 
-		<div class="jumbotron hero-spacer">
-			<h1>Spices!</h1>
-			<p th:text="#{common.welcome(${name})}">hmm</p>
-			<p th:text="${#calendars.format(date, 'dd MM yyyy')}">hmm</p>
-		</div>
+        <div class="jumbotron hero-spacer">
+            <h1>Spices!</h1>
+            <p th:text="#{common.welcome(${name})}">hmm</p>
+            <p th:text="${#calendars.format(date, 'dd MM yyyy')}">hmm</p>
+        </div>
 
-		<hr/>
+        <hr/>
 
-		<!-- Title -->
-		<div class="row">
-			<div class="col-lg-12">
-				<h3>Latest Features</h3>
-			</div>
-		</div>
-		<!-- /.row -->
+        <!-- Title -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Latest Features</h3>
+            </div>
+        </div>
+        <!-- /.row -->
 
-		<!-- Page Features -->
-		<div class="row text-center">
+        <!-- Page Features -->
+        <div class="row text-center">
 
-			<div class="col-md-3 col-sm-6 hero-feature">
-				<div class="thumbnail">
-					<img src="http://placehold.it/800x500" alt=""/>
-					<div class="caption">
-						<h3>Feature Label</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-						<p>
-							<a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
-						</p>
-					</div>
-				</div>
-			</div>
+            <div class="col-md-3 col-sm-6 hero-feature">
+                <div class="thumbnail">
+                    <img src="http://placehold.it/800x500" alt=""/>
+                    <div class="caption">
+                        <h3>Feature Label</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        <p>
+                            <a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-			<div class="col-md-3 col-sm-6 hero-feature">
-				<div class="thumbnail">
-					<img src="http://placehold.it/800x500" alt=""/>
-					<div class="caption">
-						<h3>Feature Label</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-						<p>
-							<a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
-						</p>
-					</div>
-				</div>
-			</div>
+            <div class="col-md-3 col-sm-6 hero-feature">
+                <div class="thumbnail">
+                    <img src="http://placehold.it/800x500" alt=""/>
+                    <div class="caption">
+                        <h3>Feature Label</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        <p>
+                            <a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-			<div class="col-md-3 col-sm-6 hero-feature">
-				<div class="thumbnail">
-					<img src="http://placehold.it/800x500" alt=""/>
-					<div class="caption">
-						<h3>Feature Label</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-						<p>
-							<a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
-						</p>
-					</div>
-				</div>
-			</div>
+            <div class="col-md-3 col-sm-6 hero-feature">
+                <div class="thumbnail">
+                    <img src="http://placehold.it/800x500" alt=""/>
+                    <div class="caption">
+                        <h3>Feature Label</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        <p>
+                            <a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-			<div class="col-md-3 col-sm-6 hero-feature">
-				<div class="thumbnail">
-					<img src="http://placehold.it/800x500" alt=""/>
-					<div class="caption">
-						<h3>Feature Label</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-						<p>
-							<a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+            <div class="col-md-3 col-sm-6 hero-feature">
+                <div class="thumbnail">
+                    <img src="http://placehold.it/800x500" alt=""/>
+                    <div class="caption">
+                        <h3>Feature Label</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        <p>
+                            <a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>

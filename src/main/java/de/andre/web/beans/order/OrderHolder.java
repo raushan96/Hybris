@@ -11,28 +11,28 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class OrderHolder {
-	private DcsppOrder order;
+    private DcsppOrder order;
 
-	private final OrderManager orderManager;
-	private final AccountTools accountTools;
+    private final OrderManager orderManager;
+    private final AccountTools accountTools;
 
-	@Autowired
-	public OrderHolder(final OrderManager orderManager, final AccountTools accountTools) {
-		this.orderManager = orderManager;
-		this.accountTools = accountTools;
-	}
+    @Autowired
+    public OrderHolder(final OrderManager orderManager, final AccountTools accountTools) {
+        this.orderManager = orderManager;
+        this.accountTools = accountTools;
+    }
 
-	public DcsppOrder getOrder() {
-		if (this.order == null) {
-			order = orderManager.getUserCurrentOrder(accountTools.getCommerceUser());
-			if (null == order) {
-				order = orderManager.createOrder(accountTools.getCommerceUser());
-			}
-		}
-		return order;
-	}
+    public DcsppOrder getOrder() {
+        if (this.order == null) {
+            order = orderManager.getProfileCurrentOrder(accountTools.getCommerceProfile());
+            if (null == order) {
+                order = orderManager.createOrder(accountTools.getCommerceProfile());
+            }
+        }
+        return order;
+    }
 
-	public void setOrder(DcsppOrder order) {
-		this.order = order;
-	}
+    public void setOrder(DcsppOrder order) {
+        this.order = order;
+    }
 }

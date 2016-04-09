@@ -1,6 +1,6 @@
 package de.andre.service.security;
 
-import de.andre.entity.core.DpsUser;
+import de.andre.entity.profile.Profile;
 import de.andre.service.account.AccountTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,23 +13,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-	private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
-	@Autowired
-	AccountTools accountTools;
+    @Autowired
+    AccountTools accountTools;
 
-	@Override
-	public UserDetails loadUserByUsername(final String pEmail) throws UsernameNotFoundException {
-		final DpsUser user = accountTools.findUserByEmail(pEmail);
+    @Override
+    public UserDetails loadUserByUsername(final String pEmail) throws UsernameNotFoundException {
+        final Profile profile = accountTools.findProfileByEmail(pEmail);
 
-		if (null == user) {
-			throw new UsernameNotFoundException("User wasn't found with provided email: " + pEmail);
-		}
+        if (null == profile) {
+            throw new UsernameNotFoundException("Profile wasn't found with provided email: " + pEmail);
+        }
 
-		if (log.isDebugEnabled()) {
-			log.debug("Found user with {} id and {} email", user.getUserId(), user.getEmail());
-		}
+        if (log.isDebugEnabled()) {
+            log.debug("Found Profile with {} id and {} email", profile.getId(), profile.getEmail());
+        }
 
-		return new HybrisUser(user.getEmail(), user.getPassword(), user);
-	}
+        return new HybrisUser(profile.getEmail(), profile.getPassword(), profile);
+    }
 }

@@ -9,20 +9,20 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CheckoutRestController {
-	private final static Logger log = LoggerFactory.getLogger(CheckoutRestController.class);
+    private final static Logger log = LoggerFactory.getLogger(CheckoutRestController.class);
 
-	private final CommerceItemTools commerceItemTools;
+    private final CommerceItemTools commerceItemTools;
 
-	@Autowired
-	private OrderHolder orderHolder;
+    @Autowired
+    private OrderHolder orderHolder;
 
-	@Autowired
-	public CheckoutRestController(final CommerceItemTools commerceItemTools) {
-		this.commerceItemTools = commerceItemTools;
-	}
+    @Autowired
+    public CheckoutRestController(final CommerceItemTools commerceItemTools) {
+        this.commerceItemTools = commerceItemTools;
+    }
 
-	@RequestMapping(value = "catalog/category-{catId}/pId-{pId}", method = RequestMethod.POST)
-	public void addProductToCart(@PathVariable("pId") final String pId, @RequestParam("quantity") final String quantity) {
-		commerceItemTools.addItemToOrder(Integer.valueOf(pId), orderHolder.getOrder(), Integer.valueOf(quantity));
-	}
+    @RequestMapping(value = "catalog/category-{catId}/pId-{pId}", method = RequestMethod.POST)
+    public void addProductToCart(@PathVariable("pId") final String pId, @RequestParam("quantity") final String quantity) {
+        commerceItemTools.addItemToOrder(Integer.valueOf(pId), orderHolder.getOrder(), Integer.valueOf(quantity));
+    }
 }

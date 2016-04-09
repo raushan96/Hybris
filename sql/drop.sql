@@ -1,6 +1,3 @@
-drop sequence global_seq;
-
-drop sequence order_seq;
 drop table dcspp_price_adjust;
 drop table dcspp_item;
 drop table dcspp_pay_group;
@@ -9,13 +6,11 @@ drop table dcspp_ship_group;
 drop table dcspp_order;
 drop table dcspp_amount_info;
 
-drop sequence profile_seq;
-drop table dps_giftitem;
-drop table dps_giftlist;
-drop table dps_user_address;
-drop table dps_user;
+drop table hp_interest;
+drop table hp_user_addresses;
+drop table hp_address;
+drop table hp_user;
 
-drop sequence catalog_seq;
 drop table dcs_claimable;
 drop table dcs_price;
 drop table dcs_price_list;

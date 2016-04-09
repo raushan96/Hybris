@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.zeroturnaround.com" xsi:schemaLocation="http://www.zeroturnaround.com http://www.zeroturnaround.com/alderaan/rebel-2_0.xsd">
 
-	<classpath>
-		<dir name="${rebel.workspace.path}/build/classes/main"/>
-		<dir name="${rebel.workspace.path}/build/resources"/>
-	</classpath>
+    <!-- vm startup arguments:
+    -Drebel.workspace.path=your_workspace_path
+    in case permgen errors -XX:MaxPermSize=256m-->
+    <classpath>
+        <dir name="${rebel.workspace.path}/build/classes/main"/>
+        <dir name="${rebel.workspace.path}/build/resources"/>
+    </classpath>
 
-	<web>
-		<link target="/">
-			<dir name="${rebel.workspace.path}/src/main/webapp"/>
-		</link>
-	</web>
+    <web>
+        <link target="/">
+            <dir name="${rebel.workspace.path}/src/main/webapp"/>
+        </link>
+    </web>
 
 </application>

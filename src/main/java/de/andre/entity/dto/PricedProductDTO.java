@@ -6,41 +6,41 @@ import java.io.Serializable;
  * Created by andreika on 4/25/2015.
  */
 public class PricedProductDTO implements Serializable {
-	private static final long serialVersionUID = 2589974500915152258L;
+    private static final long serialVersionUID = 2589974500915152258L;
 
-	private Integer productId;
-	private Double price;
-	private String priceList;
+    private Integer productId;
+    private Double price;
+    private String priceList;
 
-	public PricedProductDTO(){};
+    public PricedProductDTO(){};
 
-	public PricedProductDTO(Integer productId, Double basePrice, String priceList) {
-		this.productId = productId;
-		this.price = basePrice;
-		this.priceList = priceList;
-	}
+    public PricedProductDTO(Integer productId, Double basePrice, String priceList) {
+        this.productId = productId;
+        this.price = basePrice;
+        this.priceList = priceList;
+    }
 
-	public Integer getProductId() {
-		return productId;
-	}
+    public Integer getProductId() {
+        return productId;
+    }
 
-	public void setProductId(Integer productId) {
-		this.productId = productId;
-	}
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
 
-	public Double getPrice() {
-		return price;
-	}
+    public Double getPrice() {
+        return price;
+    }
 
-	public void setPrice(Double price) {
-		this.price = price;
-	}
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
-	public String getPriceList() {
-		return priceList;
-	}
+    public String getPriceList() {
+        return priceList;
+    }
 
-	public void setPriceList(String priceList) {
-		this.priceList = priceList;
-	}
+    public void setPriceList(String priceList) {
+        this.priceList = priceList;
+    }
 }

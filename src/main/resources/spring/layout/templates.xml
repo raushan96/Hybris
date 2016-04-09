@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:aop="http://www.springframework.org/schema/aop"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans.xsd
      http://www.springframework.org/schema/aop
      http://www.springframework.org/schema/aop/spring-aop.xsd">
-	<!--<aop:scoped-proxy/>-->
+    <!--<aop:scoped-proxy/>-->
 
-	<description>
-		Thymeleaf and emails(processed by it) configurations.
-		Belongs to the root web context.
-	</description>
+    <description>
+        Thymeleaf and emails(processed by it) configurations.
+        Belongs to the root web context.
+    </description>
 
-	<bean id="emailTemplateResolver" class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
-		<property name="prefix" value="email/"/>
-		<property name="templateMode" value="HTML5"/>
-		<property name="characterEncoding" value="UTF-8"/>
-		<property name="order" value="1"/>
-		<!-- dev mode -->
-		<property name="cacheable" value="false"/>
-	</bean>
+    <bean id="emailTemplateResolver" class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
+        <property name="prefix" value="email/"/>
+        <property name="templateMode" value="HTML5"/>
+        <property name="characterEncoding" value="UTF-8"/>
+        <property name="order" value="1"/>
+        <!-- dev mode -->
+        <property name="cacheable" value="false"/>
+    </bean>
 
-	<bean id="emailService" class="de.andre.service.emails.EmailService">
-		<constructor-arg index="0" ref="mailSender"/>
-		<constructor-arg index="1" ref="templateFactory"/>
-		<property name="defaultFrom" value="andrey.evans@gmail.com"/>
-	</bean>
+    <bean id="emailService" class="de.andre.service.emails.EmailService">
+        <constructor-arg index="0" ref="mailSender"/>
+        <constructor-arg index="1" ref="templateFactory"/>
+        <property name="defaultFrom" value="andrey.evans@gmail.com"/>
+    </bean>
 
-	<bean id="baseTemplate" class="de.andre.service.emails.EmailTemplateInfo" abstract="true" scope="prototype">
-		<property name="messageFrom" value="#{emailService.defaultFrom}"/>
-		<property name="mimeMessage" value="#{mailSender.createMimeMessage()}"/>
-		<property name="encoding" value="UTF-8"/>
-		<property name="templateEngine" ref="templateEngine"/>
-	</bean>
+    <bean id="baseTemplate" class="de.andre.service.emails.EmailTemplateInfo" abstract="true" scope="prototype">
+        <property name="messageFrom" value="#{emailService.defaultFrom}"/>
+        <property name="mimeMessage" value="#{mailSender.createMimeMessage()}"/>
+        <property name="encoding" value="UTF-8"/>
+        <property name="templateEngine" ref="templateEngine"/>
+    </bean>
 
-	<bean id="templateFactory" class="de.andre.service.emails.TemplatesFactory">
-		<lookup-method name="createForgotPasswordTemplate" bean="forgotPasswordTemplate"/>
-		<lookup-method name="createWelcomeTemplate" bean="welcomeTemplate"/>
-	</bean>
+    <bean id="templateFactory" class="de.andre.service.emails.TemplatesFactory">
+        <lookup-method name="createForgotPasswordTemplate" bean="forgotPasswordTemplate"/>
+        <lookup-method name="createWelcomeTemplate" bean="welcomeTemplate"/>
+    </bean>
 
-	<bean id="forgotPasswordTemplate" parent="baseTemplate">
-		<property name="messageSubject" value="New password."/>
-		<property name="templateUrl" value="forgot-password.html"/>
-		<property name="templateName" value="#{T(de.andre.utils.HybrisConstants).FORGOT_PASSWORD_EMAIL}"/>
-	</bean>
+    <bean id="forgotPasswordTemplate" parent="baseTemplate">
+        <property name="messageSubject" value="New password."/>
+        <property name="templateUrl" value="forgot-password.html"/>
+        <property name="templateName" value="#{T(de.andre.utils.HybrisConstants).FORGOT_PASSWORD_EMAIL}"/>
+    </bean>
 
-	<bean id="welcomeTemplate" parent="baseTemplate">
-		<property name="messageSubject" value="Welcome to the Spice store!"/>
-		<property name="templateUrl" value="welcome.html"/>
-		<property name="templateName" value="#{T(de.andre.utils.HybrisConstants).WELCOME_EMAIL}"/>
-	</bean>
+    <bean id="welcomeTemplate" parent="baseTemplate">
+        <property name="messageSubject" value="Welcome to the Spice store!"/>
+        <property name="templateUrl" value="welcome.html"/>
+        <property name="templateName" value="#{T(de.andre.utils.HybrisConstants).WELCOME_EMAIL}"/>
+    </bean>
 </beans>

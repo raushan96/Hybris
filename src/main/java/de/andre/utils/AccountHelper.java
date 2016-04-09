@@ -8,12 +8,12 @@ import java.util.UUID;
 import static de.andre.utils.HybrisConstants.PASSWORD_LENGTH;
 
 public class AccountHelper {
-	private static final Logger log = LoggerFactory.getLogger(AccountHelper.class);
+    private static final Logger log = LoggerFactory.getLogger(AccountHelper.class);
 
-	private AccountHelper() {}
+    private AccountHelper() {}
 
-	public static String generateRandomString() {
-		String uuid = UUID.randomUUID().toString();
-		return  uuid.replaceAll("-", "").substring(0, PASSWORD_LENGTH);
-	}
+    public static String generateRandomString() {
+        String uuid = UUID.randomUUID().toString();
+        return  uuid.replaceAll("-", "").substring(0, PASSWORD_LENGTH);
+    }
 }

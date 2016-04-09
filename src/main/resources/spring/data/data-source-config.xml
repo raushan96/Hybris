@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/data/jpa
+     http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/cache
+     http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <description>Db specific beans.</description>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <jpa:repositories base-package="de.andre.repository"
+                      entity-manager-factory-ref="entityManagerFactory"
+                      transaction-manager-ref="transactionManager"/>
+
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="dataSourceClassName" value="${jdbc.dataSourceClassName}"/>
+        <property name="poolName" value="hybHikari"/>
+        <property name="maximumPoolSize" value="${hibernate.hikari.maximumPoolSize}"/>
+        <property name="maxLifetime" value="${hibernate.hikari.maxLifetime}"/>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="url">${jdbc.url}</prop>
+                <prop key="user">${jdbc.username}</prop>
+                <prop key="password">${jdbc.password}</prop>
+                <prop key="prepStmtCacheSize">${hibernate.hikari.prepStmtCacheSize}</prop>
+                <prop key="prepStmtCacheSqlLimit">${hibernate.hikari.prepStmtCacheSqlLimit}</prop>
+                <prop key="cachePrepStmts">${hibernate.hikari.cachePrepStmts}</prop>
+                <prop key="rewriteBatchedStatements">${hibernate.hikari.rewriteBatchedStatements}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfig"/>
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="de.andre.entity"/>
+        <property name="jpaDialect" ref="jpaDialect"/>
+
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="database" value="${hibernate.database}"/>
+                <property name="showSql" value="${hibernate.show_sql}"/>
+                <property name="databasePlatform" value="${hibernate.dialect}"/>
+            </bean>
+        </property>
+
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.jdbc.batch_size">${hibernate.batch_size}</prop>
+                <prop key="hibernate.order_inserts">true</prop>
+                <prop key="hibernate.order_updates">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.generate_statistics">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+        <property name="jpaDialect" ref="jpaDialect"/>
+    </bean>
+
+    <!--    <cache:annotation-driven proxy-target-class="true"/>
+
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="ehcache"/>
+    </bean>
+
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:ehcache/ehcache.xml"/>
+    </bean>-->
+</beans>

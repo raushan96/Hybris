@@ -7,9 +7,9 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 public interface CatalogTools {
-	void populateCategoryMap(String catId, ModelAndView mav);
+    void populateCategoryMap(String catId, ModelAndView mav);
 
-	List<DcsCategory> getRootChildCategories();
+    List<DcsCategory> getRootChildCategories();
 
-	DcsProduct getProductById(Integer prdId);
+    DcsProduct getProductById(Integer prdId);
 }

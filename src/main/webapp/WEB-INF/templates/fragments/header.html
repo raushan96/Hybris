@@ -1,53 +1,53 @@
 <header th:fragment="header" xmlns:th="http://www.thymeleaf.org">
-	<nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-		<div class="navbar-header">
-			<button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a th:href="@{/index}" class="navbar-brand">Andre's Market</a>
-		</div>
-		<div id="navbarCollapse" class="collapse navbar-collapse">
-			<ul class="nav navbar-nav">
-				<li class="active"><a th:href="@{/account/profile}">Account</a></li>
-				<li><a th:href="@{/catalog}">Catalog</a></li>
-				<li class="dropdown">
-					<a data-toggle="dropdown" class="dropdown-toggle" href="#">Order <b class="caret"></b></a>
-					<ul role="menu" class="dropdown-menu">
-						<li><a th:href="@{/cart}">Shopping cart</a></li>
-						<li><a href="#">Drafts</a></li>
-						<li><a href="#">Sent Items</a></li>
-						<li class="divider"></li>
-						<li><a href="#">Trash</a></li>
-					</ul>
-				</li>
-			</ul>
-			<form role="search" class="navbar-form navbar-left">
-				<div class="form-group">
-					<input type="text" placeholder="Search" class="form-control"/>
-				</div>
-			</form>
-			<ul class="nav navbar-nav navbar-right">
-				<li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
-				<li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Register</a></li>
-				<li sec:authorize="isAuthenticated()"><span sec:authentication="name"></span></li>
-				<li sec:authorize="isAuthenticated()"><a>
-					<form th:action="@{/logout}" th:method="post">
-						<input type="submit" value="Logout"/>
-					</form></a>
-				</li>
-			</ul>
+    <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+        <div class="navbar-header">
+            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a th:href="@{/index}" class="navbar-brand">Andre's Market</a>
+        </div>
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a th:href="@{/account/profile}">Account</a></li>
+                <li><a th:href="@{/catalog}">Catalog</a></li>
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">Order <b class="caret"></b></a>
+                    <ul role="menu" class="dropdown-menu">
+                        <li><a th:href="@{/cart}">Shopping cart</a></li>
+                        <li><a href="#">Drafts</a></li>
+                        <li><a href="#">Sent Items</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Trash</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form role="search" class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" placeholder="Search" class="form-control"/>
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Register</a></li>
+                <li sec:authorize="isAuthenticated()"><span sec:authentication="name"></span></li>
+                <li sec:authorize="isAuthenticated()"><a>
+                    <form th:action="@{/logout}" th:method="post">
+                        <input type="submit" value="Logout"/>
+                    </form></a>
+                </li>
+            </ul>
 
-			<!--			<div th:fragment="logout" sec:authorize="isAuthenticated()">
-				Logged user: <span sec:authentication="name">Andre</span> |
-				Roles: <span sec:authentication="principal.authorities">[ROLE_USER]</span> |
-				<a href="/logout" th:href="@{/logout}">Logout</a>
-			</div>
-			<a href="/login" th:href="@{/login}">Login</a>-->
-		</div>
-		</div>
-	</nav>
+            <!--            <div th:fragment="logout" sec:authorize="isAuthenticated()">
+                Logged user: <span sec:authentication="name">Andre</span> |
+                Roles: <span sec:authentication="principal.authorities">[ROLE_USER]</span> |
+                <a href="/logout" th:href="@{/logout}">Logout</a>
+            </div>
+            <a href="/login" th:href="@{/login}">Login</a>-->
+        </div>
+        </div>
+    </nav>
 </header>

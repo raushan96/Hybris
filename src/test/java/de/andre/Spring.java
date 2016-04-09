@@ -11,8 +11,8 @@ public class Spring {
 
 	public static void main(String[] args) {
 /*		ApplicationContext context = new FileSystemXmlApplicationContext(new String[] {
-				"file:c:\\Users\\andreika\\IdeaProjects\\Hybris\\src\\main\\java\\de\\andre\\springTests\\services.xml",
-				"file:c:\\Users\\andreika\\IdeaProjects\\Hybris\\src\\main\\java\\de\\andre\\springTests\\daos.xml"});*/
+				"file:c:\\Profiles\\andreika\\IdeaProjects\\Hybris\\src\\main\\java\\de\\andre\\springTests\\services.xml",
+				"file:c:\\Profiles\\andreika\\IdeaProjects\\Hybris\\src\\main\\java\\de\\andre\\springTests\\daos.xml"});*/
 		ApplicationContext context = new ClassPathXmlApplicationContext("services.xml");
 		Andre andre = context.getBean("haha", Andre.class);
 		System.out.println(andre.getName());

@@ -3,62 +3,62 @@
 <body>
 
 <div layout:fragment="content" th:remove="tag">
-	<div class="row">
-		<div class="col-md-5">
-			<h2>Register profile</h2>
-			<form th:object="${dpsUser}" th:method="post" th:action="@{/register}">
-				<div class="form-group" th:classappend="${#fields.hasErrors('email')} ? error">
-					<label for="register_email">Email</label>
-					<input type="email" class="form-control" id="register_email" placeholder="Email" th:field="*{email}"/>
-					<span class="help-inline" th:errors="*{email}">[error]</span>
-				</div>
+    <div class="row">
+        <div class="col-md-5">
+            <h2>Register profile</h2>
+            <form th:object="${dpsUser}" th:method="post" th:action="@{/register}">
+                <div class="form-group" th:classappend="${#fields.hasErrors('email')} ? error">
+                    <label for="register_email">Email</label>
+                    <input type="email" class="form-control" id="register_email" placeholder="Email" th:field="*{email}"/>
+                    <span class="help-inline" th:errors="*{email}">[error]</span>
+                </div>
 
-				<div class="form-group" th:classappend="${#fields.hasErrors('password')} ? error">
-					<label for="register_password">Password</label>
-					<input type="password" class="form-control" id="register_password" placeholder="******" th:field="*{password}"/>
-					<span class="help-inline" th:errors="*{password}">[error]</span>
-				</div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('password')} ? error">
+                    <label for="register_password">Password</label>
+                    <input type="password" class="form-control" id="register_password" placeholder="******" th:field="*{password}"/>
+                    <span class="help-inline" th:errors="*{password}">[error]</span>
+                </div>
 
-				<div class="form-group" th:classappend="${#fields.hasErrors('firstName')} ? error">
-					<label for="register_firstName">First name</label>
-					<input type="text" class="form-control" id="register_firstName" placeholder="First name" th:field="*{firstName}"/>
-					<span class="help-inline" th:errors="*{firstName}">[error]</span>
-				</div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('firstName')} ? error">
+                    <label for="register_firstName">First name</label>
+                    <input type="text" class="form-control" id="register_firstName" placeholder="First name" th:field="*{firstName}"/>
+                    <span class="help-inline" th:errors="*{firstName}">[error]</span>
+                </div>
 
-				<div class="form-group">
-					<label for="register_lastName">Last name</label>
-					<input type="text" class="form-control" id="register_lastName" placeholder="Last name" th:field="*{lastName}"/>
-				</div>
+                <div class="form-group">
+                    <label for="register_lastName">Last name</label>
+                    <input type="text" class="form-control" id="register_lastName" placeholder="Last name" th:field="*{lastName}"/>
+                </div>
 
-				<div class="form-group" th:classappend="${#fields.hasErrors('dateOfBirth')} ? error">
-					<label for="register_dob">Birthday</label>
-					<input type="text" class="form-control" id="register_dob" placeholder="Date of birth" th:field="*{dateOfBirth}"/>
-					<span class="help-inline" th:errors="*{dateOfBirth}">[error]</span>
-				</div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('dateOfBirth')} ? error">
+                    <label for="register_dob">Birthday</label>
+                    <input type="text" class="form-control" id="register_dob" placeholder="Date of birth" th:field="*{dateOfBirth}"/>
+                    <span class="help-inline" th:errors="*{dateOfBirth}">[error]</span>
+                </div>
 
-				<div class="form-group">
-					<label class="radio-inline">
-						<input type="radio" name="sexRadio" id="register_male" value="MALE" th:field="*{gender}"/> Male
-					</label>
-					<label class="radio-inline">
-						<input type="radio" name="sexRadio" id="register_female" value="FEMALE" th:field="*{gender}"/> Female
-					</label>
-				</div>
+                <div class="form-group">
+                    <label class="radio-inline">
+                        <input type="radio" name="sexRadio" id="register_male" value="MALE" th:field="*{gender}"/> Male
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="sexRadio" id="register_female" value="FEMALE" th:field="*{gender}"/> Female
+                    </label>
+                </div>
 
-				<div class="form-group">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" id="register_accEmails" th:field="*{acceptEmails}"/> Accept emails
-						</label>
-					</div>
-				</div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="register_accEmails" th:field="*{acceptEmails}"/> Accept emails
+                        </label>
+                    </div>
+                </div>
 
-				<div class="form-group">
-					<button type="submit" class="btn btn-default">Register</button>
-				</div>
-			</form>
-		</div>
-	</div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 

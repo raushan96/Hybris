@@ -2,10 +2,10 @@ package de.andre.service.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.andre.entity.core.DpsAddress;
-import de.andre.entity.core.DpsUser;
-import de.andre.repository.AddressRepository;
-import de.andre.repository.UserRepository;
+import de.andre.entity.profile.Address;
+import de.andre.entity.profile.Profile;
+import de.andre.repository.profile.AddressRepository;
+import de.andre.repository.profile.ProfileRepository;
 import de.andre.service.emails.EmailService;
 import de.andre.service.security.HybrisUser;
 import de.andre.utils.AccountHelper;
@@ -34,142 +34,141 @@ import static de.andre.utils.HybrisConstants.WELCOME_EMAIL;
 
 @Service
 public class AccountTools {
+    private static final Logger log = LoggerFactory.getLogger(AccountTools.class);
 
-	private static final Logger log = LoggerFactory.getLogger(AccountTools.class);
+    private final ProfileRepository profileRepository;
+    private final AddressRepository addressRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ObjectMapper objectMapper;
+    private final EmailService emailService;
 
-	private final UserRepository userRepository;
-	private final AddressRepository addressRepository;
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-	private final ObjectMapper objectMapper;
-	private final EmailService emailService;
+    @PersistenceContext
+    private EntityManager em;
 
+    @Autowired
+    public AccountTools(final ProfileRepository profileRepository, final AddressRepository addressRepository, final BCryptPasswordEncoder bCryptPasswordEncoder,
+                        final EmailService emailService, final ObjectMapper objectMapper) {
+        this.profileRepository = profileRepository;
+        this.addressRepository = addressRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.objectMapper = objectMapper;
+        this.emailService = emailService;
+    }
 
-	@PersistenceContext
-	private EntityManager em;
+    @Transactional(readOnly = true)
+    public Profile getProfileById(final Integer ProfileId) {
+        return profileRepository.findOne(ProfileId);
+    }
 
-	@Autowired
-	public AccountTools(final UserRepository userRepository, final AddressRepository addressRepository, final BCryptPasswordEncoder bCryptPasswordEncoder,
-						final EmailService emailService, final ObjectMapper objectMapper) {
-		this.userRepository = userRepository;
-		this.addressRepository = addressRepository;
-		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-		this.objectMapper = objectMapper;
-		this.emailService = emailService;
-	}
+    @Transactional
+    public void saveProfile(final Profile profile) {
+        profileRepository.save(profile);
+    }
 
-	@Transactional(readOnly = true)
-	public DpsUser getUserById(final Integer userId) {
-		return userRepository.findOne(userId);
-	}
+    @Transactional(readOnly = true)
+    public Profile findProfileByEmail(final String email) {
+        return profileRepository.findByLogin(email);
+    }
 
-	@Transactional
-	public void saveUser(final DpsUser dpsUser) {
-		userRepository.save(dpsUser);
-	}
+    @Transactional(readOnly = true)
+    public Collection<Address> findAddressesByProfile(final Profile profile) {
+//        final Collection<Address> profileAddresses = addressRepository.findAddressesByCustomer(profile);
+        final Collection<Address> profileAddresses = Collections.emptyList();
 
-	@Transactional(readOnly = true)
-	public DpsUser findUserByEmail(final String email) {
-		return userRepository.findByLogin(email);
-	}
+        if (profileAddresses == null || profileAddresses.size() == 0) {
+            log.debug("No addresses found for Profile " + profile.getId());
+            return Collections.emptyList();
+        }
 
-	@Transactional(readOnly = true)
-	public Collection<DpsAddress> findAddressesByUser(final DpsUser dpsUser) {
-		final Collection<DpsAddress> userAddresses = addressRepository.findAddressesByCustomer(dpsUser);
+        return profileAddresses;
+    }
 
-		if (userAddresses == null || userAddresses.size() == 0) {
-			log.debug("No addresses found for user " + dpsUser.getUserId());
-			return Collections.emptyList();
-		}
+    @Transactional
+    public void createProfile(final Profile Profile, final HttpServletRequest pRequest) {
+        final String hashedPassword = bCryptPasswordEncoder.encode(Profile.getPassword());
+        Profile.setPassword(hashedPassword);
+        profileRepository.save(Profile);
 
-		return userAddresses;
-	}
+        final UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                new HybrisUser(Profile.getEmail(), Profile.getPassword(), Collections.singleton(HybrisUser.Profile_AUTHORITY)),
+                null,
+                Collections.singleton(HybrisUser.Profile_AUTHORITY));
+        auth.setDetails(new WebAuthenticationDetails(pRequest));
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
-	@Transactional
-	public void createUser(final DpsUser dpsUser, final HttpServletRequest pRequest) {
-		final String hashedPassword = bCryptPasswordEncoder.encode(dpsUser.getPassword());
-		dpsUser.setPassword(hashedPassword);
-		userRepository.save(dpsUser);
+        final Map<String, Object> templateParams = new HashMap<>();
+        templateParams.put("Profile", Profile);
 
-		final UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-				new HybrisUser(dpsUser.getEmail(), dpsUser.getPassword(), Collections.singleton(HybrisUser.USER_AUTHORITY)),
-				null,
-				Collections.singleton(HybrisUser.USER_AUTHORITY));
-		auth.setDetails(new WebAuthenticationDetails(pRequest));
-		SecurityContextHolder.getContext().setAuthentication(auth);
+        try {
+            emailService.sendEmail(WELCOME_EMAIL, templateParams, Profile.getEmail());
+        } catch (final IOException | MessagingException e) {
+            log.error("Email exception sending welcome email.", e);
+        }
+    }
 
-		final Map<String, Object> templateParams = new HashMap<>();
-		templateParams.put("user", dpsUser);
+    @Transactional
+    public void updatePassword(final String email, final String newPassword) {
+        final String hashedPassword = bCryptPasswordEncoder.encode(newPassword);
+        profileRepository.updateProfilePassword(email, hashedPassword);
+    }
 
-		try {
-			emailService.sendEmail(WELCOME_EMAIL, templateParams, dpsUser.getEmail());
-		} catch (final IOException | MessagingException e) {
-			log.error("Email exception sending welcome email.", e);
-		}
-	}
+    @Transactional
+    public ObjectNode forgotPassword(final String pEmail) {
+        final ObjectNode response = objectMapper.createObjectNode();
+        if (profileRepository.countByEmail(pEmail) < 1) {
+            log.debug("Cannot find Profiles with {} email.", pEmail);
+            return response
+                    .put("success", "false")
+                    .put("message", "Profile not found.");
+        }
 
-	@Transactional
-	public void updatePassword(final String email, final String newPassword) {
-		final String hashedPassword = bCryptPasswordEncoder.encode(newPassword);
-		userRepository.updateUserPassword(email, hashedPassword);
-	}
+        final String randomPassword = AccountHelper.generateRandomString();
+        final String hashedPassword = bCryptPasswordEncoder.encode(randomPassword);
+        profileRepository.updateProfilePassword(pEmail, hashedPassword);
 
-	@Transactional
-	public ObjectNode forgotPassword(final String pEmail) {
-		final ObjectNode response = objectMapper.createObjectNode();
-		if (userRepository.countByEmail(pEmail) < 1) {
-			log.debug("Cannot find users with {} email.", pEmail);
-			return response
-					.put("success", "false")
-					.put("message", "User not found.");
-		}
+        final Map<String, Object> templateParams = new HashMap<>();
+        templateParams.put("profile", profileRepository.findByLogin(pEmail));
+        templateParams.put("date", new Date());
+        templateParams.put("password", randomPassword);
 
-		final String randomPassword = AccountHelper.generateRandomString();
-		final String hashedPassword = bCryptPasswordEncoder.encode(randomPassword);
-		userRepository.updateUserPassword(pEmail, hashedPassword);
+        try {
+            emailService.sendEmail(FORGOT_PASSWORD_EMAIL, templateParams, pEmail);
+        } catch (final IOException | MessagingException e) {
+            log.error("Email exception sending forgot password email.", e);
+        }
+        return response.put("success", "true");
+    }
 
-		final Map<String, Object> templateParams = new HashMap<>();
-		templateParams.put("user", userRepository.findByLogin(pEmail));
-		templateParams.put("date", new Date());
-		templateParams.put("password", randomPassword);
+    public Profile getCommerceProfile() {
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		try {
-			emailService.sendEmail(FORGOT_PASSWORD_EMAIL, templateParams, pEmail);
-		} catch (final IOException | MessagingException e) {
-			log.error("Email exception sending forgot password email.", e);
-		}
-		return response.put("success", "true");
-	}
+            if (principal instanceof HybrisUser) {
+                return ((HybrisUser) principal).getCommerceProfile();
+            }
 
-	public DpsUser getCommerceUser() {
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            log.warn("Unknown principal instance.");
+            return null;
+        }
 
-			if (principal instanceof HybrisUser) {
-				return ((HybrisUser) principal).getCommerceUser();
-			}
+        log.warn("Profile is not authorized, returning null.");
+        return null;
+    }
 
-			log.warn("Unknown principal instance.");
-			return null;
-		}
+    public void updateCommerceProfile(final Profile profile) {
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		log.warn("User is not authorized, returning null.");
-		return null;
-	}
+            if (principal instanceof HybrisUser) {
+                ((HybrisUser) principal).setCommerceProfile(profile);
+            } else {
+                log.warn("Unknown principal instance, cannot update.");
+            }
+        }
+    }
 
-	public void updateCommerceUser(final DpsUser dpsUser) {
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-			if (principal instanceof HybrisUser) {
-				((HybrisUser) principal).setCommerceUser(dpsUser);
-			} else {
-				log.warn("Unknown principal instance, cannot update.");
-			}
-		}
-	}
-
-	public boolean isSoftLogged() {
-		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return auth != null && RememberMeAuthenticationToken.class.isAssignableFrom(auth.getClass());
-	}
+    public boolean isSoftLogged() {
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth != null && RememberMeAuthenticationToken.class.isAssignableFrom(auth.getClass());
+    }
 }

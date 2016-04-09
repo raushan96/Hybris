@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AuthenticationSuccessHandlerImpl extends SimpleUrlAuthenticationSuccessHandler{
-	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-		super.onAuthenticationSuccess(request, response, authentication);
-	}
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        super.onAuthenticationSuccess(request, response, authentication);
+    }
 }

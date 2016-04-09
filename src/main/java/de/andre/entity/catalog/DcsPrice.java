@@ -12,66 +12,66 @@ import java.util.Objects;
 @Immutable
 @Table(name = "DCS_PRICE", schema = "HYBRIS")
 public class DcsPrice {
-	private Integer priceId;
-	private Double listPrice;
-	private DcsPriceList priceList;
-	private DcsProduct dcsProduct;
+    private Integer priceId;
+    private Double listPrice;
+    private DcsPriceList priceList;
+    private DcsProduct dcsProduct;
 
-	@Id
-	@Column(name = "PRICE_ID")
-	public Integer getPriceId() {
-		return priceId;
-	}
+    @Id
+    @Column(name = "PRICE_ID")
+    public Integer getPriceId() {
+        return priceId;
+    }
 
-	public void setPriceId(Integer priceId) {
-		this.priceId = priceId;
-	}
+    public void setPriceId(Integer priceId) {
+        this.priceId = priceId;
+    }
 
-	@OneToOne
-	@JoinColumn(name = "PRICE_LIST_ID")
-	public DcsPriceList getPriceList() {
-		return priceList;
-	}
+    @OneToOne
+    @JoinColumn(name = "PRICE_LIST_ID")
+    public DcsPriceList getPriceList() {
+        return priceList;
+    }
 
-	public void setPriceList(DcsPriceList priceList) {
-		this.priceList = priceList;
-	}
+    public void setPriceList(DcsPriceList priceList) {
+        this.priceList = priceList;
+    }
 
-	@ManyToOne
-	@JoinColumn(name = "PRODUCT_ID")
-	public DcsProduct getDcsProduct() {
-		return dcsProduct;
-	}
+    @ManyToOne
+    @JoinColumn(name = "PRODUCT_ID")
+    public DcsProduct getDcsProduct() {
+        return dcsProduct;
+    }
 
-	public void setDcsProduct(DcsProduct dcsProduct) {
-		this.dcsProduct = dcsProduct;
-	}
+    public void setDcsProduct(DcsProduct dcsProduct) {
+        this.dcsProduct = dcsProduct;
+    }
 
-	@Basic
-	@Column(name = "LIST_PRICE")
-	public Double getListPrice() {
-		return listPrice;
-	}
+    @Basic
+    @Column(name = "LIST_PRICE")
+    public Double getListPrice() {
+        return listPrice;
+    }
 
-	public void setListPrice(Double listPrice) {
-		this.listPrice = listPrice;
-	}
+    public void setListPrice(Double listPrice) {
+        this.listPrice = listPrice;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-		DcsPrice dcsPrice = (DcsPrice) o;
+        DcsPrice dcsPrice = (DcsPrice) o;
 
-		if (priceId != dcsPrice.priceId) return false;
-		if (listPrice != null ? !listPrice.equals(dcsPrice.listPrice) : dcsPrice.listPrice != null) return false;
+        if (priceId != dcsPrice.priceId) return false;
+        if (listPrice != null ? !listPrice.equals(dcsPrice.listPrice) : dcsPrice.listPrice != null) return false;
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(priceId, listPrice);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(priceId, listPrice);
+    }
 }

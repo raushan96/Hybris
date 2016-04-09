@@ -14,18 +14,18 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "catalog/category-{catId}")
 public class ProductController {
-	private final CatalogTools catalogTools;
+    private final CatalogTools catalogTools;
 
-	@Autowired
-	public ProductController(final CatalogTools catalogTools) {
-		this.catalogTools = catalogTools;
-	}
+    @Autowired
+    public ProductController(final CatalogTools catalogTools) {
+        this.catalogTools = catalogTools;
+    }
 
-	@RequestMapping(value = "/{productLink}")
-	public ModelAndView showProductDetailsPage(@PathVariable("productLink") final String productLink) {
-		Integer prdId = Integer.valueOf(productLink.split("-")[1]);
-		ModelAndView mav = new ModelAndView("catalog/pdp");
-		mav.addObject("product", catalogTools.getProductById(prdId));
-		return mav;
-	}
+    @RequestMapping(value = "/{productLink}")
+    public ModelAndView showProductDetailsPage(@PathVariable("productLink") final String productLink) {
+        Integer prdId = Integer.valueOf(productLink.split("-")[1]);
+        ModelAndView mav = new ModelAndView("catalog/pdp");
+        mav.addObject("product", catalogTools.getProductById(prdId));
+        return mav;
+    }
 }

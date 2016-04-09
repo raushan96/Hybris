@@ -1,40 +1,40 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"
-			 xmlns:beans="http://www.springframework.org/schema/beans"
-			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-			 xsi:schemaLocation="http://www.springframework.org/schema/beans
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd
            http://www.springframework.org/schema/security
            http://www.springframework.org/schema/security/spring-security.xsd">
-	<global-method-security pre-post-annotations="enabled"/>
+    <global-method-security pre-post-annotations="enabled"/>
 
-	<http security="none" pattern="/static/**"/>
-	<http use-expressions="true">
-		<intercept-url pattern="/login" access="permitAll"/>
-		<intercept-url pattern="/index" access="permitAll"/>
-		<intercept-url pattern="/register" access="permitAll"/>
-		<intercept-url pattern="/account/**" access="hasRole('USER')" method="GET"/>
-		<intercept-url pattern="/account/**" access="isFullyAuthenticated()" method="PUT"/>
-		<intercept-url pattern="/catalog/**" access="permitAll" method="GET"/>
-		<intercept-url pattern="/catalog/**" access="isFullyAuthenticated()" method="POST"/>
-		<intercept-url pattern="/checkout/**" access="isFullyAuthenticated()"/>
+    <http security="none" pattern="/static/**"/>
+    <http use-expressions="true">
+        <intercept-url pattern="/login" access="permitAll"/>
+        <intercept-url pattern="/index" access="permitAll"/>
+        <intercept-url pattern="/register" access="permitAll"/>
+        <intercept-url pattern="/account/**" access="hasRole('USER')" method="GET"/>
+        <intercept-url pattern="/account/**" access="isFullyAuthenticated()" method="PUT"/>
+        <intercept-url pattern="/catalog/**" access="permitAll" method="GET"/>
+        <intercept-url pattern="/catalog/**" access="isFullyAuthenticated()" method="POST"/>
+        <intercept-url pattern="/checkout/**" access="isFullyAuthenticated()"/>
 
-		<form-login login-page="/login" authentication-success-handler-ref="authSuccessHandler"
-					authentication-failure-url="/login-error"/>
-		<logout logout-success-url="/index" logout-url="/logout" delete-cookies="JSESSIONID" invalidate-session="true"/>
-		<session-management invalid-session-url="/index" session-fixation-protection="changeSessionId"/>
-		<remember-me key="hybris123" token-validity-seconds="86400" remember-me-parameter="remember-me"/>
-		<session-management invalid-session-url="/error">
-			<concurrency-control max-sessions="1"/>
-		</session-management>
-		<csrf disabled="true"/>
-	</http>
+        <form-login login-page="/login" authentication-success-handler-ref="authSuccessHandler"
+                    authentication-failure-url="/login-error"/>
+        <logout logout-success-url="/index" logout-url="/logout" delete-cookies="JSESSIONID" invalidate-session="true"/>
+        <session-management invalid-session-url="/index" session-fixation-protection="changeSessionId"/>
+        <remember-me key="hybris123" token-validity-seconds="86400" remember-me-parameter="remember-me"/>
+        <session-management invalid-session-url="/error">
+            <concurrency-control max-sessions="1"/>
+        </session-management>
+        <csrf disabled="true"/>
+    </http>
 
-	<authentication-manager alias="authenticationManager">
-		<authentication-provider user-service-ref="userDetailsServiceImpl">
-			<password-encoder ref="bcryptEncoder"/>
-		</authentication-provider>
-	</authentication-manager>
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref="userDetailsServiceImpl">
+            <password-encoder ref="bcryptEncoder"/>
+        </authentication-provider>
+    </authentication-manager>
 
-	<beans:bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-	<beans:bean name="authSuccessHandler" class="de.andre.service.security.AuthenticationSuccessHandlerImpl"/>
+    <beans:bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+    <beans:bean name="authSuccessHandler" class="de.andre.service.security.AuthenticationSuccessHandlerImpl"/>
 </beans:beans>

@@ -1,0 +1,22 @@
+grant all privileges on * . * to 'hybris'@'localhost' identified by 'hybris' with grant option;
+flush privileges;
+
+create database if not exists hybris
+character set utf8 collate utf8_unicode_ci;
+
+use hybris;
+CREATE TABLE IF NOT EXISTS version (
+    id BIGINT AUTO_INCREMENT NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT pk_version_id PRIMARY KEY (id)
+);
+
+delimiter $$
+drop function if exists fn_check_history$$
+create function fn_check_history(fn varchar(255))
+returns int
+begin
+    if (select count(*) from version where file_name = fn) = 0 then return 100; else return 0; end if;
+end$$
+delimiter ;

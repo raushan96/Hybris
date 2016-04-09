@@ -10,6 +10,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PriceRepository extends JpaRepository<DcsPrice, Integer> {
-	@Query("select new de.andre.entity.dto.PricedProductDTO(pr.dcsProduct.id, pr.listPrice, pr.priceList.id) from DcsPrice pr where pr.dcsProduct in :products")
-	List<PricedProductDTO> getProductsPrices(@Param("products") List<DcsProduct> products);
+    @Query("select new de.andre.entity.dto.PricedProductDTO(pr.dcsProduct.id, pr.listPrice, pr.priceList.id) from DcsPrice pr where pr.dcsProduct in :products")
+    List<PricedProductDTO> getProductsPrices(@Param("products") List<DcsProduct> products);
 }

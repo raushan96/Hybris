@@ -3,87 +3,87 @@
 <body>
 
 <div layout:fragment="content" th:remove="tag">
-	<div role="tabpanel">
-		<ul class="nav nav-tabs" role="tablist">
-			<li role="presentation" class="active"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal info</a></li>
-			<li role="presentation"><a href="#addresses" aria-controls="addresses" role="tab" data-toggle="tab">Adresses</a></li>
-			<li role="presentation"><a href="#orders" aria-controls="settings" role="tab" data-toggle="tab">Orders</a></li>
-			<!--<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Gift list</a></li>-->
-		</ul>
+    <div role="tabpanel">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal info</a></li>
+            <li role="presentation"><a href="#addresses" aria-controls="addresses" role="tab" data-toggle="tab">Adresses</a></li>
+            <li role="presentation"><a href="#orders" aria-controls="settings" role="tab" data-toggle="tab">Orders</a></li>
+            <!--<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Gift list</a></li>-->
+        </ul>
 
-		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane active" id="personal">
-				<h2>My profile</h2>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="personal">
+                <h2>My profile</h2>
 
-				<form class="form-horizontal" th:object="${dpsUser}">
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Name:</label>
-						<div class="col-sm-10">
-							<p class="form-control-static"><span th:text="*{firstName}">First Name</span>&nbsp;<span th:text="*{lastName}">Last Name</span></p>
-						</div>
-					</div>
+                <form class="form-horizontal" th:object="${dpsUser}">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Name:</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static"><span th:text="*{firstName}">First Name</span>&nbsp;<span th:text="*{lastName}">Last Name</span></p>
+                        </div>
+                    </div>
 
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Email:</label>
-						<div class="col-sm-10">
-							<p class="form-control-static"><span th:text="*{email}">Email</span></p>
-						</div>
-					</div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Email:</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static"><span th:text="*{email}">Email</span></p>
+                        </div>
+                    </div>
 
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Date of birth:</label>
-						<div class="col-sm-10">
-							<p class="form-control-static"><span th:text="${#calendars.format({dpsUser.dateOfBirth}, 'dd/MM/yyyy')}">Date of birth</span></p>
-						</div>
-					</div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Date of birth:</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static"><span th:text="${#calendars.format({dpsUser.dateOfBirth}, 'dd/MM/yyyy')}">Date of birth</span></p>
+                        </div>
+                    </div>
 
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Gender:</label>
-						<div class="col-sm-10">
-							<p class="form-control-static"><span th:text="*{gender.name() == 'MALE'} ? 'Male' : 'Female' ">Gender</span></p>
-						</div>
-					</div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Gender:</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static"><span th:text="*{gender.name() == 'MALE'} ? 'Male' : 'Female' ">Gender</span></p>
+                        </div>
+                    </div>
 
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Accept emails:</label>
-						<div class="col-sm-10">
-							<p class="form-control-static"><span th:text="*{acceptEmails} ? 'Yes' : 'No'">Gender</span></p>
-						</div>
-					</div>
-				</form>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Accept emails:</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static"><span th:text="*{acceptEmails} ? 'Yes' : 'No'">Gender</span></p>
+                        </div>
+                    </div>
+                </form>
 
-				<a th:href="@{/account/editProfile}" class="btn btn-primary">Edit profile</a>
-			</div>
+                <a th:href="@{/account/editProfile}" class="btn btn-primary">Edit profile</a>
+            </div>
 
-			<div role="tabpanel" class="tab-pane" id="addresses">
-				<h2>Addresses</h2>
-				<table class="table table-striped" id="account_addresses">
-					<tr>
-						<th>Company</th>
-						<th>State</th>
-						<th>City</th>
-						<th>Postal code</th>
-						<th>Actions</th>
-					</tr>
-					<tr th:each="address : ${addresses}">
-						<td data-name="companyName" th:text="${address.companyName ?: 'None.'}">Company</td>
-						<td data-name="state" th:text="${address.state?.getName()}">State</td>
-						<td data-name="city" th:text="${address.city}">City</td>
-						<td data-name="postalCode" th:text="${address.postalCode}">Postal code</td>
-						<td>
-							<button type="button" th:id="'editAddress_' + ${address.addressId}" name="edit_address" class="btn btn-primary" data-toggle="modal" data-target="#addressModal">Edit</button>
-							<button type="button" th:id="'deleteAddress_' + ${address.addressId}" name="delete_address" class="btn btn-danger">Delete</button>
-						</td>
-					</tr>
-				</table>
-				<button type="button" id="add_address" name="add_address" class="btn btn-default" data-toggle="modal" data-target="#addressModal">Add address</button>
+            <div role="tabpanel" class="tab-pane" id="addresses">
+                <h2>Addresses</h2>
+                <table class="table table-striped" id="account_addresses">
+                    <tr>
+                        <th>Company</th>
+                        <th>State</th>
+                        <th>City</th>
+                        <th>Postal code</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr th:each="address : ${addresses}">
+                        <td data-name="companyName" th:text="${address.companyName ?: 'None.'}">Company</td>
+                        <td data-name="state" th:text="${address.state?.getName()}">State</td>
+                        <td data-name="city" th:text="${address.city}">City</td>
+                        <td data-name="postalCode" th:text="${address.postalCode}">Postal code</td>
+                        <td>
+                            <button type="button" th:id="'editAddress_' + ${address.addressId}" name="edit_address" class="btn btn-primary" data-toggle="modal" data-target="#addressModal">Edit</button>
+                            <button type="button" th:id="'deleteAddress_' + ${address.addressId}" name="delete_address" class="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                </table>
+                <button type="button" id="add_address" name="add_address" class="btn btn-default" data-toggle="modal" data-target="#addressModal">Add address</button>
 
-				<div th:replace="fragments/modals :: addressModal"></div>
-			</div>
+                <div th:replace="fragments/modals :: addressModal"></div>
+            </div>
 
-			<div role="tabpanel" class="tab-pane" id="orders">3</div>
-		</div>
-	</div>
+            <div role="tabpanel" class="tab-pane" id="orders">3</div>
+        </div>
+    </div>
 </div>
 </body>
 

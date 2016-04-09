@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html layout:decorator="index" xmlns:th="http://www.thymeleaf.org">
-	<body>
-		<div th:remove="tag" layout:fragment="content">
-			<h2>Addresses</h2>
-			<table class="table table-striped" id="shipping_addresses">
-				<tr>
-					<th>Company</th>
-					<th>Country</th>
-					<th>City</th>
-					<th>Postal code</th>
-					<th>Actions</th>
-				</tr>
-				<tr th:each="address : ${addresses}">
-					<td th:text="${address.companyName}">Company</td>
-					<td th:text="${address.country}">Country</td>
-					<td th:text="${address.city}">City</td>
-					<td th:text="${address.postalCode}">Postal code</td>
-					<td>
-						<a type="button" th:href="@{'selectAddress_'} + ${address.addressId}" th:id="'selectAddress_' + ${address.addressId}" name="select_address" class="btn btn-primary">Select</a>
-					</td>
-				</tr>
-			</table>
-		</div>
-	</body>
+    <body>
+        <div th:remove="tag" layout:fragment="content">
+            <h2>Addresses</h2>
+            <table class="table table-striped" id="shipping_addresses">
+                <tr>
+                    <th>Company</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Postal code</th>
+                    <th>Actions</th>
+                </tr>
+                <tr th:each="address : ${addresses}">
+                    <td th:text="${address.companyName}">Company</td>
+                    <td th:text="${address.country}">Country</td>
+                    <td th:text="${address.city}">City</td>
+                    <td th:text="${address.postalCode}">Postal code</td>
+                    <td>
+                        <a type="button" th:href="@{'selectAddress_'} + ${address.addressId}" th:id="'selectAddress_' + ${address.addressId}" name="select_address" class="btn btn-primary">Select</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
 </html>
