@@ -6,12 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Created by andreika on 3/22/2015.
- */
-
 @Controller
-public class ErrorContoller {
+public class ErrorController {
     @RequestMapping("/error")
     public String error(final HttpServletRequest request, final Model model) {
         model.addAttribute("errorCode", request.getAttribute("javax.servlet.error.status_code"));

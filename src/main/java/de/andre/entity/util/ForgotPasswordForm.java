@@ -1,4 +1,4 @@
-package de.andre.entity.core.utils;
+package de.andre.entity.util;
 
 public class ForgotPasswordForm {
     private String enteredPassword;

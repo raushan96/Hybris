@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public class EmailService {
-    private static final Logger log = LoggerFactory.getLogger(EmailService.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
     private final JavaMailSender mailSender;
 
@@ -26,19 +26,24 @@ public class EmailService {
 
     @Async
     public void sendEmail(final EmailTemplateInfo pTemplateInfo) throws IOException, MessagingException {
-        log.debug("Sending {} email.", pTemplateInfo.getTemplateName());
+        logger.debug("Sending {} email.", pTemplateInfo.getTemplateName());
 
         mailSender.send(pTemplateInfo.createMessage());
     }
 
-    public void sendEmail(final String templateName, final Map<String, Object> pParams, final String pMessageTo) throws IOException, MessagingException {
-        sendEmail(templateName, pParams, pMessageTo, false);
+    @Async
+    public void sendEmail(final String templateName, final Map<String, Object> pParams, final String pMessageTo) {
+        try {
+            sendEmail(templateName, pParams, pMessageTo, false);
+        } catch (final IOException | MessagingException e) {
+            logger.error("Unexpected error sending email: ", e);
+        }
     }
 
     @Async
     public void sendEmail(final String templateName, final Map<String, Object> pParams, final String pMessageTo,
                           boolean persist, final MultipartFile... pAttachments) throws IOException, MessagingException {
-        log.debug("Creating new {} email.", templateName);
+        logger.debug("Creating new {} email.", templateName);
         EmailTemplateInfo emailTemplate = templatesFactory.lookupTemplate(templateName);
 
         if (emailTemplate != null) {
@@ -50,7 +55,7 @@ public class EmailService {
             }
 
             if (persist) {
-                log.debug("Persisting email {}", emailTemplate.getTemplateName());
+                logger.debug("Persisting email {}", emailTemplate.getTemplateName());
                 //persist logic
             }
 

@@ -10,24 +10,13 @@ import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class HybrisUser extends User {
-    public static final GrantedAuthority Profile_AUTHORITY = new SimpleGrantedAuthority("ROLE_Profile");
+    public static final GrantedAuthority USER_AUTHORITY = new SimpleGrantedAuthority("USER");
     private static final long serialVersionUID = 4728380174114325367L;
 
     private final AtomicReference<Profile> commerceProfile = new AtomicReference<>();
 
-    public HybrisUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
-    }
-
-    public HybrisUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-    }
-
-    /**
-     * Saves dps Profile in context with single Profile role, to retrieve it if needed in app code
-     */
-    public HybrisUser(String username, String password, Profile profile) {
-        super(username, password, Collections.singleton(Profile_AUTHORITY));
+    public HybrisUser(final String username, final String password, final Profile profile) {
+        super(username, password, Collections.singleton(USER_AUTHORITY));
         this.commerceProfile.set(profile);
     }
 
@@ -35,7 +24,7 @@ public class HybrisUser extends User {
         return commerceProfile.get();
     }
 
-    public boolean setCommerceProfile(Profile commerceProfile) {
+    public boolean setCommerceProfile(final Profile commerceProfile) {
         return this.commerceProfile.compareAndSet(getCommerceProfile(), commerceProfile);
     }
 }

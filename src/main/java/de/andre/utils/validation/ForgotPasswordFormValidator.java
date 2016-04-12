@@ -1,6 +1,6 @@
 package de.andre.utils.validation;
 
-import de.andre.entity.core.utils.ForgotPasswordForm;
+import de.andre.entity.util.ForgotPasswordForm;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -15,7 +15,7 @@ public class ForgotPasswordFormValidator implements Validator {
 
     @Override
     public void validate(final Object target, final Errors errors) {
-        ForgotPasswordForm passwordForm = (ForgotPasswordForm) target;
+        final ForgotPasswordForm passwordForm = (ForgotPasswordForm) target;
         final String enteredPassword = passwordForm.getEnteredPassword();
         final String confirmedPassword = passwordForm.getConfirmedPassword();
 
@@ -27,9 +27,11 @@ public class ForgotPasswordFormValidator implements Validator {
             errors.reject("enteredPassword", "passwords.notValid");
         }
 
-        if (errors.getFieldError("enteredPassword") == null &&
-                errors.getFieldError("confirmedPassword") == null &&
-                !confirmedPassword.equals(enteredPassword)) {
+        if (errors.hasErrors()) {
+            return;
+        }
+
+        if (!confirmedPassword.equals(enteredPassword)) {
             errors.reject("enteredPassword", "passwords.notEquals");
         }
     }

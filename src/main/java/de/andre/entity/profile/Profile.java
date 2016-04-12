@@ -2,16 +2,20 @@ package de.andre.entity.profile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.andre.entity.enums.Gender;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,6 +35,7 @@ public class Profile {
     private Address shippingAddress;
     private Map<String, Address> secondaryAddresses;
     private Set<Interest> interests;
+    private WishList wishList;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,14 +48,14 @@ public class Profile {
         this.id = id;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "shipping_addr_id")
     public Address getShippingAddress() {
         return shippingAddress;
     }
 
-    @OneToMany @JoinTable(name = "hp_profile_addresses")
-    @MapKeyColumn(name = "address_name")
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @MapKey(name = "addressName")
     public Map<String, Address> getSecondaryAddresses() {
         return secondaryAddresses;
     }
@@ -63,13 +68,28 @@ public class Profile {
         this.shippingAddress = shippingAddress;
     }
 
-    @OneToMany(mappedBy = "profile")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "hp_profile_interests",
+            joinColumns = @JoinColumn(name = "profile_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "interest_id", referencedColumnName = "id")
+    )
     public Set<Interest> getInterests() {
         return interests;
     }
 
     public void setInterests(Set<Interest> interests) {
         this.interests = interests;
+    }
+
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true,
+             fetch = FetchType.LAZY)
+    public WishList getWishList() {
+        return wishList;
+    }
+
+    public void setWishList(WishList wishList) {
+        this.wishList = wishList;
     }
 
     @JsonIgnore
@@ -167,7 +187,8 @@ public class Profile {
         if (email != null ? !email.equals(hpProfile.email) : hpProfile.email != null) return false;
         if (firstName != null ? !firstName.equals(hpProfile.firstName) : hpProfile.firstName != null) return false;
         if (lastName != null ? !lastName.equals(hpProfile.lastName) : hpProfile.lastName != null) return false;
-        if (dateOfBirth != null ? !dateOfBirth.equals(hpProfile.dateOfBirth) : hpProfile.dateOfBirth != null) return false;
+        if (dateOfBirth != null ? !dateOfBirth.equals(hpProfile.dateOfBirth) : hpProfile.dateOfBirth != null)
+            return false;
         if (created != null ? !created.equals(hpProfile.created) : hpProfile.created != null) return false;
 
         return true;

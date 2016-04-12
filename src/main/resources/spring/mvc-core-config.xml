@@ -14,6 +14,7 @@
     <import resource="classpath:spring/layout/thymeleaf.xml"/>
     <import resource="classpath:spring/utils/validation.xml"/>
     <import resource="classpath:spring/data/data-source-config.xml"/>
+    <import resource="classpath:spring/service/profile.xml"/>
 
     <context:component-scan
             base-package="de.andre.service"/>

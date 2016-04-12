@@ -1,12 +1,15 @@
 package de.andre.web.controller.account;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.andre.entity.dto.View;
 import de.andre.entity.profile.Address;
 import de.andre.service.account.AddressTools;
 import de.andre.utils.validation.AddressValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -21,7 +24,7 @@ public class AddressController {
 
     @Autowired
     public AddressController(final AddressTools addressCardsTools, final ObjectMapper objectMapper,
-                             final AddressValidator addressValidator) {
+            final AddressValidator addressValidator) {
         this.addressTools = addressCardsTools;
         this.objectMapper = objectMapper;
         this.addressValidator = addressValidator;
@@ -32,19 +35,19 @@ public class AddressController {
         dataBinder.setValidator(addressValidator);
     }
 
+    @JsonView(View.AddressView.class)
     @RequestMapping(value = "/getEditAddress", method = RequestMethod.GET)
-    public Address getEditAddress(@RequestParam("addressId") final String addressId) {
-        final Address Address = addressTools.getAddressById(addressId);
-        return Address;
+    public Address getEditAddress(@RequestParam("addressName") final String addressName) {
+        return addressTools.addressByName(addressName);
     }
 
     @RequestMapping(value = "/deleteAddress", method = RequestMethod.POST)
-    public ObjectNode deleteAddress(@RequestParam("addressId") final String addressId) {
+    public ObjectNode deleteAddress(@RequestParam("addressName") final String addressName) {
         try {
-            addressTools.deleteAdressById(addressId);
+            final boolean success = addressTools.deleteAddressByName(addressName) > 0;
             return objectMapper.createObjectNode()
-                    .put("success", true)
-                    .put("deletedId", addressId);
+                    .put("success", success)
+                    .put("deletedName", addressName);
         } catch (Exception e) {
             return objectMapper.createObjectNode()
                     .put("success", false)
@@ -59,14 +62,14 @@ public class AddressController {
             addressValidator.validate(address, errors);
 
             if (!errors.hasErrors()) {
-                boolean isNew = address.getId() == null;
+                boolean update = StringUtils.hasLength(address.getOldAddressName());
 
-                final Long newAddressId = addressTools.createAddress(address);
+                final String newAddressNickname = addressTools.addOrUpdateAddress(address, update);
                 return objectMapper.createObjectNode()
                         .put("success", true)
-                        .put("newAddressId", newAddressId)
-                        .put("isNew", isNew);
-//                  todo      .put("state", address.getState().getName());
+                        .put("nickname", newAddressNickname)
+                        .put("isNew", !update)
+                        .put("state", address.getState().getName());
             } else {
                 return objectMapper.createObjectNode()
                         .put("success", false)

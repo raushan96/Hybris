@@ -1,63 +1,74 @@
-create table dcs_catalog (
-    catalog_id    varchar(20),
-    display_name    varchar(40)    null,
-    creation_date    timestamp    null,
-constraint dcs_catalog_p primary key (catalog_id));
+USE hybris;
 
-create table dcs_category (
-    category_id    varchar(20),
-    catalog_id    constraint dcs_cata_fk references dcs_catalog(catalog_id) not null,
-    display_name    varchar(40)    null,
-    long_description    clob    null,
-    parent_cat_id    constraint dcs_par_cata_fk references dcs_category(category_id),
-    root_category    number(1,0)    default 0,
-constraint dcs_category_pk primary key (category_id),
-constraint dcs_category_root_ch check (root_category in (0,1)));
+CREATE TABLE IF NOT EXISTS hc_catalog (
+  id            VARCHAR(20),
+  display_name  VARCHAR(50)                        NULL,
+  creation_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  CONSTRAINT hc_catalog_pk PRIMARY KEY (id)
+);
 
-create index dcs_cat_parent_idx on dcs_category (parent_cat_id);
+CREATE TABLE IF NOT EXISTS hc_category (
+  id               VARCHAR(20),
+  catalog_id       VARCHAR(20) NOT NULL,
+  display_name     VARCHAR(50) NULL,
+  long_description TEXT        NULL,
+  parent_cat_id    VARCHAR(20) NULL,
+  root_category    BOOLEAN DEFAULT 0,
+  CONSTRAINT hc_category_pk PRIMARY KEY (id),
+  CONSTRAINT hc_category_catalog_fk FOREIGN KEY (catalog_id) REFERENCES hc_catalog (id),
+  CONSTRAINT hc_category_pcat_fk FOREIGN KEY (parent_cat_id) REFERENCES hc_category (id)
+);
 
-create table dcs_product (
-    product_id    number(8,0),
-    display_name    varchar(40)    null,
-    description    varchar(254)    null,
-    image    varchar(120) null,
-  product_type    integer null,
-    discountable    number(1)    default 1,
-  start_date    timestamp    null,
-  expiration_date    timestamp    null,
-    brand    varchar(80)    null,
-constraint dcs_product_pk primary key (product_id),
-constraint dcs_product_disc_ch check (discountable in (0,1)));
+# height, weight, gender, producer, code, catalogs, enabled, catalogs
+CREATE TABLE IF NOT EXISTS hc_product (
+  id              VARCHAR(20),
+  display_name    VARCHAR(50)  NULL,
+  description     VARCHAR(254) NULL,
+  image           VARCHAR(120) NULL,
+  product_type    INTEGER      NULL,
+  discountable    BOOLEAN DEFAULT 1,
+  start_date      DATETIME     NULL,
+  expiration_date DATETIME     NULL,
+  brand           VARCHAR(80)  NULL,
+  CONSTRAINT hc_product_pk PRIMARY KEY (id)
+);
 
-create index dcs_prd_type_idx on dcs_product (product_type);
+CREATE INDEX hc_prd_type_idx ON hc_product (product_type);
 
-create table dcs_category_products (
-  category_id constraint dcs_cat_prod_fk references dcs_category(category_id),
-  product_id constraint dcs_prod_cat_fk references dcs_product(product_id),
-constraint dcs_cat_prod_pk primary key(category_id, product_id));
+CREATE TABLE IF NOT EXISTS hc_category_products (
+  category_id VARCHAR(20),
+  product_id  VARCHAR(20),
+  CONSTRAINT hc_cat_prod_pk PRIMARY KEY (category_id, product_id),
+  CONSTRAINT hc_cat_prod_fk FOREIGN KEY (category_id) REFERENCES hc_category (id),
+  CONSTRAINT hc_prod_cat_fk FOREIGN KEY (product_id) REFERENCES hc_product (id)
+);
 
-create table dcs_claimable (
-  claimable_id    number(8,0),
-  type    integer    not null,
-  status    integer    null,
-  start_date    timestamp    null,
-  expiration_date    timestamp    null,
-constraint dcs_claimable_pk primary key (claimable_id));
+CREATE TABLE IF NOT EXISTS hc_price_list (
+  id              VARCHAR(20),
+  base_price_list VARCHAR(20),
+  description     VARCHAR(80)                        NULL,
+  creation_date   DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  locale          VARCHAR(5)                         NOT NULL,
+  currency        VARCHAR(3)                         NOT NULL,
+  CONSTRAINT hc_price_list_pk PRIMARY KEY (id),
+  CONSTRAINT hc_price_list_base_fk FOREIGN KEY (base_price_list) REFERENCES hc_price_list (id)
+);
 
-create table dcs_price_list (
-  price_list_id    varchar(20),
-  base_price_list constraint dcs_price_list_fk references dcs_price_list(price_list_id),
-  description    varchar(80) null,
-  creation_date    timestamp    null,
-  locale    varchar(5)  not null,
-  currency    varchar(3)  not null,
-constraint dcs_price_list_pk primary key (price_list_id));
+CREATE TABLE IF NOT EXISTS hc_price (
+  id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+  price_list_id VARCHAR(20) NOT NULL,
+  list_price DECIMAL(15 , 3 ) UNSIGNED NOT NULL,
+  product_id VARCHAR(20),
+  CONSTRAINT hc_price_pk PRIMARY KEY (id),
+  CONSTRAINT hc_price_list_fk FOREIGN KEY (price_list_id) REFERENCES hc_price_list (id),
+  CONSTRAINT hc_price_prod_fk FOREIGN KEY (product_id) REFERENCES hc_product (id)
+);
 
-create table dcs_price (
-  price_id    number(8,0),
-  price_list_id constraint dcs_price_fk references dcs_price_list(price_list_id) not null,
-  list_price    number(8, 4) not null,
-  product_id    constraint dcs_price_prod_fk references dcs_product(product_id) on delete cascade not null,
-constraint dcs_price_pk primary key (price_id));
-
-create index dcs_price_prd_idx on dcs_price(product_id);
+# CREATE TABLE IF NOT EXISTS dcs_claimable (
+#   claimable_id    BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+#   type            INTEGER                        NOT NULL,
+#   status          INTEGER                        NULL,
+#   start_date      TIMESTAMP                      NULL,
+#   expiration_date TIMESTAMP                      NULL,
+#   CONSTRAINT dcs_claimable_pk PRIMARY KEY (claimable_id)
+# );

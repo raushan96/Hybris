@@ -1,7 +1,11 @@
 package de.andre.entity.profile;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import de.andre.entity.dto.View;
+import de.andre.entity.enums.State;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 
@@ -9,13 +13,14 @@ import javax.persistence.*;
 @Table(name = "hp_address", schema = "hybris")
 public class Address {
     private Long id;
-    private String companyName;
+    private String addressName;
     private String city;
     private String postalCode;
     private String countryCode;
     private String address;
-    private Integer state;
+    private State state;
 
+    private String oldAddressName;
     private Profile profile;
 
     @Id
@@ -29,7 +34,7 @@ public class Address {
         this.id = id;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public Profile getProfile() {
         return profile;
     }
@@ -38,16 +43,17 @@ public class Address {
         this.profile = profile;
     }
 
-    @Length(min = 3, max = 50)
-    @Column(name = "company_name")
-    public String getCompanyName() {
-        return companyName;
+    @JsonView(View.AddressView.class)
+    @Column(name = "address_name")
+    public String getAddressName() {
+        return addressName;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setAddressName(String addressName) {
+        this.addressName = addressName;
     }
 
+    @JsonView(View.AddressView.class)
     @NotBlank
     @Length(min = 3, max = 50)
     @Column(name = "city")
@@ -59,6 +65,7 @@ public class Address {
         this.city = city;
     }
 
+    @JsonView(View.AddressView.class)
     @NotBlank
     @Length(min = 3, max = 15)
     @Column(name = "postal_code")
@@ -70,6 +77,7 @@ public class Address {
         this.postalCode = postalCode;
     }
 
+    @JsonView(View.AddressView.class)
     @NotBlank
     @Length(min = 2, max = 2)
     @Column(name = "country_code")
@@ -81,6 +89,7 @@ public class Address {
         this.countryCode = countryCode;
     }
 
+    @JsonView(View.AddressView.class)
     @NotBlank
     @Length(min = 5, max = 80)
     @Column(name = "address")
@@ -92,14 +101,24 @@ public class Address {
         this.address = address;
     }
 
-    @Basic
+    @JsonView(View.AddressView.class)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "state")
-    public Integer getState() {
+    public State getState() {
         return state;
     }
 
-    public void setState(Integer state) {
+    public void setState(State state) {
         this.state = state;
+    }
+
+    @Transient
+    public String getOldAddressName() {
+        return oldAddressName;
+    }
+
+    public void setOldAddressName(String oldAddressName) {
+        this.oldAddressName = oldAddressName;
     }
 
     @Override
@@ -107,28 +126,25 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Address hpAddress = (Address) o;
+        Address address1 = (Address) o;
 
-        if (companyName != null ? !companyName.equals(hpAddress.companyName) : hpAddress.companyName != null)
-            return false;
-        if (city != null ? !city.equals(hpAddress.city) : hpAddress.city != null) return false;
-        if (postalCode != null ? !postalCode.equals(hpAddress.postalCode) : hpAddress.postalCode != null) return false;
-        if (countryCode != null ? !countryCode.equals(hpAddress.countryCode) : hpAddress.countryCode != null)
-            return false;
-        if (address != null ? !address.equals(hpAddress.address) : hpAddress.address != null) return false;
-        if (state != null ? !state.equals(hpAddress.state) : hpAddress.state != null) return false;
+        if (!addressName.equals(address1.addressName)) return false;
+        if (!city.equals(address1.city)) return false;
+        if (!postalCode.equals(address1.postalCode)) return false;
+        if (!countryCode.equals(address1.countryCode)) return false;
+        if (!address.equals(address1.address)) return false;
+        return state == address1.state;
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = companyName != null ? companyName.hashCode() : 0;
-        result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
-        result = 31 * result + (countryCode != null ? countryCode.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
+        int result = addressName.hashCode();
+        result = 31 * result + city.hashCode();
+        result = 31 * result + postalCode.hashCode();
+        result = 31 * result + countryCode.hashCode();
+        result = 31 * result + address.hashCode();
+        result = 31 * result + state.hashCode();
         return result;
     }
 }

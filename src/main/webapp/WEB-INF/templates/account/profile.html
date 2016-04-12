@@ -15,7 +15,7 @@
             <div role="tabpanel" class="tab-pane active" id="personal">
                 <h2>My profile</h2>
 
-                <form class="form-horizontal" th:object="${dpsUser}">
+                <form class="form-horizontal" th:object="${profile}">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Name:</label>
                         <div class="col-sm-10">
@@ -33,7 +33,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Date of birth:</label>
                         <div class="col-sm-10">
-                            <p class="form-control-static"><span th:text="${#calendars.format({dpsUser.dateOfBirth}, 'dd/MM/yyyy')}">Date of birth</span></p>
+                            <p class="form-control-static"><span th:text="${#temporals.format({profile.dateOfBirth}, 'dd/MM/yyyy')}">Date of birth</span></p>
                         </div>
                     </div>
 
@@ -59,20 +59,20 @@
                 <h2>Addresses</h2>
                 <table class="table table-striped" id="account_addresses">
                     <tr>
-                        <th>Company</th>
-                        <th>State</th>
                         <th>City</th>
+                        <th>State</th>
+                        <th>Address</th>
                         <th>Postal code</th>
                         <th>Actions</th>
                     </tr>
                     <tr th:each="address : ${addresses}">
-                        <td data-name="companyName" th:text="${address.companyName ?: 'None.'}">Company</td>
-                        <td data-name="state" th:text="${address.state?.getName()}">State</td>
                         <td data-name="city" th:text="${address.city}">City</td>
+                        <td data-name="state" th:text="${address.state?.getName()}">State</td>
+                        <td data-name="address" th:text="${address.address}">Address</td>
                         <td data-name="postalCode" th:text="${address.postalCode}">Postal code</td>
                         <td>
-                            <button type="button" th:id="'editAddress_' + ${address.addressId}" name="edit_address" class="btn btn-primary" data-toggle="modal" data-target="#addressModal">Edit</button>
-                            <button type="button" th:id="'deleteAddress_' + ${address.addressId}" name="delete_address" class="btn btn-danger">Delete</button>
+                            <button type="button" th:id="'editAddress_' + ${address.addressName}" name="edit_address" class="btn btn-primary" data-toggle="modal" data-target="#addressModal">Edit</button>
+                            <button type="button" th:id="'deleteAddress_' + ${address.addressName}" name="delete_address" class="btn btn-danger">Delete</button>
                         </td>
                     </tr>
                 </table>

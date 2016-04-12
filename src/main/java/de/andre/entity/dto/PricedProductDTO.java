@@ -2,9 +2,6 @@ package de.andre.entity.dto;
 
 import java.io.Serializable;
 
-/**
- * Created by andreika on 4/25/2015.
- */
 public class PricedProductDTO implements Serializable {
     private static final long serialVersionUID = 2589974500915152258L;
 

@@ -7,10 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface ProfileRepository extends JpaRepository<Profile, Integer> {
+import java.util.Optional;
 
-    @Query("select u from Profile u where u.email = :email")
-    Profile findByLogin(@Param("email") String email);
+public interface ProfileRepository extends JpaRepository<Profile, Long> {
+
+    @Query("select pr from Profile pr where pr.email = :email")
+    Optional<Profile> findByLogin(@Param("email") String email);
+
+    @Query("select pr from Profile pr join fetch pr.secondaryAddresses where pr.id = :profileId")
+    Optional<Profile> profileWithAddresses(@Param("profileId") Long profileId);
 
     @Modifying
     @Transactional
@@ -19,4 +24,8 @@ public interface ProfileRepository extends JpaRepository<Profile, Integer> {
 
     @Query("select count(*) from Profile u where u.email = :email")
     int countByEmail(@Param("email") String pEmail);
+
+    @Query("select case when count(pr) > 0 then true else false end from Profile pr " +
+            "where pr.email = :email")
+    boolean emailExists(@Param("email") String email);
 }

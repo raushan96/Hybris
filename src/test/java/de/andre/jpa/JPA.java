@@ -48,7 +48,7 @@ public class JPA {
 //		address.setCity("city");
 //		address.setPostalCode("12313");
 //		address.setCountryCode("US");
-//		address.setState(UState.AK);
+//		address.setState(State.AK);
 //		address.setAddress("nda");
 //		address.setProfile(Profile);
 //

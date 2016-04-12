@@ -8,12 +8,12 @@
             <div class="modal-body">
 
                 <form id="modal_addrForm">
-                    <input type="hidden" id="modal_addressId" name="addressId"/>
-                    <input type="hidden" id="modal_addrCountryCode" name="countryCode" th:value="${T(de.andre.utils.HybrisConstants).ISO_COUNTRY}"/>
+                    <input type="hidden" id="modal_oldAddressName" name="modal_oldAddressName"/>
+                    <input type="hidden" id="modal_addrCountryCode" name="countryCode" th:value="${T(de.andre.utils.HybrisConstants).ISO_COUNTRY_BY}"/>
 
                     <div class="form-group">
-                        <label for="modal_addrCompany">Company</label>
-                        <input type="text" class="form-control" id="modal_addrCompany" placeholder="Company"/>
+                        <label for="modal_addrName">Address Name</label>
+                        <input type="text" class="form-control" id="modal_addrName" placeholder="Name"/>
                     </div>
 
                     <div class="form-group">

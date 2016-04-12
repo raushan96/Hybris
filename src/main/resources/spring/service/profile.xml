@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="profileAdapterRepository" class="de.andre.repository.profile.ProfileAdapterRepository">
+        <constructor-arg name="profileRepository" ref="profileRepository"/>
+        <constructor-arg name="addressRepository" ref="addressRepository"/>
+        <constructor-arg name="interestRepository" ref="interestRepository"/>
+    </bean>
+
+    <bean id="profileTools" class="de.andre.service.account.ProfileTools">
+        <constructor-arg name="profileAdapterRepository" ref="profileAdapterRepository"/>
+        <constructor-arg name="passwordEncoder" ref="bcryptEncoder"/>
+
+        <property name="profileEditableProps">
+            <set>
+                <value>firstName</value>
+                <value>lastName</value>
+                <value>gender</value>
+                <value>dateOfBirth</value>
+                <value>acceptEmails</value>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="addressTools" class="de.andre.service.account.AddressTools">
+        <constructor-arg name="profileAdapterRepository" ref="profileAdapterRepository"/>
+        <constructor-arg name="profileTools" ref="profileTools"/>
+    </bean>
+</beans>

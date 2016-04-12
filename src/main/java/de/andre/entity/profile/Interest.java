@@ -1,18 +1,18 @@
 package de.andre.entity.profile;
 
+import org.hibernate.annotations.Immutable;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Immutable
 @Entity
 @Table(name = "hp_interest", schema = "hybris")
 public class Interest {
     private Long id;
     private String displayName;
     private Integer code;
-
-    private Profile profile;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,16 +23,6 @@ public class Interest {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "profile_id")
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
     }
 
     @NotBlank

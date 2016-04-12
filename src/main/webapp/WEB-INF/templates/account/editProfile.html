@@ -3,32 +3,34 @@
 <body>
 
 <div layout:fragment="content" th:remove="tag">
-
-    <!--<span th:text="${session}"/>-->
     <div class="row">
         <div class="col-md-5">
             <h2>Edit profile</h2>
-            <form th:object="${dpsUser}" th:method="post" th:action="@{${#httpServletRequest.servletPath}}">
-        <!--        <input type="hidden" th:field="*{userId}"/>-->
+
+            <form th:object="${profile}" th:method="post" th:action="@{${#httpServletRequest.servletPath}}">
                 <div class="form-group">
                     <label for="edit_email">Email</label>
-                    <input type="email" class="form-control" id="edit_email" placeholder="Email" th:field="*{email}" th:readonly="true"/>
+                    <input type="email" class="form-control" id="edit_email" placeholder="Email" th:field="*{email}"
+                           th:readonly="true"/>
                 </div>
 
                 <div class="form-group" th:classappend="${#fields.hasErrors('firstName')} ? error">
                     <label for="edit_firstName">First name</label>
-                    <input type="text" class="form-control" id="edit_firstName" placeholder="First name" th:field="*{firstName}"/>
+                    <input type="text" class="form-control" id="edit_firstName" placeholder="First name"
+                           th:field="*{firstName}"/>
                     <span class="help-inline" th:errors="*{firstName}">[error]</span>
                 </div>
 
                 <div class="form-group">
                     <label for="edit_lastName">Last name</label>
-                    <input type="text" class="form-control" id="edit_lastName" placeholder="Last name" th:field="*{lastName}"/>
+                    <input type="text" class="form-control" id="edit_lastName" placeholder="Last name"
+                           th:field="*{lastName}"/>
                 </div>
 
                 <div class="form-group" th:classappend="${#fields.hasErrors('dateOfBirth')} ? error">
                     <label for="edit_dob">Birthday</label>
-                    <input type="text" class="form-control" id="edit_dob" placeholder="Date of birth" th:field="*{dateOfBirth}"/>
+                    <input type="datetime" class="form-control" id="edit_dob" placeholder="Date of birth"
+                           th:field="*{dateOfBirth}"/>
                     <span class="help-inline" th:errors="*{dateOfBirth}">[error]</span>
                 </div>
 
@@ -37,7 +39,8 @@
                         <input type="radio" name="sexRadio" id="edit_male" value="MALE" th:field="*{gender}"/> Male
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" name="sexRadio" id="edit_female" value="FEMALE" th:field="*{gender}"/> Female
+                        <input type="radio" name="sexRadio" id="edit_female" value="FEMALE" th:field="*{gender}"/>
+                        Female
                     </label>
                 </div>
 
@@ -58,16 +61,19 @@
 
         <div class="col-md-3">
             <h2>Change password</h2>
+
             <form th:action="@{/account/resetPassword}" th:method="post" th:object="${forgotPasswordForm}">
                 <div class="form-group">
                     <label for="edit_password">Enter password</label>
-                    <input type="password" id="edit_password" class="form-control" placeholder="Enter password" th:field="*{enteredPassword}"/>
+                    <input type="password" id="edit_password" class="form-control" placeholder="Enter password"
+                           th:field="*{enteredPassword}"/>
                     <span class="help-inline" th:errors="*{enteredPassword}">[error]</span>
                 </div>
 
                 <div class="form-group">
                     <label for="confirm-password">Re-enter password</label>
-                    <input type="password" id="confirm-password" class="form-control" placeholder="Confirm password" th:field="*{confirmedPassword}"/>
+                    <input type="password" id="confirm-password" class="form-control" placeholder="Confirm password"
+                           th:field="*{confirmedPassword}"/>
                     <span class="help-inline" th:errors="*{confirmedPassword}">[error]</span>
                 </div>
 
