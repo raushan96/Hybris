@@ -22,19 +22,18 @@ $(document).ready(function () {
         form.find('#modal_addrPostalCode').val(addrObj.postalCode);
         form.find('#modal_addrAddress').val(addrObj.address);
         form.find('#modal_addrState').val(addrObj.state);
-        form.find('#modal_addrName').val(addrObj.addressName);
-        form.find('#modal_oldAddressName').val(addrObj.addressName);
+        form.find('#modal_addrDisplayName').val(addrObj.displayName);
+        form.find('#modal_addressName').val(addrObj.addressName);
     }
 
     function collectAddrForm(form, ajaxData) {
-        ajaxData['addressName'] = form.find('#modal_addrName').val();
+        ajaxData['addressName'] = form.find('#modal_addressName').val();
+        ajaxData['displayName'] = form.find('#modal_addrDisplayName').val();
         ajaxData['state'] = form.find('#modal_addrState').val();
         ajaxData['city'] = form.find('#modal_addrCity').val();
         ajaxData['postalCode'] = form.find('#modal_addrPostalCode').val();
         ajaxData['address'] = form.find('#modal_addrAddress').val();
         ajaxData['countryCode'] = form.find('#modal_addrCountryCode').val();
-        //old address nickname
-        ajaxData['oldAddressName'] = form.find('#modal_oldAddressName').val();
     }
 
     $('#account_addresses').on('click', 'button[name=delete_address]', function () {
@@ -128,7 +127,6 @@ $(document).ready(function () {
                         );
                 } else if (res.success) {
                     var addressRow = $('#account_addresses').find('button[id=editAddress_' + res.nickname + ']').parent().parent();
-                    addressRow.find('[data-name="companyName"]').text(ajaxData['companyName']);
                     addressRow.find('[data-name="state"]').text(res.state);
                     addressRow.find('[data-name="city"]').text(ajaxData['city']);
                     addressRow.find('[data-name="postalCode"]').text(ajaxData['postalCode']);

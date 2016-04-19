@@ -16,7 +16,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static de.andre.utils.HybrisConstants.ADDRESS_NAME_PREFIX;
-import static de.andre.utils.HybrisConstants.DEFAULT_SHIPPING_NAME;
 
 public class AddressTools {
     private final AddressRepository addressRepository;
@@ -34,9 +33,7 @@ public class AddressTools {
     public Address addressByName(final String addressName) {
         final Profile profile = profileRepository.profileWithAddresses(ProfileHelper.authenticatedProfile().getId())
                 .orElseThrow(() -> new IllegalStateException("Profile was removed"));
-        return DEFAULT_SHIPPING_NAME.equalsIgnoreCase(addressName) ?
-                profile.getShippingAddress() :
-                profile.getSecondaryAddresses().get(addressName);
+        return profile.getAddresses().get(addressName);
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -47,39 +44,39 @@ public class AddressTools {
 
     @PreAuthorize("hasAuthority('USER')")
     @Transactional
-    public String addOrUpdateAddress(final Address address, final boolean update) {
+    public String addSecondaryAddress(final Address address) {
         final Profile profile = profileTools.profileById(ProfileHelper.authenticatedProfile().getId());
-
-        if (DEFAULT_SHIPPING_NAME.equalsIgnoreCase(address.getAddressName())) {
-            BeanUtils.copyProperties(address, profile.getShippingAddress(), "id", "addressName");
-            return DEFAULT_SHIPPING_NAME;
-        }
 
         final Set<String> existingNicknames = profileTools.addressesByProfile(profile)
                 .stream()
                 .filter(addr -> !addr.getAddressName().equals(address.getAddressName()))
                 .map(Address::getAddressName)
                 .collect(Collectors.toSet());
-        final String providedNickname = StringUtils.hasLength(address.getAddressName()) ?
-                address.getAddressName() :
-                Long.toString(System.currentTimeMillis());
         final String nickname = ProfileHelper.generateUniqueNickname(
-                providedNickname,
+                null,
                 ADDRESS_NAME_PREFIX,
                 existingNicknames
         );
 
-        if (update) {
-            final Address currentAddress = profile.getSecondaryAddresses().remove(address.getOldAddressName());
-            Assert.notNull(currentAddress, "Updating address must exist");
-            address.setId(currentAddress.getId());
-        }
-
         address.setAddressName(nickname);
-        profile.getSecondaryAddresses().put(nickname, address);
+        profile.getAddresses().put(nickname, address);
         address.setProfile(profile);
         profileRepository.save(profile);
 
         return nickname;
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @Transactional
+    public String updateSecondaryAddress(final Address address) {
+        final Profile profile = profileTools.profileById(ProfileHelper.authenticatedProfile().getId());
+
+        final Address currentAddress = profile.getAddresses().get(address.getAddressName());
+        Assert.notNull(currentAddress, "Updating address must exist");
+        BeanUtils.copyProperties(address, currentAddress, "id", "addressName", "profile");
+
+        profileRepository.save(profile);
+
+        return address.getAddressName();
     }
 }

@@ -4,59 +4,59 @@
 
 <div layout:fragment="content" th:remove="tag">
     <h2>Register profile</h2>
-    <form th:object="${profile}" th:method="post" th:action="@{/register}">
+    <form th:object="${registrationForm}" th:method="post" th:action="@{/register}">
         <div class="row">
             <div class="col-md-5">
-                <div class="form-group" th:classappend="${#fields.hasErrors('email')} ? error">
+                <div class="form-group" th:classappend="${#fields.hasErrors('profile.email')} ? error">
                     <label for="register_email">Email</label>
                     <input type="email" class="form-control" id="register_email" placeholder="Email"
-                           th:field="*{email}"/>
-                    <span class="help-inline" th:errors="*{email}">[error]</span>
+                           th:field="*{profile.email}"/>
+                    <span class="help-inline" th:errors="*{profile.email}">[error]</span>
                 </div>
 
-                <div class="form-group" th:classappend="${#fields.hasErrors('password')} ? error">
+                <div class="form-group" th:classappend="${#fields.hasErrors('profile.password')} ? error">
                     <label for="register_password">Password</label>
                     <input type="password" class="form-control" id="register_password" placeholder="******"
-                           th:field="*{password}"/>
-                    <span class="help-inline" th:errors="*{password}">[error]</span>
+                           th:field="*{profile.password}"/>
+                    <span class="help-inline" th:errors="*{profile.password}">[error]</span>
                 </div>
 
-                <div class="form-group" th:classappend="${#fields.hasErrors('firstName')} ? error">
+                <div class="form-group" th:classappend="${#fields.hasErrors('profile.firstName')} ? error">
                     <label for="register_firstName">First name</label>
                     <input type="text" class="form-control" id="register_firstName" placeholder="First name"
-                           th:field="*{firstName}"/>
-                    <span class="help-inline" th:errors="*{firstName}">[error]</span>
+                           th:field="*{profile.firstName}"/>
+                    <span class="help-inline" th:errors="*{profile.firstName}">[error]</span>
                 </div>
 
-                <div class="form-group" th:classappend="${#fields.hasErrors('lastName')} ? error">
+                <div class="form-group" th:classappend="${#fields.hasErrors('profile.lastName')} ? error">
                     <label for="register_lastName">Last name</label>
                     <input type="text" class="form-control" id="register_lastName" placeholder="Last name"
-                           th:field="*{lastName}"/>
-                    <span class="help-inline" th:errors="*{lastName}">[error]</span>
+                           th:field="*{profile.lastName}"/>
+                    <span class="help-inline" th:errors="*{profile.lastName}">[error]</span>
                 </div>
 
-                <div class="form-group" th:classappend="${#fields.hasErrors('dateOfBirth')} ? error">
+                <div class="form-group" th:classappend="${#fields.hasErrors('profile.dateOfBirth')} ? error">
                     <label for="register_dob">Birthday</label>
                     <input type="text" class="form-control" id="register_dob" placeholder="Date of birth"
-                           th:field="*{dateOfBirth}"/>
-                    <span class="help-inline" th:errors="*{dateOfBirth}">[error]</span>
+                           th:field="*{profile.dateOfBirth}"/>
+                    <span class="help-inline" th:errors="*{profile.dateOfBirth}">[error]</span>
                 </div>
 
-                <div class="form-group" th:classappend="${#fields.hasErrors('gender')} ? error">
+                <div class="form-group" th:classappend="${#fields.hasErrors('profile.gender')} ? error">
                     <label class="radio-inline">
-                        <input type="radio" name="sexRadio" id="register_male" value="MALE" th:field="*{gender}"/> Male
+                        <input type="radio" name="sexRadio" id="register_male" value="MALE" th:field="*{profile.gender}"/> Male
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" name="sexRadio" id="register_female" value="FEMALE" th:field="*{gender}"/>
+                        <input type="radio" name="sexRadio" id="register_female" value="FEMALE" th:field="*{profile.gender}"/>
                         Female
                     </label>
-                    <span class="help-inline" th:errors="*{gender}">[error]</span>
+                    <span class="help-inline" th:errors="*{profile.gender}">[error]</span>
                 </div>
 
                 <div class="form-group">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" id="register_accEmails" th:field="*{acceptEmails}"/> Accept emails
+                            <input type="checkbox" id="register_accEmails" th:field="*{profile.acceptEmails}"/> Accept emails
                         </label>
                     </div>
                 </div>
@@ -75,6 +75,13 @@
 
             <div class="col-md-5">
                 <input type="hidden" id="register_countryCode" name="shippingAddress.countryCode" th:value="${T(de.andre.utils.HybrisConstants).ISO_COUNTRY_BY}"/>
+
+                <div class="form-group" th:classappend="${#fields.hasErrors('shippingAddress.displayName')} ? error">
+                    <label for="register_displayName">Address Name</label>
+                    <input type="text" class="form-control" id="register_displayName" placeholder="Address Name"
+                           th:field="*{shippingAddress.displayName}"/>
+                    <span class="help-inline" th:errors="*{shippingAddress.displayName}">[error]</span>
+                </div>
 
                 <div class="form-group" th:classappend="${#fields.hasErrors('shippingAddress.city')} ? error">
                     <label for="register_city">City</label>

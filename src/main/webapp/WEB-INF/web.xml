@@ -35,14 +35,6 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <!--
-      - Loads the root application context of this web app at startup.
-      - The application context is then available via
-      - WebApplicationContextUtils.getWebApplicationContext(servletContext).
-
-      ServletRequestAttributes attr = (ServletRequestAttributes)     RequestContextHolder.currentRequestAttributes();
-        HttpSession session= attr.getRequest().getSession(true);
-    -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -51,9 +43,17 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
-
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>siteContextFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>siteContextFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 

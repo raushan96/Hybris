@@ -62,12 +62,14 @@ public class AddressController {
             addressValidator.validate(address, errors);
 
             if (!errors.hasErrors()) {
-                boolean update = StringUtils.hasLength(address.getOldAddressName());
+                boolean update = StringUtils.hasLength(address.getAddressName());
 
-                final String newAddressNickname = addressTools.addOrUpdateAddress(address, update);
+                final String addressNickname = StringUtils.hasLength(address.getAddressName()) ?
+                        addressTools.updateSecondaryAddress(address) :
+                        addressTools.addSecondaryAddress(address);
                 return objectMapper.createObjectNode()
                         .put("success", true)
-                        .put("nickname", newAddressNickname)
+                        .put("nickname", addressNickname)
                         .put("isNew", !update)
                         .put("state", address.getState().getName());
             } else {

@@ -1,9 +1,11 @@
 package de.andre.web.controller.account;
 
+import de.andre.entity.dto.RegistrationForm;
 import de.andre.entity.enums.State;
 import de.andre.entity.profile.Profile;
 import de.andre.service.account.ProfileTools;
 import de.andre.utils.validation.ProfileValidator;
+import de.andre.utils.validation.RegistrationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +21,12 @@ import java.util.Set;
 @Controller
 public class LoginController {
     private final ProfileTools profileTools;
-    private final ProfileValidator profileValidator;
+    private final RegistrationValidator registrationValidator;
 
     @Autowired
-    public LoginController(final ProfileTools accountTools, final ProfileValidator profileValidator) {
+    public LoginController(final ProfileTools accountTools, final RegistrationValidator registrationValidator) {
         this.profileTools = accountTools;
-        this.profileValidator = profileValidator;
+        this.registrationValidator = registrationValidator;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -45,7 +47,7 @@ public class LoginController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerPage(final Model model) {
-        model.addAttribute("profile", new Profile());
+        model.addAttribute("registrationForm", new RegistrationForm());
         model.addAttribute("states", State.STATES);
         model.addAttribute("interests", profileTools.availableInterests());
         return "account/register";
@@ -53,18 +55,21 @@ public class LoginController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String processRegister(
-            @Valid final Profile profile,
+            final RegistrationForm registrationForm,
             @RequestParam(value = "intCodes", required = false) final String[] interests,
             final BindingResult result,
             final Model model) {
-        profileValidator.validate(profile, result);
+        registrationValidator.validate(registrationForm, result);
 
         if (result.hasErrors()) {
             model.addAttribute("interests", profileTools.availableInterests());
             model.addAttribute("states", State.STATES);
             return "account/register";
         } else {
-            profileTools.createProfile(profile, interests);
+            profileTools.createProfile(
+                    registrationForm.getProfile(),
+                    registrationForm.getShippingAddress(),
+                    interests);
             return "redirect:/";
         }
     }

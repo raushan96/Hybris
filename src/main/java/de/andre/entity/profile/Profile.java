@@ -2,27 +2,23 @@ package de.andre.entity.profile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.andre.entity.enums.Gender;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 @Entity
 @Table(name = "hp_profile", schema = "hybris")
-public class Profile {
-    private Long id;
+public class Profile extends ProfileBaseEntity {
     private String password;
     private String email;
     private String firstName;
@@ -32,43 +28,29 @@ public class Profile {
     private boolean acceptEmails;
     private LocalDateTime created;
 
-    private Address shippingAddress;
-    private Map<String, Address> secondaryAddresses;
+    private Map<String, Address> addresses;
     private Set<Interest> interests;
     private WishList wishList;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @OneToOne
-    @JoinColumn(name = "shipping_addr_id")
-    public Address getShippingAddress() {
-        return shippingAddress;
-    }
-
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     @MapKey(name = "addressName")
-    public Map<String, Address> getSecondaryAddresses() {
-        return secondaryAddresses;
+    public Map<String, Address> getAddresses() {
+        return addresses;
     }
 
-    public void setSecondaryAddresses(Map<String, Address> secondaryAddresses) {
-        this.secondaryAddresses = secondaryAddresses;
+    public void addAddress(Address address) {
+        if (this.addresses == null) {
+            this.addresses = new HashMap<>(4);
+        }
+        address.setProfile(this);
+        this.addresses.put(address.getAddressName(), address);
     }
 
-    public void setShippingAddress(Address shippingAddress) {
-        this.shippingAddress = shippingAddress;
+    public void setAddresses(Map<String, Address> addresses) {
+        this.addresses = addresses;
     }
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany
     @JoinTable(
             name = "hp_profile_interests",
             joinColumns = @JoinColumn(name = "profile_id", referencedColumnName = "id"),

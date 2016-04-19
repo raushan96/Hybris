@@ -7,24 +7,12 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "hp_wish_item", schema = "hybris")
-public class WishItem {
-    private Long id;
+public class WishItem extends ProfileBaseEntity {
     private String displayName;
     private String description;
     private Integer quantityDesired;
 
     private WishList wishList;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @ManyToOne
     @JoinColumn(name = "wishlist_id")

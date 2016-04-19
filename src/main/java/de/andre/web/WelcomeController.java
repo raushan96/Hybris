@@ -3,6 +3,7 @@ package de.andre.web;
 import de.andre.entity.enums.Gender;
 import de.andre.entity.profile.Profile;
 import de.andre.repository.profile.ProfileRepository;
+import de.andre.repository.profile.SiteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class WelcomeController {
 
     @Autowired
     private ProfileRepository profileRepository;
+
+    @Autowired
+    private SiteRepository siteRepository;
 
     @Autowired
     private MessageSource messageSource;

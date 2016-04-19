@@ -11,6 +11,11 @@
 
     <bean id="profileValidator" class="de.andre.utils.validation.ProfileValidator">
         <constructor-arg name="profileRepository" ref="profileRepository"/>
+    </bean>
+
+    <bean id="registrationValidator" class="de.andre.utils.validation.RegistrationValidator">
+        <constructor-arg name="hibernateValidator" ref="validator"/>
+        <constructor-arg name="profileValidator" ref="profileValidator"/>
         <constructor-arg name="addressValidator" ref="addressValidator"/>
     </bean>
 </beans>

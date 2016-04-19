@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="siteManager" class="de.andre.multisite.SiteManager">
+        <constructor-arg name="siteRepository" ref="siteRepository"/>
+    </bean>
+
+    <bean id="urlFilterStrategy" class="de.andre.multisite.UrlFilterStrategy">
+        <constructor-arg name="siteManager" ref="siteManager"/>
+    </bean>
+
+    <bean id="siteContextFilter" class="de.andre.multisite.SiteContextFilter">
+        <constructor-arg name="siteManager" ref="siteManager"/>
+        <property name="defaultSiteId" value="hybris-site"/>
+        <property name="siteResolvers">
+            <set>
+                <ref bean="urlFilterStrategy"/>
+            </set>
+        </property>
+    </bean>
+</beans>

@@ -11,30 +11,18 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "hp_address", schema = "hybris")
-public class Address {
-    private Long id;
+public class Address extends ProfileBaseEntity {
     private String addressName;
+    private String displayName;
     private String city;
     private String postalCode;
     private String countryCode;
     private String address;
     private State state;
 
-    private String oldAddressName;
     private Profile profile;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     public Profile getProfile() {
         return profile;
     }
@@ -51,6 +39,16 @@ public class Address {
 
     public void setAddressName(String addressName) {
         this.addressName = addressName;
+    }
+
+    @JsonView(View.AddressView.class)
+    @Column(name = "display_name")
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @JsonView(View.AddressView.class)
@@ -112,15 +110,6 @@ public class Address {
         this.state = state;
     }
 
-    @Transient
-    public String getOldAddressName() {
-        return oldAddressName;
-    }
-
-    public void setOldAddressName(String oldAddressName) {
-        this.oldAddressName = oldAddressName;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -128,23 +117,28 @@ public class Address {
 
         Address address1 = (Address) o;
 
-        if (!addressName.equals(address1.addressName)) return false;
-        if (!city.equals(address1.city)) return false;
-        if (!postalCode.equals(address1.postalCode)) return false;
-        if (!countryCode.equals(address1.countryCode)) return false;
-        if (!address.equals(address1.address)) return false;
+        if (addressName != null ? !addressName.equals(address1.addressName) : address1.addressName != null)
+            return false;
+        if (displayName != null ? !displayName.equals(address1.displayName) : address1.displayName != null)
+            return false;
+        if (city != null ? !city.equals(address1.city) : address1.city != null) return false;
+        if (postalCode != null ? !postalCode.equals(address1.postalCode) : address1.postalCode != null) return false;
+        if (countryCode != null ? !countryCode.equals(address1.countryCode) : address1.countryCode != null)
+            return false;
+        if (address != null ? !address.equals(address1.address) : address1.address != null) return false;
         return state == address1.state;
 
     }
 
     @Override
     public int hashCode() {
-        int result = addressName.hashCode();
-        result = 31 * result + city.hashCode();
-        result = 31 * result + postalCode.hashCode();
-        result = 31 * result + countryCode.hashCode();
-        result = 31 * result + address.hashCode();
-        result = 31 * result + state.hashCode();
+        int result = addressName != null ? addressName.hashCode() : 0;
+        result = 31 * result + (displayName != null ? displayName.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
+        result = 31 * result + (countryCode != null ? countryCode.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (state != null ? state.hashCode() : 0);
         return result;
     }
 }

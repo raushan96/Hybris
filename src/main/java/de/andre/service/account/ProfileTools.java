@@ -82,9 +82,6 @@ public class ProfileTools {
     @Transactional(readOnly = true)
     public List<Address> addressesByProfile(final Profile profile) {
         final List<Address> profileAddresses = profileAdapterRepository.getAddressRepository().findAllAddresses(profile);
-        if (profile.getShippingAddress() != null) {
-            profileAddresses.add(profile.getShippingAddress());
-        }
 
         if (profileAddresses.size() == 0) {
             logger.debug("No addresses found for Profile " + profile.getId());
@@ -95,16 +92,14 @@ public class ProfileTools {
     }
 
     @Transactional
-    public void createProfile(final Profile profile, final String[] interests) {
+    public void createProfile(final Profile profile, final Address shippingAddress, final String[] interests) {
         synchronized (RequestContextHolder.currentRequestAttributes().getSessionMutex()) {
-            final Address shippingAddress = profile.getShippingAddress();
-            if (!StringUtils.hasText(shippingAddress.getAddressName())) {
-                shippingAddress.setAddressName(DEFAULT_SHIPPING_NAME);
-            }
-            profileAdapterRepository.getAddressRepository().save(shippingAddress);
-
             profile.setPassword(passwordEncoder.encode(profile.getPassword()));
-            addWishList(profile);
+
+            shippingAddress.setAddressName(DEFAULT_SHIPPING_NAME);
+            profile.addAddress(shippingAddress);
+            addWishList(profile, shippingAddress);
+
             profile.setInterests(resolveChosenInterests(interests));
 
             profileRepository.save(profile);
@@ -112,7 +107,7 @@ public class ProfileTools {
             final UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                     new HybrisUser(profile.getEmail(), profile.getPassword(), profile),
                     null,
-                    Collections.singleton(HybrisUser.USER_AUTHORITY));
+                    HybrisUser.USER_AUTHORITY);
             auth.setDetails(new WebAuthenticationDetails(
                     ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest()));
             SecurityContextHolder.getContext().setAuthentication(auth);
@@ -139,11 +134,11 @@ public class ProfileTools {
                 Collections.emptySet();
     }
 
-    private void addWishList(final Profile profile) {
+    private void addWishList(final Profile profile, final Address shippingAddress) {
         final WishList wishList = new WishList();
         wishList.setProfile(profile);
         profile.setWishList(wishList);
-        wishList.setShippingAddress(profile.getShippingAddress());
+        wishList.setShippingAddress(shippingAddress);
     }
 
     @PreAuthorize("hasAuthority('USER')")

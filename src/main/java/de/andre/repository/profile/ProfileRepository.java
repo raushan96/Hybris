@@ -14,7 +14,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     @Query("select pr from Profile pr where pr.email = :email")
     Optional<Profile> findByLogin(@Param("email") String email);
 
-    @Query("select pr from Profile pr join fetch pr.secondaryAddresses where pr.id = :profileId")
+    @Query("select pr from Profile pr join fetch pr.addresses where pr.id = :profileId")
     Optional<Profile> profileWithAddresses(@Param("profileId") Long profileId);
 
     @Modifying
