@@ -2,13 +2,14 @@ package de.andre.entity.profile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.andre.entity.enums.Gender;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -64,8 +65,9 @@ public class Profile extends ProfileBaseEntity {
         this.interests = interests;
     }
 
-    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true,
+    @OneToOne(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.MERGE},
              fetch = FetchType.LAZY)
+    @LazyToOne(LazyToOneOption.NO_PROXY)
     public WishList getWishList() {
         return wishList;
     }

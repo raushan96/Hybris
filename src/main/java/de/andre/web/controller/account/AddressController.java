@@ -56,6 +56,21 @@ public class AddressController {
 
     }
 
+    @RequestMapping(value = "/changeDefault", method = RequestMethod.POST)
+    public ObjectNode changeDefaultShipping(@RequestParam("addressName") final String addressName) {
+        try {
+            final String newNickname = addressTools.changeDefaultShipping(addressName);
+            return objectMapper.createObjectNode()
+                    .put("success", true)
+                    .put("newNickname", newNickname);
+        } catch (Exception e) {
+            return objectMapper.createObjectNode()
+                    .put("success", false)
+                    .put("error", e.toString());
+        }
+
+    }
+
     @RequestMapping(value = "/modifyAddress", method = RequestMethod.POST)
     public ObjectNode modifyAddress(@Validated @RequestBody final Address address, final Errors errors) throws JsonProcessingException {
         try {

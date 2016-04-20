@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html layout:decorator="index" xmlns:th="http://www.thymeleaf.org">
+<html layout:decorator="index" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
 
 <div layout:fragment="content" th:remove="tag">
@@ -66,6 +66,7 @@
                         <th>Actions</th>
                     </tr>
                     <tr th:each="address : ${addresses}">
+                        <span th:if="${address.addressName == T(de.andre.utils.HybrisConstants).DEFAULT_SHIPPING_NAME}" th:text="${'Default Shipping'}">default address</span>
                         <td data-name="city" th:text="${address.city}">City</td>
                         <td data-name="state" th:text="${address.state?.getName()}">State</td>
                         <td data-name="address" th:text="${address.address}">Address</td>

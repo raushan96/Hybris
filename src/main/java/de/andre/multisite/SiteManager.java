@@ -4,6 +4,7 @@ import de.andre.entity.profile.SiteConfiguration;
 import de.andre.repository.profile.SiteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -13,6 +14,7 @@ public class SiteManager {
     protected static final Logger logger = LoggerFactory.getLogger(SiteManager.class);
 
     private static final ThreadLocal<Site> siteHolder = new ThreadLocal<>();
+    private static final Site EMPTY_SITE = new Site.EmptySite();
 
     private final SiteRepository siteRepository;
 
@@ -35,7 +37,14 @@ public class SiteManager {
     }
 
     public static Site getSite() {
-        return siteHolder.get();
+        Site site = siteHolder.get();
+
+        if (site == null) {
+            site = EMPTY_SITE;
+            siteHolder.set(EMPTY_SITE);
+        }
+
+        return site;
     }
 
     public static String getSiteId() {
@@ -46,8 +55,9 @@ public class SiteManager {
         return null;
     }
 
+    @Transactional(readOnly = true)
     public List<SiteConfiguration> allSites() {
-        return siteRepository.findAll();
+        return siteRepository.fetchSites();
     }
 
     public String siteIdFromUrl(final String url) {
@@ -58,12 +68,17 @@ public class SiteManager {
         return siteRepository.siteIdFromUrl(url);
     }
 
-    public SiteConfiguration siteFromId(final String siteId) {
+    public Site siteFromId(final String siteId) {
         if (!StringUtils.hasLength(siteId)) {
-            return null;
+            return EMPTY_SITE;
         }
 
-        return siteRepository.fetchSite(siteId)
-                .orElse(null);
+        final SiteConfiguration site = siteRepository.fetchSite(siteId);
+        if (site != null) {
+            logger.debug("Found site with name: {} for {} id", site.getDisplayName(), siteId);
+            return site;
+        }
+
+        return EMPTY_SITE;
     }
 }

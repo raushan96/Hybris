@@ -1,6 +1,5 @@
 package de.andre.utils;
 
-import de.andre.entity.profile.Profile;
 import de.andre.service.security.HybrisUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +15,6 @@ import java.util.Collection;
 import java.util.UUID;
 
 import static de.andre.utils.HybrisConstants.*;
-import static de.andre.utils.HybrisConstants.KEY_MAX_LENGTH;
-import static de.andre.utils.HybrisConstants.KEY_MIN_LENGTH;
-import static de.andre.utils.HybrisConstants.PASSWORD_LENGTH;
 
 public class ProfileHelper {
     private static final Logger logger = LoggerFactory.getLogger(ProfileHelper.class);
@@ -26,29 +22,40 @@ public class ProfileHelper {
     private ProfileHelper() {
     }
 
-    public static Profile currentProfile() {
+    public static Long currentProfileId() {
+        final HybrisUser.UserIdentity userIdentity = getCurrentUserIdentity();
+        return userIdentity != null ? userIdentity.getId() : null;
+    }
+
+    public static String currentProfileEmail() {
+        final HybrisUser.UserIdentity userIdentity = getCurrentUserIdentity();
+        return userIdentity != null ? userIdentity.getEmail() : null;
+    }
+
+    public static boolean loggedIn() {
+        return getCurrentUserIdentity() != null;
+    }
+
+    private static HybrisUser.UserIdentity getCurrentUserIdentity() {
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
             if (principal instanceof HybrisUser) {
-                return ((HybrisUser) principal).getCommerceProfile();
+                return ((HybrisUser) principal).getUserIdentity();
             }
-
-            logger.warn("Unknown principal instance.");
-            return null;
         }
 
-        logger.warn("Profile is not authorized, returning null.");
+        logger.warn("Profile is not authorized/unknown authority, returning null.");
         return null;
     }
 
-    public static Profile authenticatedProfile() {
-        Assert.notNull(SecurityContextHolder.getContext().getAuthentication());
-        final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Assert.isTrue(principal instanceof HybrisUser);
-
-        return ((HybrisUser) principal).getCommerceProfile();
-    }
+//    public static Profile authenticatedProfile() {
+//        Assert.notNull(SecurityContextHolder.getContext().getAuthentication());
+//        final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Assert.isTrue(principal instanceof HybrisUser);
+//
+//        return ((HybrisUser) principal).getCommerceProfile();
+//    }
 
     public static boolean isSoftLogged() {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();

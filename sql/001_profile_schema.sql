@@ -102,5 +102,6 @@ CREATE TABLE IF NOT EXISTS hp_identity_generator (
   id             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   sequence_name  VARCHAR(100)    NOT NULL,
   sequence_value BIGINT UNSIGNED NOT NULL,
-  CONSTRAINT hp_identity_generator_pk PRIMARY KEY (id)
+  CONSTRAINT hp_identity_generator_pk PRIMARY KEY (id),
+  CONSTRAINT hp_identity_generator_seq_uk UNIQUE (sequence_name)
 );

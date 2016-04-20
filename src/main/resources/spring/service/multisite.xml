@@ -8,7 +8,7 @@
         <constructor-arg name="siteRepository" ref="siteRepository"/>
     </bean>
 
-    <bean id="urlFilterStrategy" class="de.andre.multisite.UrlFilterStrategy">
+    <bean id="urlFilterStrategy" class="de.andre.multisite.UrlFilterStrategy" init-method="refresh">
         <constructor-arg name="siteManager" ref="siteManager"/>
     </bean>
 

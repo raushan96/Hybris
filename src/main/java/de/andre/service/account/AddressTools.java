@@ -5,7 +5,10 @@ import de.andre.entity.profile.Profile;
 import de.andre.repository.profile.AddressRepository;
 import de.andre.repository.profile.ProfileAdapterRepository;
 import de.andre.repository.profile.ProfileRepository;
+import de.andre.utils.HybrisConstants;
 import de.andre.utils.ProfileHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +19,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static de.andre.utils.HybrisConstants.ADDRESS_NAME_PREFIX;
+import static de.andre.utils.HybrisConstants.DEFAULT_SHIPPING_NAME;
 
 public class AddressTools {
+    private static final Logger logger = LoggerFactory.getLogger(AddressTools.class);
+
     private final AddressRepository addressRepository;
     private final ProfileRepository profileRepository;
     private final ProfileTools profileTools;
@@ -31,7 +37,7 @@ public class AddressTools {
     @PreAuthorize("hasAuthority('USER')")
     @Transactional(readOnly = true)
     public Address addressByName(final String addressName) {
-        final Profile profile = profileRepository.profileWithAddresses(ProfileHelper.authenticatedProfile().getId())
+        final Profile profile = profileRepository.profileWithAddresses(ProfileHelper.currentProfileId())
                 .orElseThrow(() -> new IllegalStateException("Profile was removed"));
         return profile.getAddresses().get(addressName);
     }
@@ -39,24 +45,40 @@ public class AddressTools {
     @PreAuthorize("hasAuthority('USER')")
     @Transactional
     public int deleteAddressByName(final String addressName) {
-        return addressRepository.deleteProfileAddress(ProfileHelper.authenticatedProfile(), addressName);
+        return addressRepository.deleteProfileAddress(ProfileHelper.currentProfileId(), addressName);
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @Transactional
+    public String changeDefaultShipping(final String addressName) {
+        if (!StringUtils.hasLength(addressName) || DEFAULT_SHIPPING_NAME.equals(addressName)) {
+            logger.debug("Not eligible address name '{}'", addressName);
+            return HybrisConstants.EMPTY_STRING;
+        }
+
+        final Profile profile = profileTools.currentProfile();
+        final Address oldDefaultShipping = profile.getAddresses().remove(DEFAULT_SHIPPING_NAME);
+        Assert.notNull(oldDefaultShipping);
+
+        final Address newDefaultShipping = profile.getAddresses().remove(addressName);
+        Assert.notNull(newDefaultShipping);
+
+        logger.debug("Making {} address as default shipping", addressName);
+        newDefaultShipping.setAddressName(DEFAULT_SHIPPING_NAME);
+        profile.addAddress(newDefaultShipping);
+
+        final String newNickname = generateNickname(addressName, profile);
+        oldDefaultShipping.setAddressName(newNickname);
+        profile.addAddress(oldDefaultShipping);
+
+        return newNickname;
     }
 
     @PreAuthorize("hasAuthority('USER')")
     @Transactional
     public String addSecondaryAddress(final Address address) {
-        final Profile profile = profileTools.profileById(ProfileHelper.authenticatedProfile().getId());
-
-        final Set<String> existingNicknames = profileTools.addressesByProfile(profile)
-                .stream()
-                .filter(addr -> !addr.getAddressName().equals(address.getAddressName()))
-                .map(Address::getAddressName)
-                .collect(Collectors.toSet());
-        final String nickname = ProfileHelper.generateUniqueNickname(
-                null,
-                ADDRESS_NAME_PREFIX,
-                existingNicknames
-        );
+        final Profile profile = profileTools.currentProfile();
+        final String nickname = generateNickname(null, profile);
 
         address.setAddressName(nickname);
         profile.getAddresses().put(nickname, address);
@@ -69,7 +91,7 @@ public class AddressTools {
     @PreAuthorize("hasAuthority('USER')")
     @Transactional
     public String updateSecondaryAddress(final Address address) {
-        final Profile profile = profileTools.profileById(ProfileHelper.authenticatedProfile().getId());
+        final Profile profile = profileTools.currentProfile();
 
         final Address currentAddress = profile.getAddresses().get(address.getAddressName());
         Assert.notNull(currentAddress, "Updating address must exist");
@@ -78,5 +100,22 @@ public class AddressTools {
         profileRepository.save(profile);
 
         return address.getAddressName();
+    }
+
+    private String generateNickname(final String providedNickname, final Profile profile) {
+        Assert.notNull(profile);
+        final Set<String> existingNicknames = profileTools.addressesByProfile(profile.getId())
+                .stream()
+                .map(Address::getAddressName)
+                .collect(Collectors.toSet());
+        return ProfileHelper.generateUniqueNickname(
+                providedNickname,
+                ADDRESS_NAME_PREFIX,
+                existingNicknames
+        );
+    }
+
+    private boolean isDefaultShipping(final Address address) {
+        return address != null && DEFAULT_SHIPPING_NAME.equals(address.getAddressName());
     }
 }

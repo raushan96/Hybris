@@ -4,12 +4,10 @@ import de.andre.entity.profile.Address;
 import de.andre.entity.profile.Interest;
 import de.andre.entity.profile.Profile;
 import de.andre.entity.profile.WishList;
-import de.andre.repository.profile.AddressRepository;
 import de.andre.repository.profile.ProfileAdapterRepository;
 import de.andre.repository.profile.ProfileRepository;
 import de.andre.service.security.HybrisUser;
 import de.andre.utils.BeanHelper;
-import de.andre.utils.HybrisConstants;
 import de.andre.utils.ProfileHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.util.WebUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,17 +54,21 @@ public class ProfileTools {
         return profileRepository.findOne(profileId);
     }
 
+    @Transactional(readOnly = true)
+    public Profile currentProfile() {
+        if (!ProfileHelper.loggedIn()) {
+            return null;
+        }
+        return profileById(ProfileHelper.currentProfileId());
+    }
+
     @PreAuthorize("hasAuthority('USER')")
     @Transactional
     public void updateProfile(final Profile newProfile) {
-        final Profile currentProfile = profileByEmail(ProfileHelper.authenticatedProfile().getEmail())
-                .orElseThrow(() -> new IllegalStateException("Profile was removed"));
+        final Profile currentProfile = currentProfile();
         synchronized (RequestContextHolder.getRequestAttributes().getSessionMutex()) {
             BeanHelper.copyBeanProperties(newProfile, currentProfile, profileEditableProps);
-
             profileRepository.save(currentProfile);
-
-            updateCommerceProfile(currentProfile);
         }
     }
 
@@ -80,11 +81,11 @@ public class ProfileTools {
     }
 
     @Transactional(readOnly = true)
-    public List<Address> addressesByProfile(final Profile profile) {
-        final List<Address> profileAddresses = profileAdapterRepository.getAddressRepository().findAllAddresses(profile);
+    public List<Address> addressesByProfile(final Long profileId) {
+        final List<Address> profileAddresses = profileAdapterRepository.getAddressRepository().findAllAddresses(profileId);
 
         if (profileAddresses.size() == 0) {
-            logger.debug("No addresses found for Profile " + profile.getId());
+            logger.debug("No addresses found for Profile " + profileId);
             return Collections.emptyList();
         }
 
@@ -145,7 +146,7 @@ public class ProfileTools {
     @Transactional
     public void updatePassword(final String newPassword) {
         final String hashedPassword = passwordEncoder.encode(newPassword);
-        profileRepository.updateProfilePassword(ProfileHelper.authenticatedProfile().getEmail(), hashedPassword);
+        profileRepository.updateProfilePassword(ProfileHelper.currentProfileEmail(), hashedPassword);
     }
 
     @Transactional(readOnly = true)
@@ -162,17 +163,5 @@ public class ProfileTools {
         final String randomPassword = ProfileHelper.generateRandomString();
         final String hashedPassword = passwordEncoder.encode(randomPassword);
         profileRepository.updateProfilePassword(pEmail, hashedPassword);
-    }
-
-    public void updateCommerceProfile(final Profile profile) {
-        if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            if (principal instanceof HybrisUser) {
-                ((HybrisUser) principal).setCommerceProfile(profile);
-            } else {
-                logger.warn("Unknown principal instance, cannot update.");
-            }
-        }
     }
 }

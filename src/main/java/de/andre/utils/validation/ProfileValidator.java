@@ -29,7 +29,7 @@ public class ProfileValidator implements Validator {
         }
 
         final Profile profile = (Profile) target;
-        final boolean loggedIn = ProfileHelper.currentProfile() != null;
+        final boolean loggedIn = ProfileHelper.loggedIn();
 
         if (!loggedIn && !StringUtils.hasText(profile.getPassword())) {
             errors.rejectValue("password", "user.password.empty");

@@ -43,7 +43,7 @@ public class SiteView implements Site {
 
     @Override
     public Locale getLocale() {
-        return (Locale) this.locale.clone();
+        return this.locale;
     }
 
     @Override

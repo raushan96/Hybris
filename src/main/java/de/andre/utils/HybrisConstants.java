@@ -21,6 +21,7 @@ public class HybrisConstants {
 
     public static final int KEY_MAX_LENGTH = 14;
     public static final int KEY_MIN_LENGTH = 5;
+    public static final String EMPTY_STRING = "";
     public static final String DEFAULT_PREFIX = "key";
     public static final String DEFAULT_SHIPPING_NAME = "shippingAddress";
     public static final String NICKNAME_SEPARATOR = "-";

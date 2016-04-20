@@ -1,5 +1,8 @@
---core
---password - andre 9cf7e1
+#
+#password - andre 9cf7e1
+INSERT INTO `hybris`.`hp_site` (`id`, `display_name`, `locale`, `enabled`) VALUES ('hybris-site', 'Hybris', 'en_US', '1');
+INSERT INTO `hybris`.`hp_site_urls` (`id`, `url`) VALUES ('hybris-site', 'localhost');
+
 insert into hp_user(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
 values (1, '$2a$10$zdP5J.iGZkWAhLjuGGQww.l7X.m2datdggOd9mMkzliDj2NY6hbAS', 'andre', 'evans', 0, 'andrey.evans@gmail.com', to_date('03-MAR-1994'), 1);
 insert into hp_user(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
@@ -21,7 +24,7 @@ values(3, 'ExpertSoft', 'Mensk', '123412', 'Belarus', 'xz 8 h');
 
 commit;
 
---catalog
+# --catalog
 insert into dcs_catalog(catalog_id, display_name, creation_date)
 values('spices', 'Spice catalog', to_date('03-MAR-2015'));
 insert into dcs_category(category_id, catalog_id, display_name, root_category)

@@ -73,7 +73,7 @@
         <property name="jpaDialect" ref="jpaDialect"/>
     </bean>
 
-    <!--    <cache:annotation-driven proxy-target-class="true"/>
+    <cache:annotation-driven proxy-target-class="true"/>
 
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
         <property name="cacheManager" ref="ehcache"/>
@@ -81,5 +81,8 @@
 
     <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation" value="classpath:ehcache/ehcache.xml"/>
-    </bean>-->
+        <property name="cacheManagerName" value="hybrisManager"/>
+        <property name="acceptExisting" value="true"/>
+    </bean>
+
 </beans>
