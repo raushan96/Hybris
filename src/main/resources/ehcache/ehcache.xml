@@ -3,15 +3,20 @@
          updateCheck="false">
     <diskStore path="java.io.tmpdir"/>
 
-    <!-- objects are evicted from the cache every 60 seconds -->
-    <cache name="catalog"
-           timeToLiveSeconds="60"
-           maxElementsInMemory="100"
-           eternal="false"
-           overflowToDisk="false"
-           maxElementsOnDisk="10000000"
-           diskPersistent="false"
-           diskExpiryThreadIntervalSeconds="1"
-           memoryStoreEvictionPolicy="LRU"/>
+    <defaultCache maxEntriesLocalHeap="10000" eternal="false"
+                  overflowToDisk="false" timeToLiveSeconds="1000"
+                  memoryStoreEvictionPolicy="LFU">
+    </defaultCache>
+
+    <cache name="authTokenCache" eternal="false" maxEntriesLocalHeap="10000"
+           timeToLiveSeconds="14400" memoryStoreEvictionPolicy="LRU">
+        <!--<persistence strategy="localTempSwap"/>-->
+    </cache>
+
+    <cache name="sites"
+           timeToLiveSeconds="600"
+           timeToIdleSeconds="300"
+           maxEntriesLocalHeap="10000">
+    </cache>
 
 </ehcache>

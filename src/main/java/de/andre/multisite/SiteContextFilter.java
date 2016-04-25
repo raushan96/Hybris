@@ -22,20 +22,20 @@ public class SiteContextFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
-                                    final FilterChain filterChain) throws ServletException, IOException {
+            final FilterChain filterChain) throws ServletException, IOException {
         try {
             String siteId = null;
             for (final Iterator<SiteResolver> resolversIterator = siteResolvers.iterator();
-                 resolversIterator.hasNext() && siteId == null;) {
+                 resolversIterator.hasNext() && siteId == null; ) {
                 siteId = resolversIterator.next().resolveSiteId(request);
             }
 
             if (!StringUtils.hasLength(siteId)) {
-                logger.debug("SiteConfiguration wasn\'t resolved for the " + request.getRequestURI() + " url");
+                logger.debug("SiteConfiguration wasn\'t resolved for the " + request.getServerName() + " request name");
                 siteId = defaultSiteId;
             }
 
-            logger.debug("Pushing site with id: " + siteId);
+            logger.trace("Pushing site with id: " + siteId);
             siteManager.setSite(siteManager.siteFromId(siteId));
 
             filterChain.doFilter(request, response);

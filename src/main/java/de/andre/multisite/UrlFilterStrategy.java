@@ -17,8 +17,8 @@ public class UrlFilterStrategy implements SiteResolver {
 
     private final SiteManager siteManager;
 
-    protected ReadWriteLock urlCacheLock = new ReentrantReadWriteLock();
-    protected Map<String, String> urlToSiteId = new HashMap<>();
+    protected final ReadWriteLock urlCacheLock = new ReentrantReadWriteLock();
+    protected final Map<String, String> urlToSiteId = new HashMap<>();
 
     public UrlFilterStrategy(final SiteManager siteManager) {
         this.siteManager = siteManager;
@@ -32,7 +32,7 @@ public class UrlFilterStrategy implements SiteResolver {
 
         final String cachedSiteId = cachedId(url);
         if (StringUtils.hasLength(cachedSiteId)) {
-            logger.debug("Found '{}' cached site id", cachedSiteId);
+            logger.trace("Found '{}' cached site id", cachedSiteId);
             return cachedSiteId;
         }
 
@@ -65,7 +65,7 @@ public class UrlFilterStrategy implements SiteResolver {
     }
 
     private String cachedId(final String url) {
-        logger.debug("Trying to find cached site id for '{}' url", url);
+        logger.trace("Trying to find cached site id for '{}' url", url);
         urlCacheLock.readLock().lock();
 
         try {

@@ -12,8 +12,8 @@
         </filter>
     </appender>
 
-    <!--    <appender name="hybrisLog" class="ch.qos.logback.core.FileAppender">
-            <file>${rebel.workspace.path}\\src\\main\\resources\\hybris.log</file>
+    <!--    <appender name="fileLog" class="ch.qos.logback.core.FileAppender">
+            <file>${rebel.workspace.path}\\src\\main\\resources\\out.log</file>
             <encoder>
                 <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
             </encoder>
@@ -22,7 +22,7 @@
 
     <logger name="de.andre" level="debug"/>
 
-    <logger name="org.springframework" level="error"/>
+    <logger name="org.springframework" level="debug"/>
     <logger name="org.springframework.beans.TypeConverterDelegate" level="error"/>
 
     <!--<logger name="org.hibernate.type" level="trace"/>-->
@@ -30,10 +30,11 @@
 
     <logger name="com.zaxxer" level="error"/>
     <logger name="org.thymeleaf" level="error"/>
+    <logger name="net.sf.ehcache" level="error"/>
 
     <root level="debug">
         <appender-ref ref="stdout"/>
-        <!--<appender-ref ref="hybrisLog"/>-->
+        <!--<appender-ref ref="fileLog"/>-->
     </root>
 
 

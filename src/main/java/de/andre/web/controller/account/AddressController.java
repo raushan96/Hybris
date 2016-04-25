@@ -30,11 +30,6 @@ public class AddressController {
         this.addressValidator = addressValidator;
     }
 
-    @InitBinder
-    private void initAddressBinder(final WebDataBinder dataBinder) {
-        dataBinder.setValidator(addressValidator);
-    }
-
     @JsonView(View.AddressView.class)
     @RequestMapping(value = "/getEditAddress", method = RequestMethod.GET)
     public Address getEditAddress(@RequestParam("addressName") final String addressName) {

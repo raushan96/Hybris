@@ -54,6 +54,21 @@ $(document).ready(function () {
         });
     });
 
+    $('#account_addresses').on('click', 'button[name=change_shipping]', function () {
+        var addressName = this.id.split('_')[1];
+        var ajaxData = {};
+        ajaxData['addressName'] = addressName;
+        $.ajax({
+            type: 'POST',
+            url: '/address/changeDefault',
+            dataType: 'json',
+            data: $.param(ajaxData),
+            success: function (res) {
+                console.log(res);
+            }
+        });
+    });
+
     $('#account_addresses').on('click', 'button[name=edit_address]', function () {
         openEditPopUp(this.id);
     });

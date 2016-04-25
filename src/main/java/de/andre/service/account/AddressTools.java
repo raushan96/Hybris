@@ -57,17 +57,16 @@ public class AddressTools {
         }
 
         final Profile profile = profileTools.currentProfile();
+        final String newNickname = generateNickname(addressName, profile);
+
         final Address oldDefaultShipping = profile.getAddresses().remove(DEFAULT_SHIPPING_NAME);
         Assert.notNull(oldDefaultShipping);
-
         final Address newDefaultShipping = profile.getAddresses().remove(addressName);
         Assert.notNull(newDefaultShipping);
 
         logger.debug("Making {} address as default shipping", addressName);
         newDefaultShipping.setAddressName(DEFAULT_SHIPPING_NAME);
         profile.addAddress(newDefaultShipping);
-
-        final String newNickname = generateNickname(addressName, profile);
         oldDefaultShipping.setAddressName(newNickname);
         profile.addAddress(oldDefaultShipping);
 

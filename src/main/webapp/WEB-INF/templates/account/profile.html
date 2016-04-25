@@ -63,14 +63,23 @@
                         <th>State</th>
                         <th>Address</th>
                         <th>Postal code</th>
+                        <th>Default Shipping</th>
                         <th>Actions</th>
                     </tr>
                     <tr th:each="address : ${addresses}">
-                        <span th:if="${address.addressName == T(de.andre.utils.HybrisConstants).DEFAULT_SHIPPING_NAME}" th:text="${'Default Shipping'}">default address</span>
+                        <!--<span th:if="${address.addressName == T(de.andre.utils.HybrisConstants).DEFAULT_SHIPPING_NAME}" th:text="${'Default Shipping'}">default address</span>-->
                         <td data-name="city" th:text="${address.city}">City</td>
                         <td data-name="state" th:text="${address.state?.getName()}">State</td>
                         <td data-name="address" th:text="${address.address}">Address</td>
                         <td data-name="postalCode" th:text="${address.postalCode}">Postal code</td>
+                        <td data-name="shipping">
+                            <span th:switch="${address.addressName}">
+                                <p th:case="${T(de.andre.utils.HybrisConstants).DEFAULT_SHIPPING_NAME}">Shipping Address</p>
+                                <p th:case="*">
+                                    <button type="button" th:id="'changeShipping_' + ${address.addressName}" name="change_shipping" class="btn btn-primary">Select as default</button>
+                                </p>
+                            </span>
+                        </td>
                         <td>
                             <button type="button" th:id="'editAddress_' + ${address.addressName}" name="edit_address" class="btn btn-primary" data-toggle="modal" data-target="#addressModal">Edit</button>
                             <button type="button" th:id="'deleteAddress_' + ${address.addressName}" name="delete_address" class="btn btn-danger">Delete</button>
