@@ -1,6 +1,7 @@
 package de.andre.entity.profile;
 
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Table(name = "hp_wish_list", schema = "hybris")
 public class WishList {
@@ -19,6 +21,7 @@ public class WishList {
 
     private Profile profile;
     private Address shippingAddress;
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<WishItem> wishItems = new ArrayList<>(0);
 
     @Id

@@ -3,6 +3,7 @@ package de.andre.entity.profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.andre.entity.enums.Gender;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Table(name = "hp_profile", schema = "hybris")
 public class Profile extends ProfileBaseEntity {
@@ -33,6 +35,7 @@ public class Profile extends ProfileBaseEntity {
     private Set<Interest> interests;
     private WishList wishList;
 
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     @MapKey(name = "addressName")
     public Map<String, Address> getAddresses() {
@@ -51,6 +54,7 @@ public class Profile extends ProfileBaseEntity {
         this.addresses = addresses;
     }
 
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @ManyToMany
     @JoinTable(
             name = "hp_profile_interests",
@@ -65,9 +69,8 @@ public class Profile extends ProfileBaseEntity {
         this.interests = interests;
     }
 
-    @OneToOne(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-             fetch = FetchType.LAZY)
-    @LazyToOne(LazyToOneOption.NO_PROXY)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @OneToOne(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     public WishList getWishList() {
         return wishList;
     }

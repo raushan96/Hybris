@@ -32,7 +32,7 @@ tasks.withType(JavaCompile) {
 
 hibernate {
     enhance {
-        enableLazyInitialization= true
+        enableLazyInitialization= false
         enableDirtyTracking = false
         enableAssociationManagement = false
     }

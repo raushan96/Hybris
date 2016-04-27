@@ -4,9 +4,11 @@ import de.andre.entity.profile.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.QueryHint;
 import java.util.Optional;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
@@ -14,6 +16,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     @Query("select pr from Profile pr where pr.email = :email")
     Optional<Profile> findByLogin(@Param("email") String email);
 
+    @QueryHints(@QueryHint(name = "org.hibernate.cacheable", value = "true"))
     @Query("select pr from Profile pr join fetch pr.addresses where pr.id = :profileId")
     Optional<Profile> profileWithAddresses(@Param("profileId") Long profileId);
 
