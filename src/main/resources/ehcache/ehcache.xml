@@ -19,4 +19,33 @@
            maxEntriesLocalHeap="10000">
     </cache>
 
+    <cache name="de.andre.entity.profile.Profile"
+           timeToLiveSeconds="600"
+           timeToIdleSeconds="300"
+           maxEntriesLocalHeap="10000">
+    </cache>
+
+    <cache name="de.andre.entity.profile.Address"
+           timeToLiveSeconds="600"
+           timeToIdleSeconds="300"
+           maxEntriesLocalHeap="10000">
+    </cache>
+
+    <cache name="de.andre.entity.profile.Interest"
+           timeToLiveSeconds="600"
+           timeToIdleSeconds="300"
+           maxEntriesLocalHeap="10000">
+    </cache>
+
+    <cache name="de.andre.entity.profile.WishList"
+           timeToLiveSeconds="600"
+           timeToIdleSeconds="300"
+           maxEntriesLocalHeap="10000">
+    </cache>
+
+    <cache name="de.andre.entity.profile.WishItem"
+           timeToLiveSeconds="600"
+           timeToIdleSeconds="300"
+           maxEntriesLocalHeap="10000">
+    </cache>
 </ehcache>
