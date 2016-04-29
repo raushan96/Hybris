@@ -1,12 +1,19 @@
-USE hybris;
+# catalog -> set of root categories(root = true), site
+# category -> set of catalogs, set of parent categories, set of sites from catalogs, list of child products
+# product -> list of products, set of sites, prices
+# sku -> parent product
 
+USE hybris;
 CREATE TABLE IF NOT EXISTS hc_catalog (
   id            VARCHAR(20),
   display_name  VARCHAR(50)                        NULL,
+  code          VARCHAR(50)                        NOT NULL,
   creation_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  CONSTRAINT hc_catalog_pk PRIMARY KEY (id)
+  CONSTRAINT hc_catalog_pk PRIMARY KEY (id),
+  CONSTRAINT uq_catalog_code UNIQUE (code)
 );
 
+#parent catalogs?
 CREATE TABLE IF NOT EXISTS hc_category (
   id               VARCHAR(20),
   catalog_id       VARCHAR(20) NOT NULL,
@@ -14,12 +21,13 @@ CREATE TABLE IF NOT EXISTS hc_category (
   long_description TEXT        NULL,
   parent_cat_id    VARCHAR(20) NULL,
   root_category    BOOLEAN DEFAULT 0,
+  creation_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
   CONSTRAINT hc_category_pk PRIMARY KEY (id),
   CONSTRAINT hc_category_catalog_fk FOREIGN KEY (catalog_id) REFERENCES hc_catalog (id),
   CONSTRAINT hc_category_pcat_fk FOREIGN KEY (parent_cat_id) REFERENCES hc_category (id)
 );
 
-# height, weight, gender, producer, code, catalogs, enabled, catalogs
+# height, weight, gender, producer, code, catalogs, enabled, catalogs, attributes
 CREATE TABLE IF NOT EXISTS hc_product (
   id              VARCHAR(20),
   display_name    VARCHAR(50)  NULL,
@@ -32,6 +40,8 @@ CREATE TABLE IF NOT EXISTS hc_product (
   brand           VARCHAR(80)  NULL,
   CONSTRAINT hc_product_pk PRIMARY KEY (id)
 );
+
+#sku table - size, color, site, code, personalizable, visible, origin
 
 CREATE INDEX hc_prd_type_idx ON hc_product (product_type);
 
@@ -55,20 +65,11 @@ CREATE TABLE IF NOT EXISTS hc_price_list (
 );
 
 CREATE TABLE IF NOT EXISTS hc_price (
-  id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
-  price_list_id VARCHAR(20) NOT NULL,
-  list_price DECIMAL(15 , 3 ) UNSIGNED NOT NULL,
-  product_id VARCHAR(20),
+  id            BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+  price_list_id VARCHAR(20)                    NOT NULL,
+  list_price    DECIMAL(15, 3) UNSIGNED        NOT NULL,
+  product_id    VARCHAR(20),
   CONSTRAINT hc_price_pk PRIMARY KEY (id),
   CONSTRAINT hc_price_list_fk FOREIGN KEY (price_list_id) REFERENCES hc_price_list (id),
   CONSTRAINT hc_price_prod_fk FOREIGN KEY (product_id) REFERENCES hc_product (id)
 );
-
-# CREATE TABLE IF NOT EXISTS dcs_claimable (
-#   claimable_id    BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
-#   type            INTEGER                        NOT NULL,
-#   status          INTEGER                        NULL,
-#   start_date      TIMESTAMP                      NULL,
-#   expiration_date TIMESTAMP                      NULL,
-#   CONSTRAINT dcs_claimable_pk PRIMARY KEY (claimable_id)
-# );
