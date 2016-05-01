@@ -89,7 +89,7 @@
     <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation" value="classpath:ehcache/ehcache.xml"/>
         <!--<property name="cacheManagerName" value="hybrisManager"/>-->
-        <!--<property name="acceptExisting" value="true"/>-->
+        <property name="acceptExisting" value="true"/>
         <property name="shared" value="true"/>
     </bean>
 

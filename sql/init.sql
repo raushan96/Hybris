@@ -1,15 +1,13 @@
-#
-#password - andre 9cf7e1
-INSERT INTO `hybris`.`hp_site` (`id`, `display_name`, `locale`, `enabled`) VALUES ('hybris-site', 'Hybris', 'en_US', '1');
-INSERT INTO `hybris`.`hp_site_urls` (`id`, `url`) VALUES ('hybris-site', 'localhost');
+use hybris;
 
-insert into hp_user(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
+# profile
+insert into hp_profile(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
 values (1, '$2a$10$zdP5J.iGZkWAhLjuGGQww.l7X.m2datdggOd9mMkzliDj2NY6hbAS', 'andre', 'evans', 0, 'andrey.evans@gmail.com', to_date('03-MAR-1994'), 1);
-insert into hp_user(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
+insert into hp_profile(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
 values (2, '$2a$10$zdP5J.iGZkWAhLjuGGQww.l7X.m2datdggOd9mMkzliDj2NY6hbAS', 'andre1', 'evans1', 1, 'andre@gmail.com', to_date('02-MAR-1991'), 0);
-insert into hp_user_address(address_id, user_id, company_name, city, postal_code, country_code, address, state)
+insert into hp_address(address_id, user_id, company_name, city, postal_code, country_code, address, state)
 values(1, 1, 'ExpertSoft', 'Minsk', '123123', 'US', 'korzh 5 d', '2');
-insert into hp_user_address(address_id, user_id, company_name, city, postal_code, country_code, address, state)
+insert into hp_address(address_id, user_id, company_name, city, postal_code, country_code, address, state)
 values(2, 1, 'ExpertSoft', 'Grodno', '123412', 'US', 'malin 6 c', '3');
 
 insert into dps_giftlist(gift_list_id, is_published, creation_date, shipping_addr_id)
@@ -19,41 +17,51 @@ values (1, 1, 'gift item 1', 'test description', 1, 0);
 insert into dps_giftitem(gift_item_id, gift_list_id, display_name, description, quantity_desired, quantity_purchased)
 values (2, 1, 'gift item 2', 'test description new', 3, 0);
 
-insert into hp_user_address(address_id, company_name, city, postal_code, country, address)
+insert into hp_address(address_id, company_name, city, postal_code, country, address)
 values(3, 'ExpertSoft', 'Mensk', '123412', 'Belarus', 'xz 8 h');
 
 commit;
 
-# --catalog
-insert into dcs_catalog(catalog_id, display_name, creation_date)
-values('spices', 'Spice catalog', to_date('03-MAR-2015'));
-insert into dcs_category(category_id, catalog_id, display_name, root_category)
-values('root-cat', 'spices', 'Root Spice Category', 1);
-insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
-values('a1', 'spices', 'Spice One', 'root-cat');
-insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
-values('a2', 'spices', 'Spice Two', 'root-cat');
-insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
-values('a3', 'spices', 'Spice Three', 'root-cat');
-insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
-values('a4', 'spices', 'Spice Four', 'root-cat');
-insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
-values('a5', 'spices', 'Spice Five', 'root-cat');
-insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
-values('a6', 'spices', 'Spice Six', 'root-cat');
-insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
-values('a7', 'spices', 'Spice Seven', 'root-cat');
+# catalog
+INSERT INTO `hybris`.`hc_catalog` (`id`, `display_name`, `code`) VALUES ('spices', 'Spice Catalog', 'hyb_cat');
+insert into hc_category(id, display_name, sites, root_category)
+values('root-cat', 'Root Spice Category', 'hybris-site, natura-site, chile-site', 1);
+INSERT INTO `hybris`.`hc_catalog_categories` (`catalog_id`, `category_id`) VALUES ('spices', 'root-cat');
 
-insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
-values('b1', 'spices', 'Spice b1', 'a1');
-insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
-values('b2', 'spices', 'Spice b2', 'a1');
-insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
-values('b3', 'spices', 'Spice b3', 'a1');
-insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
-values('b4', 'spices', 'Spice b4', 'a2');
-insert into dcs_category(category_id, catalog_id, display_name, parent_cat_id)
-values('b5', 'spices', 'Spice b5', 'a3');
+
+insert into hc_category(id, display_name, parent_cat_id)
+values('a1', 'Spice One', 'root-cat');
+insert into hc_category(id, display_name, parent_cat_id)
+values('a2', 'Spice Two', 'root-cat');
+insert into hc_category(id, display_name, parent_cat_id)
+values('a3', 'Spice Three', 'root-cat');
+insert into hc_category(id, display_name, parent_cat_id)
+values('a4', 'Spice Four', 'root-cat');
+insert into hc_category(id, display_name, parent_cat_id)
+values('a5', 'Spice Five', 'root-cat');
+insert into hc_category(id, display_name, parent_cat_id)
+values('a6', 'Spice Six', 'root-cat');
+insert into hc_category(id, display_name, parent_cat_id)
+values('a7', 'Spice Seven', 'root-cat');
+
+insert into hc_category(id, display_name, parent_cat_id)
+values('b1', 'Spice b1', 'a1');
+insert into hc_category(id, display_name, parent_cat_id)
+values('b2', 'Spice b2', 'a1');
+insert into hc_category(id, display_name, parent_cat_id)
+values('b3', 'Spice b3', 'a1');
+insert into hc_category(id, display_name, parent_cat_id)
+values('b4', 'Spice b4', 'a2');
+insert into hc_category(id, display_name, parent_cat_id)
+values('b5', 'Spice b5', 'a3');
+
+commit;
+
+# site
+INSERT INTO `hybris`.`hs_site` (`id`, `display_name`, `locale`, `enabled`, `catalog_id`) VALUES ('hybris-site', 'Hybris', 'en_US', '1', 'spices');
+INSERT INTO `hybris`.`hs_site_urls` (`id`, `url`) VALUES ('hybris-site', 'localhost');
+
+commit;
 
 INSERT INTO dcs_product (product_id,display_name,description,product_type,brand) VALUES (100,'Paloma','facilisis vitae, orci. Phasellus dapibus quam quis diam. Pellentesque senectus ',4,'Elizabeth Lancaster');
 INSERT INTO dcs_product (product_id,display_name,description,product_type,brand) VALUES (103,'Honorato','parturient montes, nascetur ridiculus mus. Aenean eget magna.Venenatis lacus',5,'Ima Bruce');
@@ -86,37 +94,37 @@ INSERT INTO dcs_product (product_id,display_name,description,product_type,brand)
 INSERT INTO dcs_product (product_id,display_name,description,product_type,brand) VALUES (184,'Nasim','lacus. Mauris non dui nec urna suscipit nonummy. Fusce fermentum fermentum arcu. Vestibulum an',5,'Sade Burch');
 INSERT INTO dcs_product (product_id,display_name,description,product_type,brand) VALUES (187,'Alexandra','tellus. Phasellus elit pede, malesuada vel, venenatis vel. Donec consectetuer mauris id',2,'Hiroko Gonzalez');
 
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b1', 100);
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b1', 103);
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b1', 106);
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b1', 109);
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b1', 112);
 
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b2', 115);
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b2', 118);
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b2', 121);
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b2', 124);
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b2', 127);
 
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b3', 130);
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b3', 133);
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b3', 136);
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b3', 139);
-insert into dcs_category_products (category_id, product_id)
+insert into hc_category_products (id, product_id)
 values('b3', 142);
 
 insert into dcs_price_list (price_list_id, base_price_list, description, locale, currency)

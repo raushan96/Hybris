@@ -1,5 +1,6 @@
-package de.andre.entity.profile;
+package de.andre.entity.site;
 
+import de.andre.entity.catalog.Catalog;
 import de.andre.multisite.Site;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -12,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Entity
-@Table(name = "hp_site", schema = "hybris")
+@Table(name = "hs_site", schema = "hybris")
 public class SiteConfiguration implements Site {
     private String id;
     private String displayName;
@@ -23,8 +24,11 @@ public class SiteConfiguration implements Site {
     private Set<String> urls;
     private Map<String, String> attributes;
 
+    private Catalog defaultCatalog;
+
     //define version instead?
     @Id
+    @Column(name = "id")
     public String getId() {
         return id;
     }
@@ -35,7 +39,7 @@ public class SiteConfiguration implements Site {
 
     @ElementCollection
     @CollectionTable(
-            name = "hp_site_urls",
+            name = "hs_site_urls",
             joinColumns = @JoinColumn(name = "id")
     )
     @Column(name = "url")
@@ -49,7 +53,7 @@ public class SiteConfiguration implements Site {
 
     @ElementCollection
     @CollectionTable(
-            name = "hp_site_attributes",
+            name = "hs_site_attributes",
             joinColumns = @JoinColumn(name = "site_id")
     )
     @MapKeyColumn(name = "attr_key")
@@ -60,6 +64,16 @@ public class SiteConfiguration implements Site {
 
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "catalog_id")
+    public Catalog getDefaultCatalog() {
+        return defaultCatalog;
+    }
+
+    public void setDefaultCatalog(Catalog defaultCatalog) {
+        this.defaultCatalog = defaultCatalog;
     }
 
     @Column(name = "display_name")

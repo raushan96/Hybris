@@ -1,6 +1,6 @@
 package de.andre.multisite;
 
-import de.andre.entity.profile.SiteConfiguration;
+import de.andre.entity.site.SiteConfiguration;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 

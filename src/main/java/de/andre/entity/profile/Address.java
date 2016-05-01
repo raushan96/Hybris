@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import de.andre.entity.dto.View;
 import de.andre.entity.enums.State;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -11,7 +12,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 @Table(name = "hp_address", schema = "hybris")
 public class Address extends ProfileBaseEntity {
@@ -26,6 +27,7 @@ public class Address extends ProfileBaseEntity {
     private Profile profile;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "profile_id")
     public Profile getProfile() {
         return profile;
     }

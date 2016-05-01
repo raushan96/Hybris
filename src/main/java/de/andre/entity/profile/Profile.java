@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@NaturalIdCache
 @Entity
 @Table(name = "hp_profile", schema = "hybris")
 public class Profile extends ProfileBaseEntity {
@@ -89,6 +90,7 @@ public class Profile extends ProfileBaseEntity {
         this.password = password;
     }
 
+    @NaturalId
     @NotBlank
     @Length(min = 7, max = 255)
     @Column(name = "email")

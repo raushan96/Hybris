@@ -2,6 +2,8 @@ package de.andre.web;
 
 import de.andre.entity.enums.Gender;
 import de.andre.entity.profile.Profile;
+import de.andre.repository.catalog.CatalogHRepository;
+import de.andre.repository.catalog.CategoryHRepository;
 import de.andre.repository.profile.ProfileRepository;
 import de.andre.repository.profile.SiteRepository;
 import org.slf4j.Logger;
@@ -35,6 +37,12 @@ public class WelcomeController {
     private SiteRepository siteRepository;
 
     @Autowired
+    private CategoryHRepository categoryRepository;
+
+    @Autowired
+    private CatalogHRepository catalogRepository;
+
+    @Autowired
     private MessageSource messageSource;
 
     @Autowired
@@ -51,9 +59,11 @@ public class WelcomeController {
         this.messageSource = messageSource;
     }
 
+    @Transactional
     @RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
     public ModelAndView welcome(@RequestParam(value = "name", defaultValue = "world") final String name) {
         log.debug("welcome() - name {}", name);
+        categoryRepository.findOne("root-cat");
         final ModelAndView model = new ModelAndView();
         model.setViewName("index");
         model.addObject("name", String.format(template, name) + "nda");

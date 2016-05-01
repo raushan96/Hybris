@@ -1,6 +1,6 @@
 package de.andre.multisite;
 
-import de.andre.entity.profile.SiteConfiguration;
+import de.andre.entity.site.SiteConfiguration;
 import de.andre.repository.profile.SiteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
