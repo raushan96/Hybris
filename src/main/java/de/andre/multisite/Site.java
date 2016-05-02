@@ -10,6 +10,7 @@ import static de.andre.utils.HybrisConstants.EMPTY_STRING;
 
 public interface Site {
     String getId();
+    String catalogId();
     String getDisplayName();
     Locale getLocale();
     boolean isEnabled();
@@ -22,6 +23,11 @@ public interface Site {
         @Override
         public String getId() {
             return EMPTY_SITE_ID;
+        }
+
+        @Override
+        public String catalogId() {
+            return EMPTY_STRING;
         }
 
         @Override

@@ -5,9 +5,11 @@ import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.util.comparator.NullSafeComparator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -154,4 +156,12 @@ public class Category {
         result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
         return result;
     }
+
+    public static final Comparator<Category> NAME_COMPARATOR = new NullSafeComparator<>(
+            new Comparator<Category>() {
+                @Override
+                public int compare(final Category cat1, final Category cat2) {
+                    return cat1.getDisplayName().compareTo(cat2.getDisplayName());
+                }
+            }, true);
 }

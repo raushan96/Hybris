@@ -3,6 +3,7 @@ package de.andre.web.controller.catalog;
 import de.andre.service.catalog.CatalogTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,21 +20,19 @@ public class CatalogController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView catalogMenu() {
-        final ModelAndView mav = new ModelAndView("catalog/catalog");
-        mav.addObject("rootCats", catalogTools.getRootChildCategories());
-        return mav;
+    public String catalogMenu(final Model map) {
+        map.addAttribute("rootCats", catalogTools.getRootChildCategories());
+        return "catalog/catalog";
     }
 
     @RequestMapping(value = "/{catalogLink}", method = RequestMethod.GET)
-    public ModelAndView showCategory(@PathVariable("catalogLink") final String catalogLink) {
-        final ModelAndView mav = new ModelAndView("catalog/category");
+    public String showCategory(@PathVariable("catalogLink") final String catalogLink, final Model map) {
         final String catId = catalogLink.split("-")[1];
-        catalogTools.populateCategoryMap(catId, mav);
+        catalogTools.populateCategoryMap(catId, map);
 
-        if((Boolean)mav.getModel().get("error")) {
-            mav.setViewName("index");
-        }
-        return mav;
+//        if((Boolean)mav.getModel().get("error")) {
+//            mav.setViewName("index");
+//        }
+        return "catalog/category";
     }
 }

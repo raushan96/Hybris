@@ -2,8 +2,8 @@ package de.andre.web;
 
 import de.andre.entity.enums.Gender;
 import de.andre.entity.profile.Profile;
-import de.andre.repository.catalog.CatalogHRepository;
-import de.andre.repository.catalog.CategoryHRepository;
+import de.andre.repository.catalog.CatalogRepository;
+import de.andre.repository.catalog.CategoryRepository;
 import de.andre.repository.profile.ProfileRepository;
 import de.andre.repository.profile.SiteRepository;
 import org.slf4j.Logger;
@@ -37,10 +37,10 @@ public class WelcomeController {
     private SiteRepository siteRepository;
 
     @Autowired
-    private CategoryHRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    private CatalogHRepository catalogRepository;
+    private CatalogRepository catalogRepository;
 
     @Autowired
     private MessageSource messageSource;

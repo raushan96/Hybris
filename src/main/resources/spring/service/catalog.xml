@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="productCatalog" class="de.andre.repository.catalog.ProductCatalog">
+        <constructor-arg name="catalogRepository" ref="catalogRepository"/>
+        <constructor-arg name="categoryRepository" ref="categoryRepository"/>
+    </bean>
+
+    <bean id="pricesRepository" class="de.andre.repository.catalog.PricesRepository">
+        <constructor-arg name="priceRepository" ref="priceRepository"/>
+        <constructor-arg name="priceListRepository" ref="priceListRepository"/>
+    </bean>
+
+    <bean id="catalogTools" class="de.andre.service.catalog.CatalogTools">
+        <constructor-arg name="productCatalog" ref="productCatalog"/>
+        <constructor-arg name="pricesRepository" ref="pricesRepository"/>
+        <property name="defaultCatalogId" value="spices"/>
+    </bean>
+</beans>

@@ -37,6 +37,11 @@ public class SiteConfiguration implements Site {
         this.id = id;
     }
 
+    @Override
+    public String catalogId() {
+        return getDefaultCatalog() != null ? getDefaultCatalog().getId() : null;
+    }
+
     @ElementCollection
     @CollectionTable(
             name = "hs_site_urls",

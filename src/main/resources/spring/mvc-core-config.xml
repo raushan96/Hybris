@@ -15,6 +15,7 @@
     <import resource="classpath:spring/utils/validation.xml"/>
     <import resource="classpath:spring/data/data-source-config.xml"/>
     <import resource="classpath:spring/service/profile.xml"/>
+    <import resource="classpath:spring/service/catalog.xml"/>
     <import resource="classpath:spring/service/multisite.xml"/>
 
     <context:component-scan

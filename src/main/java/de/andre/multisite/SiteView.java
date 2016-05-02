@@ -11,6 +11,7 @@ import java.util.Set;
 
 public class SiteView implements Site {
     private String id;
+    private String catId;
     private String displayName;
     private Locale locale;
     private boolean enabled;
@@ -21,6 +22,7 @@ public class SiteView implements Site {
     public SiteView(final SiteConfiguration siteConfiguration) {
         Assert.notNull(siteConfiguration);
         BeanUtils.copyProperties(siteConfiguration, this);
+        catId = siteConfiguration.catalogId();
 
         this.attributes = (siteConfiguration.getAttributes() != null && !siteConfiguration.getAttributes().isEmpty()) ?
                 Collections.unmodifiableMap(siteConfiguration.getAttributes()) :
@@ -34,6 +36,11 @@ public class SiteView implements Site {
     @Override
     public String getId() {
         return this.id;
+    }
+
+    @Override
+    public String catalogId() {
+        return catId;
     }
 
     @Override
