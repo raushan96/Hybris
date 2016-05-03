@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Set;
 
 public interface CatalogRepository extends JpaRepository<Catalog, String> {
-    @Query("select cat from Category cat where cat.catalogs and cat.rootCategory = true " +
-            "order by cat.displayName")
+    @Query("select ctl.allChildCategories as cats from Catalog ctl where cats.rootCategory = true " +
+            "order by cats.displayName")
     Set<Category> rootCatalogCategories(@Param("ctlId") String ctlId);
 
-    @Query(value = "select cat.category_id, cat.display_name from dcs_category cat where cat.parent_cat_id = :catId", nativeQuery = true)
+    @Query(value = "select cat.id, cat.display_name from hc_category cat where cat.parent_cat_id = :catId", nativeQuery = true)
     List<String[]> getSubCategoriesIdsAndNames(@Param("catId") String catId);
 
 /*    @Query("select cat from Category cat join fetch cat.childCategories where cat.categoryId = :catId")
@@ -23,6 +23,6 @@ public interface CatalogRepository extends JpaRepository<Catalog, String> {
     @Query(value = "select count(*) from dcs_category where parent_cat_id = :catId", nativeQuery = true)
     Integer getChildCatsCount(@Param("catId") String catId);
 
-    @Query("select cat.parentCategory from Category cat where cat.categoryId = :catId")
-    Catalog getCategoryParent(@Param("catId") String catId);
+    @Query("select cat.parentCategory from Category cat where cat.id = :catId")
+    Category categoryParent(@Param("catId") String catId);
 }

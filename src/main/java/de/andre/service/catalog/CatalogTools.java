@@ -2,14 +2,12 @@ package de.andre.service.catalog;
 
 import de.andre.entity.catalog.Category;
 import de.andre.entity.catalog.Product;
-import de.andre.entity.dto.PricedProductDTO;
 import de.andre.multisite.SiteManager;
 import de.andre.repository.catalog.PricesRepository;
 import de.andre.repository.catalog.ProductCatalog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -18,9 +16,6 @@ public class CatalogTools {
     private static final Logger logger = LoggerFactory.getLogger(CatalogTools.class);
 
     private String defaultCatalogId;
-
-    private static final String BASE_PRICE_LIST = "base-list";
-    private static final String SALE_PRICE_LIST = "sales-list";
 
     private final ProductCatalog productCatalog;
     private final PricesRepository pricesRepository;
@@ -31,103 +26,70 @@ public class CatalogTools {
     }
 
     @Transactional(readOnly = true)
-    public void populateCategoryMap(final String catId, final Model map) {
-        final Category parentCategory = catalogRepository.getCategoryParent(catId);
-        final String filterCatId = getFilterCategoryId(catId, parentCategory);
-
-        if (filterCatId == null || parentCategory == null || ROOT_CAT_ID.equals(filterCatId)) {
-            map.addAttribute("error", true);
-            return;
+    public Map<String, Object> populateCategoryMap(final String catId) {
+        final Category cat;
+        if (!StringUtils.hasLength(catId) || (cat = productCatalog.getCategoryRepository().findOne(catId)) == null) {
+            logger.debug("Empty or invalid category id {}", catId);
+            return Collections.emptyMap();
         }
+
+        final Category parentCat = cat.getParentCategory();
+        final String filterCatId = getFilterCategoryId(cat, parentCat);
+
         final List<Product> allProducts = getProductsByCatId(catId);
-        if (allProducts == null || allProducts.size() == 0) {
+        if (allProducts.isEmpty()) {
             logger.warn("Category {} has no products", catId);
         } else {
             Collections.sort(allProducts);
         }
 
         final Map<String, String> categoryIdNameMap = getSubcategoriesNames(filterCatId);
-        ;
         if (categoryIdNameMap == null || categoryIdNameMap.isEmpty()) {
             logger.warn("No subcategories found for category {}, returning without processing", catId);
         }
-        map.addAttribute("products", allProducts);
-        map.addAttribute("catsNameId", categoryIdNameMap);
-        map.addAttribute("parentCat", parentCategory);
-        map.addAttribute("error", false);
+
+        final Map<String, Object> result = new HashMap<>(5);
+        result.put("products", allProducts);
+        result.put("catsNameId", categoryIdNameMap);
+        result.put("parentCat", parentCat);
+
+        return result;
     }
 
-    private String getFilterCategoryId(final String catId, final Category parentCategory) {
-        if (StringUtils.hasText(catId)) {
-            Integer childCount = catalogRepository.getChildCatsCount(catId);
-
-            if (childCount > 0) {
-                return catId;
-            } else {
-                if (parentCategory != null) {
-                    return parentCategory.getCategoryId();
-                }
+    private String getFilterCategoryId(final Category category, final Category parentCategory) {
+        if (!category.getChildCategories().isEmpty()) {
+            return category.getId();
+        } else {
+            if (parentCategory != null) {
+                return parentCategory.getId();
             }
         }
 
-        return null;
+        logger.debug("No child or parent categories for {} category", category.getId());
+        return category.getId();
     }
 
-    private List<DcsProduct> getProductsByCatId(final String catId) {
-        try {
-            final List<DcsProduct> allProducts = productRepository.getProductsWithAncestorsCat(catId);
-            final List<PricedProductDTO> productPrices = priceRepository.getProductsPrices(allProducts);
-
-            if (productPrices != null) {
-                for (final PricedProductDTO productPrice : productPrices) {
-                    if (BASE_PRICE_LIST.equals(productPrice.getPriceList())) {
-                        for (final DcsProduct dcsProduct : allProducts) {
-                            if (dcsProduct.getProductId().equals(productPrice.getProductId())) {
-                                dcsProduct.setBasePrice(productPrice.getPrice());
-                                break;
-                            }
-                        }
-                    } else if (SALE_PRICE_LIST.equals(productPrice.getPriceList())) {
-                        for (final DcsProduct dcsProduct : allProducts) {
-                            if (dcsProduct.getProductId().equals(productPrice.getProductId())) {
-                                dcsProduct.setSalePrice(productPrice.getPrice());
-                                break;
-                            }
-                        }
-                    } else {
-                        logger.warn("Price list wasn't found for: " + productPrice.getProductId());
-                    }
-                }
-            }
-            return allProducts;
-        } catch (Exception e) {
-            logger.error(e.toString());
-        }
-
-        return Collections.emptyList();
+    private List<Product> getProductsByCatId(final String catId) {
+        final List<Product> allProducts = productCatalog.getProductRepository()
+                .getProductsWithAncestorsCat(catId);
+        return allProducts;
     }
 
     private Map<String, String> getSubcategoriesNames(final String catId) {
-        if (StringUtils.hasText(catId)) {
-            try {
-                final List<String[]> childCategories = catalogRepository.getSubCategoriesIdsAndNames(catId);
-                final Map<String, String> categoryIdNameMap = new LinkedHashMap<>();
+        final List<String[]> childCategories = productCatalog.getCatalogRepository()
+                .getSubCategoriesIdsAndNames(catId);
 
-                if (childCategories.isEmpty()) {
-                    logger.warn("No child categories found for category: ", catId);
-                    return null;
-                }
-
-                for (final Object[] category : childCategories) {
-                    categoryIdNameMap.put((String) category[0], (String) category[1]);
-                }
-                return categoryIdNameMap;
-            } catch (Exception e) {
-                logger.error(e.toString());
-            }
+        if (childCategories.isEmpty()) {
+            logger.debug("No child categories found for category: {}", catId);
+            return Collections.emptyMap();
         }
 
-        return Collections.emptyMap();
+        final Map<String, String> categoryIdNameMap = new LinkedHashMap<>(childCategories.size());
+        for (final Object[] category : childCategories) {
+            categoryIdNameMap.put(
+                    String.valueOf(category[0]), String.valueOf(category[1]));
+        }
+        return categoryIdNameMap;
     }
 
     @Transactional(readOnly = true)

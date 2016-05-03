@@ -13,7 +13,7 @@ import java.util.List;
 @Immutable
 @Entity
 @Table(name = "hc_product", schema = "hybris")
-public class Product {
+public class Product implements Comparable<Product> {
     private String id;
     private String displayName;
     private String productCode;
@@ -149,5 +149,10 @@ public class Product {
         result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
         result = 31 * result + (expirationDate != null ? expirationDate.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int compareTo(Product pr) {
+        return getDisplayName().compareTo(pr.getDisplayName());
     }
 }

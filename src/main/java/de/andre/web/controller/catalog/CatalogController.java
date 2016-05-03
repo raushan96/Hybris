@@ -28,11 +28,8 @@ public class CatalogController {
     @RequestMapping(value = "/{catalogLink}", method = RequestMethod.GET)
     public String showCategory(@PathVariable("catalogLink") final String catalogLink, final Model map) {
         final String catId = catalogLink.split("-")[1];
-        catalogTools.populateCategoryMap(catId, map);
+        map.addAllAttributes(catalogTools.populateCategoryMap(catId));
 
-//        if((Boolean)mav.getModel().get("error")) {
-//            mav.setViewName("index");
-//        }
         return "catalog/category";
     }
 }
