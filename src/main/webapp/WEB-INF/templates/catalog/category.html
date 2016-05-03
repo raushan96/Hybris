@@ -6,8 +6,8 @@
         <!--<span th:text="${session}"/>-->
         <div class="col-md-3">
             <p class="lead">Categories</p>
-            <div class="list-group" th:if="${parentCat.categoryId ne 'root-cat'}">
-                <a th:href="@{/catalog/category-} + ${parentCat.categoryId}" th:text="${parentCat.displayName}" class="list-group-item list-group-item-warning">Category</a>
+            <div class="list-group" th:if="${parentCat.id ne 'root-cat'}">
+                <a th:href="@{/catalog/category-} + ${parentCat.id}" th:text="${parentCat.displayName}" class="list-group-item list-group-item-warning">Category</a>
             </div>
             <div class="list-group" th:each="catEntry : ${catsNameId}">
                 <a th:href="@{/catalog/category-} + ${catEntry.key}" th:text="${catEntry.value}" class="list-group-item">Category</a>
@@ -19,10 +19,10 @@
                 <div class="col-sm-4 col-lg-4 col-md-4" th:each="prd : ${products}">
                     <div class="thumbnail">
                         <img src="http://placehold.it/320x150" th:alt-title="${prd.displayName}"/>
-                        <div class="caption"
-                             th:with="prdBasePrice=${prd.salePrice != null ? '&lt;s&gt;' + '$' + prd.basePrice + '&lt;/s&gt;': '$' + prd.basePrice}">
-                            <h4 class="pull-right" th:utext="${prdBasePrice}">$24.99</h4>
-                            <h4 class="pull-right" th:if="${prd.salePrice != null}" th:text="'$' + ${prd.salePrice} + '&nbsp;'">$24.99</h4>
+                        <div class="caption">
+                             <!--th:with="prdBasePrice=${prd.salePrice != null ? '&lt;s&gt;' + '$' + prd.basePrice + '&lt;/s&gt;': '$' + prd.basePrice}">-->
+                            <!--<h4 class="pull-right" th:utext="${prdBasePrice}">$24.99</h4>-->
+                            <!--<h4 class="pull-right" th:if="${prd.salePrice != null}" th:text="'$' + ${prd.salePrice} + '&nbsp;'">$24.99</h4>-->
                             <h4><a href="#" th:text="${prd.displayName}">Product</a>
                             </h4>
                             <p th:text="${prd.description}">See more</p>
@@ -32,8 +32,8 @@
                                 <span class="number-plus">+</span>
                             </div>
                             <br/>
-                                <a th:href="@{${#httpServletRequest.servletPath}} + '/pId-' + ${prd.productId}" class="btn btn-primary addQuantity">Add to cart</a>
-                                <a th:href="@{${#httpServletRequest.servletPath}} + '/prd-' + ${prd.productId}" class="btn btn-default">Product Page</a>
+                                <a th:href="@{${#httpServletRequest.servletPath}} + '/pId-' + ${prd.id}" class="btn btn-primary addQuantity">Add to cart</a>
+                                <a th:href="@{${#httpServletRequest.servletPath}} + '/prd-' + ${prd.id}" class="btn btn-default">Product Page</a>
                         </div>
                         <div class="ratings">
                             <p class="pull-right">15 reviews</p>

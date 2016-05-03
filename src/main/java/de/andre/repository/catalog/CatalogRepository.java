@@ -10,10 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface CatalogRepository extends JpaRepository<Catalog, String> {
-    @Query("select ctl.allChildCategories as cats from Catalog ctl where cats.rootCategory = true " +
-            "order by cats.displayName")
-    Set<Category> rootCatalogCategories(@Param("ctlId") String ctlId);
-
     @Query(value = "select cat.id, cat.display_name from hc_category cat where cat.parent_cat_id = :catId", nativeQuery = true)
     List<String[]> getSubCategoriesIdsAndNames(@Param("catId") String catId);
 

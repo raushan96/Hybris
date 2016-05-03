@@ -8,6 +8,7 @@ import de.andre.repository.catalog.ProductCatalog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -35,13 +36,7 @@ public class CatalogTools {
 
         final Category parentCat = cat.getParentCategory();
         final String filterCatId = getFilterCategoryId(cat, parentCat);
-
-        final List<Product> allProducts = getProductsByCatId(catId);
-        if (allProducts.isEmpty()) {
-            logger.warn("Category {} has no products", catId);
-        } else {
-            Collections.sort(allProducts);
-        }
+        final List<Product> allProducts = getProductsWithAncestorsCat(cat);
 
         final Map<String, String> categoryIdNameMap = getSubcategoriesNames(filterCatId);
         if (categoryIdNameMap == null || categoryIdNameMap.isEmpty()) {
@@ -56,6 +51,35 @@ public class CatalogTools {
         return result;
     }
 
+    private List<Product> getProductsWithAncestorsCat(final Category rootCategory) {
+        final List<Product> resultList = new ArrayList<>(30);
+        final Set<String> seenSoFar = new HashSet<>();
+
+        processCategory(rootCategory, seenSoFar, resultList);
+
+        if (!resultList.isEmpty()) {
+            Collections.sort(resultList);
+        }
+        return resultList;
+    }
+
+    private void processCategory(final Category category, final Set<String> seenSoFar,
+            final List<Product> resultList) {
+        if (seenSoFar.contains(category.getId())) {
+            return;
+        }
+        seenSoFar.add(category.getId());
+
+        if (!CollectionUtils.isEmpty(category.getProducts())) {
+            resultList.addAll(category.getProducts());
+        }
+        if (!CollectionUtils.isEmpty(category.getChildCategories())) {
+            for (final Category subcategory : category.getChildCategories()) {
+                processCategory(subcategory, seenSoFar, resultList);
+            }
+        }
+    }
+
     private String getFilterCategoryId(final Category category, final Category parentCategory) {
         if (!category.getChildCategories().isEmpty()) {
             return category.getId();
@@ -67,12 +91,6 @@ public class CatalogTools {
 
         logger.debug("No child or parent categories for {} category", category.getId());
         return category.getId();
-    }
-
-    private List<Product> getProductsByCatId(final String catId) {
-        final List<Product> allProducts = productCatalog.getProductRepository()
-                .getProductsWithAncestorsCat(catId);
-        return allProducts;
     }
 
     private Map<String, String> getSubcategoriesNames(final String catId) {
@@ -99,8 +117,15 @@ public class CatalogTools {
             logger.warn("Site {} doesn't have catalog, using default one", SiteManager.getSiteId());
             catalogId = getDefaultCatalogId();
         }
-        return productCatalog.getCatalogRepository()
-                .rootCatalogCategories(catalogId);
+
+        final Category rootCategory = productCatalog.getCategoryRepository()
+                .rootCatalogCategory(catalogId);
+        if (rootCategory == null) {
+            logger.warn("No root category configured for {} catalog", catalogId);
+            return Collections.emptySet();
+        }
+
+        return rootCategory.getChildCategories();
     }
 
     @Transactional(readOnly = true)

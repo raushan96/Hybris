@@ -38,6 +38,8 @@ public abstract class RepositoryAdapter {
                                 Function.identity())
                         )
         );
+
+        logger.debug("{} component startup complete", this.getClass().getSimpleName());
     }
 
     protected Session getSession() {
