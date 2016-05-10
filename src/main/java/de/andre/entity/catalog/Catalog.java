@@ -3,6 +3,7 @@ package de.andre.entity.catalog;
 import de.andre.entity.site.SiteConfiguration;
 import de.andre.entity.types.CommaDelimitedStringType;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Immutable
 @Entity
 @Table(name = "hc_catalog", schema = "hybris")

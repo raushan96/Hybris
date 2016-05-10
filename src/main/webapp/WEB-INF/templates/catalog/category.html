@@ -1,39 +1,46 @@
 <!DOCTYPE html>
 <html layout:decorator="index" xmlns:th="http://www.thymeleaf.org">
-    <body>
-    <div th:remove="tag" layout:fragment="content">
+<body>
+<div th:remove="tag" layout:fragment="content">
     <div class="row">
         <!--<span th:text="${session}"/>-->
         <div class="col-md-3">
             <p class="lead">Categories</p>
             <div class="list-group" th:if="${parentCat.id ne 'root-cat'}">
-                <a th:href="@{/catalog/category-} + ${parentCat.id}" th:text="${parentCat.displayName}" class="list-group-item list-group-item-warning">Category</a>
+                <a th:href="@{/catalog/category-} + ${parentCat.id}" th:text="${parentCat.displayName}"
+                   class="list-group-item list-group-item-warning">Category</a>
             </div>
             <div class="list-group" th:each="catEntry : ${catsNameId}">
-                <a th:href="@{/catalog/category-} + ${catEntry.key}" th:text="${catEntry.value}" class="list-group-item">Category</a>
+                <a th:href="@{/catalog/category-} + ${catEntry.key}" th:text="${catEntry.value}"
+                   class="list-group-item">Category</a>
             </div>
         </div>
 
         <div class="col-md-9">
             <div class="row">
                 <div class="col-sm-4 col-lg-4 col-md-4" th:each="prd : ${products}">
-                    <div class="thumbnail">
+                    <div class="thumbnail" th:if="${#maps.containsKey(prices, prd.id)}">
                         <img src="http://placehold.it/320x150" th:alt-title="${prd.displayName}"/>
-                        <div class="caption">
-                             <!--th:with="prdBasePrice=${prd.salePrice != null ? '&lt;s&gt;' + '$' + prd.basePrice + '&lt;/s&gt;': '$' + prd.basePrice}">-->
-                            <!--<h4 class="pull-right" th:utext="${prdBasePrice}">$24.99</h4>-->
-                            <!--<h4 class="pull-right" th:if="${prd.salePrice != null}" th:text="'$' + ${prd.salePrice} + '&nbsp;'">$24.99</h4>-->
-                            <h4><a href="#" th:text="${prd.displayName}">Product</a>
-                            </h4>
+                        <div class="caption"
+                             th:with="prdPrice=${prices[prd.id]}, onSale=${prdPrice.salePrice != null and prdPrice.salePrice > 0}">
+                            <h4 class="pull-right"
+                                th:utext="${onSale ? '&lt;s&gt;' + '$' + prdPrice.basePrice + '&lt;/s&gt;' : '$' + prdPrice.basePrice}">
+                                $24.99</h4>
+                            <h4 class="pull-right" th:if="${onSale}" th:text="'$' + ${prdPrice.salePrice} + '&nbsp;'">
+                                $24.99</h4>
+                            <h4><a href="#" th:text="${prd.displayName}">Product</a></h4>
                             <p th:text="${prd.description}">See more</p>
                             <div class="number-controls size-sm">
                                 <span class="number-minus">-</span>
-                                <input type="text" name="quantity" data-min="1" data-maxallowed="8" value="1" readonly="readonly"/>
+                                <input type="text" name="quantity" data-min="1" data-maxallowed="8" value="1"
+                                       readonly="readonly"/>
                                 <span class="number-plus">+</span>
                             </div>
                             <br/>
-                                <a th:href="@{${#httpServletRequest.servletPath}} + '/pId-' + ${prd.id}" class="btn btn-primary addQuantity">Add to cart</a>
-                                <a th:href="@{${#httpServletRequest.servletPath}} + '/prd-' + ${prd.id}" class="btn btn-default">Product Page</a>
+                            <a th:href="@{${#httpServletRequest.servletPath}} + '/pId-' + ${prd.id}"
+                               class="btn btn-primary addQuantity">Add to cart</a>
+                            <a th:href="@{${#httpServletRequest.servletPath}} + '/prd-' + ${prd.id}"
+                               class="btn btn-default">Product Page</a>
                         </div>
                         <div class="ratings">
                             <p class="pull-right">15 reviews</p>
@@ -52,13 +59,15 @@
             <div class="col-sm-6 col-lg-6 col-md-6">
                 <h4><a href="#">Like this shop?</a>
                 </h4>
-                <p>If you like this shop, then check out <a target="_blank" href="http://upyachka.ru/">this page</a> just fyi!</p>
-                <a class="btn btn-primary" target="_blank" href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">View Info</a>
+                <p>If you like this shop, then check out <a target="_blank" href="http://upyachka.ru/">this page</a>
+                    just fyi!</p>
+                <a class="btn btn-primary" target="_blank"
+                   href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">View Info</a>
             </div>
 
         </div>
 
     </div>
-    </div>
-    </body>
+</div>
+</body>
 </html>

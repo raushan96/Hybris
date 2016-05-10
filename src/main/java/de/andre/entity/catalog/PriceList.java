@@ -1,17 +1,18 @@
 package de.andre.entity.catalog;
 
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.Immutable;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 
+//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Immutable
 @Entity
 @Table(name = "hc_price_list", schema = "hybris")
@@ -117,5 +118,14 @@ public class PriceList {
         result = 31 * result + (locale != null ? locale.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PriceList{" +
+                "id='" + id + '\'' +
+                ", locale=" + locale +
+                ", currency=" + currency +
+                '}';
     }
 }

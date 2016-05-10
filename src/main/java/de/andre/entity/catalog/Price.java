@@ -1,27 +1,39 @@
 package de.andre.entity.catalog;
 
-import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
+//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Immutable
 @Entity
 @Table(name = "hc_price", schema = "hybris")
 public class Price {
-    private Long id;
+    private String id;
     private BigDecimal listPrice;
 
     private PriceList priceList;
     private Product product;
 
+    public Price() {
+    }
+
+    public Price(String id, BigDecimal listPrice) {
+        this.id = id;
+        this.listPrice = listPrice;
+    }
+
     @Id
     @Column(name = "id")
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -72,5 +84,13 @@ public class Price {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (listPrice != null ? listPrice.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Price{" +
+                "id='" + id + '\'' +
+                ", listPrice=" + listPrice +
+                '}';
     }
 }

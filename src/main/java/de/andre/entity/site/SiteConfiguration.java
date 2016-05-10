@@ -1,6 +1,7 @@
 package de.andre.entity.site;
 
 import de.andre.entity.catalog.Catalog;
+import de.andre.entity.catalog.PriceList;
 import de.andre.multisite.Site;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -25,6 +26,7 @@ public class SiteConfiguration implements Site {
     private Map<String, String> attributes;
 
     private Catalog defaultCatalog;
+    private PriceList defaultPriceList;
 
     //define version instead?
     @Id
@@ -40,6 +42,11 @@ public class SiteConfiguration implements Site {
     @Override
     public String catalogId() {
         return getDefaultCatalog() != null ? getDefaultCatalog().getId() : null;
+    }
+
+    @Override
+    public String priceListId() {
+        return getDefaultPriceList() != null ? getDefaultPriceList().getId() : null;
     }
 
     @ElementCollection
@@ -79,6 +86,16 @@ public class SiteConfiguration implements Site {
 
     public void setDefaultCatalog(Catalog defaultCatalog) {
         this.defaultCatalog = defaultCatalog;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "price_list_id")
+    public PriceList getDefaultPriceList() {
+        return defaultPriceList;
+    }
+
+    public void setDefaultPriceList(PriceList defaultPriceList) {
+        this.defaultPriceList = defaultPriceList;
     }
 
     @Column(name = "display_name")
@@ -128,7 +145,8 @@ public class SiteConfiguration implements Site {
         SiteConfiguration siteConfiguration = (SiteConfiguration) o;
 
         if (enabled != siteConfiguration.enabled) return false;
-        if (displayName != null ? !displayName.equals(siteConfiguration.displayName) : siteConfiguration.displayName != null) return false;
+        if (displayName != null ? !displayName.equals(
+                siteConfiguration.displayName) : siteConfiguration.displayName != null) return false;
         return locale != null ? locale.equals(siteConfiguration.locale) : siteConfiguration.locale == null;
 
     }

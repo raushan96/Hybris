@@ -1,18 +1,20 @@
 package de.andre.entity.catalog;
 
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.Immutable;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.comparator.NullSafeComparator;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
+//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Immutable
 @Entity
 @Table(name = "hc_category", schema = "hybris")

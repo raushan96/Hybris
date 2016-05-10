@@ -18,6 +18,14 @@
     <bean id="catalogTools" class="de.andre.service.catalog.CatalogTools">
         <constructor-arg name="productCatalog" ref="productCatalog"/>
         <constructor-arg name="pricesRepository" ref="pricesRepository"/>
+        <constructor-arg name="priceTools" ref="priceTools"/>
         <property name="defaultCatalogId" value="spices"/>
+    </bean>
+
+    <bean id="priceTools" class="de.andre.service.price.PriceTools">
+        <constructor-arg name="pricesRepository" ref="pricesRepository"/>
+        <property name="self" ref="priceTools"/>
+        <property name="defaultPriceList" value="base-list"/>
+        <property name="bulkPricing" value="true"/>
     </bean>
 </beans>

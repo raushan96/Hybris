@@ -6,6 +6,9 @@ public class HybrisConstants {
     private HybrisConstants() {
     }
 
+    public static final String EMPTY_STRING = "";
+    public static final String HYPHEN = "-";
+
     public static final Pattern MASK_PASSWORD = Pattern.compile(".{6,15}");
     public static final Pattern MASK_CITY = Pattern.compile("[A-Za-z.'\\-(\\s)]{1,40}$");
     public static final Pattern MASK_NAME = Pattern.compile("[A-Za-z\\s]*{1,40}$");
@@ -21,7 +24,7 @@ public class HybrisConstants {
 
     public static final int KEY_MAX_LENGTH = 14;
     public static final int KEY_MIN_LENGTH = 5;
-    public static final String EMPTY_STRING = "";
+
     public static final String DEFAULT_PREFIX = "key";
     public static final String DEFAULT_SHIPPING_NAME = "shippingAddress";
     public static final String NICKNAME_SEPARATOR = "-";

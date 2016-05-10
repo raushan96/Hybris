@@ -2,14 +2,16 @@ USE hybris;
 
 #price lists and catalogs
 CREATE TABLE IF NOT EXISTS hs_site (
-  id           VARCHAR(100)                       NOT NULL,
-  catalog_id   VARCHAR(20)                        NULL,
-  display_name VARCHAR(50)                        NOT NULL,
-  locale       VARCHAR(5)                         NOT NULL,
-  enabled      BOOLEAN DEFAULT 1,
-  created      DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  id            VARCHAR(100)                       NOT NULL,
+  catalog_id    VARCHAR(20)                        NULL,
+  price_list_id VARCHAR(20)                        NULL,
+  display_name  VARCHAR(50)                        NOT NULL,
+  locale        VARCHAR(5)                         NOT NULL,
+  enabled       BOOLEAN DEFAULT 1,
+  created       DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
   CONSTRAINT hs_site_pk PRIMARY KEY (id),
-  CONSTRAINT hs_site_cat_fk FOREIGN KEY (catalog_id) REFERENCES hc_catalog (id)
+  CONSTRAINT hs_site_cat_fk FOREIGN KEY (catalog_id) REFERENCES hc_catalog (id),
+  CONSTRAINT hs_site_price_fk FOREIGN KEY (price_list_id) REFERENCES hc_price_list (id)
 );
 
 CREATE TABLE IF NOT EXISTS hs_site_urls (

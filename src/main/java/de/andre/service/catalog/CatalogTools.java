@@ -5,6 +5,8 @@ import de.andre.entity.catalog.Product;
 import de.andre.multisite.SiteManager;
 import de.andre.repository.catalog.PricesRepository;
 import de.andre.repository.catalog.ProductCatalog;
+import de.andre.service.price.PriceTools;
+import de.andre.utils.StreamUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,15 +23,18 @@ public class CatalogTools {
     private String defaultCatalogId;
 
     private final ProductCatalog productCatalog;
+    private final PriceTools priceTools;
     private final PricesRepository pricesRepository;
 
-    public CatalogTools(final ProductCatalog productCatalog, final PricesRepository pricesRepository) {
+    public CatalogTools(final ProductCatalog productCatalog, final PriceTools priceTools,
+            final PricesRepository pricesRepository) {
         this.productCatalog = productCatalog;
+        this.priceTools = priceTools;
         this.pricesRepository = pricesRepository;
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> populateCategoryMap(final String catId) {
+    public Map<String, Object> assembleCategoryContent(final String catId) {
         final Category cat;
         if (!StringUtils.hasLength(catId) || (cat = productCatalog.getCategoryRepository().findOne(catId)) == null) {
             logger.debug("Empty or invalid category id {}", catId);
@@ -41,12 +46,13 @@ public class CatalogTools {
         final List<Product> allProducts = getProductsWithAncestorsCat(cat);
 
         final Map<String, String> categoryIdNameMap = getSubcategoriesNames(cat, parentCat, filterCatId);
-        if (categoryIdNameMap == null || categoryIdNameMap.isEmpty()) {
-            logger.warn("No subcategories found for category {}, returning without processing", catId);
+        if (categoryIdNameMap.isEmpty()) {
+            logger.warn("No subcategories found for category {}", catId);
         }
 
         final Map<String, Object> result = new HashMap<>(5);
         result.put("products", allProducts);
+        result.put("prices", priceTools.priceProducts(allProducts));
         result.put("catsNameId", categoryIdNameMap);
         result.put("parentCat", parentCat);
 
@@ -68,7 +74,8 @@ public class CatalogTools {
         return resultList
                 .stream()
 //                .filter(prd -> prd contains(siteId))
-                .filter(prd -> prd.isEnabled() && (prd.getExpirationDate() == null || prd.getExpirationDate().isAfter(now)) &&
+                .filter(prd -> prd.isEnabled() && (prd.getExpirationDate() == null || prd.getExpirationDate().isAfter(
+                        now)) &&
                         prd.getStartDate() == null || prd.getStartDate().isBefore(now))
                 .distinct()
                 .sorted()
@@ -117,19 +124,11 @@ public class CatalogTools {
         }
 
         if (subcategories.isEmpty()) {
-            logger.debug("No child categories found for category: {}", filterCatId);
-            return Collections.emptyMap();
+            logger.debug("No child categories found for category: {}, fallback to root category", filterCatId);
+            return StreamUtils.categoriesToSortedIdNames(getRootChildCategories());
         }
 
-        return subcategories
-                .stream()
-                .sorted(Comparator.comparing(Category::getDisplayName))
-                .collect(Collectors.toMap(
-                        Category::getId,
-                        Category::getDisplayName,
-                        (v1, v2) -> v1,
-                        LinkedHashMap::new)
-                );
+        return StreamUtils.categoriesToSortedIdNames(subcategories);
     }
 
     @Transactional(readOnly = true)

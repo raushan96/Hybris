@@ -1,24 +1,20 @@
 use hybris;
 
 # profile
-insert into hp_profile(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
+insert into hp_profile(id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
 values (1, '$2a$10$zdP5J.iGZkWAhLjuGGQww.l7X.m2datdggOd9mMkzliDj2NY6hbAS', 'andre', 'evans', 0, 'andrey.evans@gmail.com', to_date('03-MAR-1994'), 1);
-insert into hp_profile(user_id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
+insert into hp_profile(id, password, first_name, last_name, gender, email, date_of_birth, accept_emails)
 values (2, '$2a$10$zdP5J.iGZkWAhLjuGGQww.l7X.m2datdggOd9mMkzliDj2NY6hbAS', 'andre1', 'evans1', 1, 'andre@gmail.com', to_date('02-MAR-1991'), 0);
-insert into hp_address(address_id, user_id, company_name, city, postal_code, country_code, address, state)
-values(1, 1, 'ExpertSoft', 'Minsk', '123123', 'US', 'korzh 5 d', '2');
-insert into hp_address(address_id, user_id, company_name, city, postal_code, country_code, address, state)
-values(2, 1, 'ExpertSoft', 'Grodno', '123412', 'US', 'malin 6 c', '3');
+insert into hp_address(id, profile_id, city, postal_code, country_code, address, state)
+values(1, 1, 'Minsk', '123123', 'US', 'korzh 5 d', '2');
+insert into hp_address(id, profile_id, city, postal_code, country_code, address, state)
+values(2, 1, 'Grodno', '123412', 'US', 'malin 6 c', '3');
 
-insert into dps_giftlist(gift_list_id, is_published, creation_date, shipping_addr_id)
-values (1, 1, to_date('01-MAR-2018'), 1);
-insert into dps_giftitem(gift_item_id, gift_list_id, display_name, description, quantity_desired, quantity_purchased)
-values (1, 1, 'gift item 1', 'test description', 1, 0);
-insert into dps_giftitem(gift_item_id, gift_list_id, display_name, description, quantity_desired, quantity_purchased)
-values (2, 1, 'gift item 2', 'test description new', 3, 0);
+insert into hp_wish_list(id, is_published, shipping_addr_id)
+values (1, 1, 1);
 
-insert into hp_address(address_id, company_name, city, postal_code, country, address)
-values(3, 'ExpertSoft', 'Mensk', '123412', 'Belarus', 'xz 8 h');
+insert into hp_address(id, city, postal_code, country_code, address)
+values(3, 'Mensk', '123412', 'BY', 'xz 8 h');
 
 commit;
 
@@ -54,12 +50,6 @@ insert into hc_category(id, display_name, parent_cat_id)
 values('b4', 'Spice b4', 'a2');
 insert into hc_category(id, display_name, parent_cat_id)
 values('b5', 'Spice b5', 'a3');
-
-commit;
-
-# site
-INSERT INTO `hybris`.`hs_site` (`id`, `display_name`, `locale`, `enabled`, `catalog_id`) VALUES ('hybris-site', 'Hybris', 'en_US', '1', 'spices');
-INSERT INTO `hybris`.`hs_site_urls` (`id`, `url`) VALUES ('hybris-site', 'localhost');
 
 commit;
 
@@ -101,50 +91,129 @@ values('b3', 315);
 insert into hc_category_products (category_id, product_id)
 values('b3', 319);
 
-insert into dcs_price_list (price_list_id, base_price_list, description, locale, currency)
+insert into hc_price_list (id, base_price_list, description, locale, currency)
 values('base-list', null, 'Default Price List', 'en_US', 'EUR');
-insert into dcs_price_list (price_list_id, base_price_list, description, locale, currency)
+insert into hc_price_list (id, base_price_list, description, locale, currency)
 values('sales-list', 'base-list', 'Sales Price List', 'en_US', 'EUR');
 
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (55,'base-list',41,100);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (56,'base-list',23,103);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (57,'base-list',43,106);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (58,'base-list',47,109);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (59,'base-list',49,112);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (60,'base-list',20,115);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (61,'base-list',47,118);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (62,'base-list',33,121);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (63,'base-list',31,124);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (64,'base-list',40,127);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (65,'base-list',5,130);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (66,'base-list',32,133);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (67,'base-list',27,136);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (68,'base-list',35,139);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (69,'base-list',38,142);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (70,'base-list',25,145);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (71,'base-list',27,148);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (72,'base-list',41,151);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (73,'base-list',49,154);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (74,'base-list',8,157);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (75,'base-list',45,160);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (76,'base-list',6,163);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (77,'base-list',22,166);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (78,'base-list',38,169);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (79,'base-list',19,172);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (80,'base-list',27,175);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (81,'base-list',50,178);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (82,'base-list',32,181);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (83,'base-list',17,184);
-INSERT INTO dcs_price (price_id,price_list_id,list_price,product_id) VALUES (84,'base-list',25,187);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (30,"base-list",90,300);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (31,"base-list",181,301);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (32,"base-list",126,302);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (33,"base-list",100,303);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (34,"base-list",287,304);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (35,"base-list",143,305);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (36,"base-list",234,306);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (37,"base-list",56,307);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (38,"base-list",40,308);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (39,"base-list",72,309);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (40,"base-list",150,310);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (41,"base-list",68,311);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (42,"base-list",273,312);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (43,"base-list",225,313);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (44,"base-list",189,314);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (45,"base-list",50,315);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (46,"base-list",201,316);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (47,"base-list",136,317);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (48,"base-list",184,318);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (49,"base-list",161,319);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (50,"base-list",173,320);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (51,"base-list",191,321);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (52,"base-list",36,322);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (53,"base-list",208,323);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (54,"base-list",295,324);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (55,"base-list",78,325);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (56,"base-list",168,326);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (57,"base-list",150,327);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (58,"base-list",178,328);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (59,"base-list",228,329);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (60,"base-list",110,330);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (61,"base-list",238,331);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (62,"base-list",40,332);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (63,"base-list",42,333);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (64,"base-list",197,334);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (65,"base-list",83,335);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (66,"base-list",222,336);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (67,"base-list",236,337);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (68,"base-list",100,338);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (69,"base-list",98,339);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (70,"base-list",51,340);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (71,"base-list",146,341);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (72,"base-list",278,342);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (73,"base-list",173,343);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (74,"base-list",117,344);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (75,"base-list",90,345);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (76,"base-list",205,346);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (77,"base-list",138,347);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (78,"base-list",209,348);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (79,"base-list",123,349);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (80,"base-list",233,350);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (81,"base-list",58,351);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (82,"base-list",94,352);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (83,"base-list",195,353);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (84,"base-list",246,354);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (85,"base-list",43,355);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (86,"base-list",39,356);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (87,"base-list",276,357);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (88,"base-list",249,358);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (89,"base-list",267,359);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (90,"base-list",245,360);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (91,"base-list",104,361);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (92,"base-list",30,362);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (93,"base-list",189,363);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (94,"base-list",188,364);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (95,"base-list",294,365);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (96,"base-list",195,366);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (97,"base-list",254,367);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (98,"base-list",158,368);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (99,"base-list",255,369);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (100,"base-list",74,370);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (101,"base-list",218,371);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (102,"base-list",253,372);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (103,"base-list",109,373);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (104,"base-list",70,374);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (105,"base-list",43,375);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (106,"base-list",121,376);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (107,"base-list",73,377);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (108,"base-list",164,378);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (109,"base-list",171,379);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (110,"base-list",274,380);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (111,"base-list",278,381);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (112,"base-list",32,382);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (113,"base-list",139,383);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (114,"base-list",32,384);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (115,"base-list",63,385);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (116,"base-list",264,386);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (117,"base-list",296,387);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (118,"base-list",269,388);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (119,"base-list",124,389);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (120,"base-list",115,390);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (121,"base-list",30,391);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (122,"base-list",95,392);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (123,"base-list",127,393);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (124,"base-list",34,394);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (125,"base-list",39,395);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (126,"base-list",282,396);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (127,"base-list",217,397);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (128,"base-list",236,398);
+INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (129,"base-list",100,399);
 
-insert into dcs_price (price_id, price_list_id, list_price, product_id)
-values(1, 'sales-list', 4, 100);
-insert into dcs_price (price_id, price_list_id, list_price, product_id)
-values(2, 'sales-list', 4, 103);
-insert into dcs_price (price_id, price_list_id, list_price, product_id)
-values(3, 'sales-list', 3, 106);
-insert into dcs_price (price_id, price_list_id, list_price, product_id)
-values(4, 'sales-list', 5, 109);
-insert into dcs_price (price_id, price_list_id, list_price, product_id)
-values(5, 'sales-list', 2, 112);
+
+insert into hc_price (id, price_list_id, list_price, product_id)
+values(1, 'sales-list', 14, 300);
+insert into hc_price (id, price_list_id, list_price, product_id)
+values(2, 'sales-list', 10, 301);
+insert into hc_price (id, price_list_id, list_price, product_id)
+values(3, 'sales-list', 25, 302);
+insert into hc_price (id, price_list_id, list_price, product_id)
+values(4, 'sales-list', 15, 303);
+insert into hc_price (id, price_list_id, list_price, product_id)
+values(5, 'sales-list', 66, 304);
+insert into hc_price (id, price_list_id, list_price, product_id)
+values(6, 'sales-list', 26, 305);
+commit;
+
+# site
+INSERT INTO `hybris`.`hs_site` (`id`, `price_list_id`, `display_name`, `locale`, `enabled`, `catalog_id`) VALUES ('hybris-site', 'sales-list', 'Hybris', 'en_US', '1', 'spices');
+INSERT INTO `hybris`.`hs_site_urls` (`id`, `url`) VALUES ('hybris-site', 'localhost');
+
 commit;

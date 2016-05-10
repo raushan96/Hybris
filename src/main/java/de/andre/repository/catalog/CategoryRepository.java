@@ -8,7 +8,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.Set;
 
 public interface CategoryRepository extends JpaRepository<Category, String> {
-    @Query("select cat from Category cat join Catalog ctl on ctl.id = :ctlId where cat.rootCategory = true " +
-            "order by cat.displayName")
+    @Query("select cat from Category cat join Catalog ctl on ctl.id = :ctlId " +
+            "left join fetch cat.childCategories " +
+            "where cat.rootCategory = true")
     Category rootCatalogCategory(@Param("ctlId") String ctlId);
 }

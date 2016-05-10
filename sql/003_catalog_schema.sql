@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS hc_price_list (
 );
 
 CREATE TABLE IF NOT EXISTS hc_price (
-  id            BIGINT UNSIGNED AUTO_INCREMENT,
+  id            VARCHAR(20) ,
   price_list_id VARCHAR(20)             NOT NULL,
   list_price    DECIMAL(15, 3) UNSIGNED NOT NULL,
   product_id    VARCHAR(20),
