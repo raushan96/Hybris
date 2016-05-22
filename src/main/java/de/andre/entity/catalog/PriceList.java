@@ -12,7 +12,7 @@ import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 
-//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Immutable
 @Entity
 @Table(name = "hc_price_list", schema = "hybris")
@@ -36,6 +36,7 @@ public class PriceList {
         this.id = id;
     }
 
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     @OneToOne
     @JoinColumn(name = "base_price_list")
     public PriceList getBasePriceList() {

@@ -8,6 +8,7 @@ public class PricesRepository extends RepositoryAdapter {
 
     public PricesRepository(final PriceRepository priceRepository,
             final PriceListRepository priceListRepository) {
+        super(priceListRepository, priceRepository);
         this.priceRepository = priceRepository;
         this.priceListRepository = priceListRepository;
     }

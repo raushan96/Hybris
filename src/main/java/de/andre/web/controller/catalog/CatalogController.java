@@ -1,5 +1,6 @@
 package de.andre.web.controller.catalog;
 
+import de.andre.entity.catalog.Category;
 import de.andre.service.catalog.CatalogTools;
 import de.andre.utils.HybrisConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Set;
 
 import static de.andre.utils.HybrisConstants.HYPHEN;
 
@@ -23,7 +26,8 @@ public class CatalogController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String catalogMenu(final Model map) {
-        map.addAttribute("rootCats", catalogTools.getRootChildCategories());
+        final Set<Category> rootCats = catalogTools.getRootChildCategories();
+        map.addAttribute("rootCats", rootCats.toArray(new Category[rootCats.size()]));
         return "catalog/catalog";
     }
 

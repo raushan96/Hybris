@@ -22,7 +22,6 @@ public abstract class RepositoryAdapter {
     protected EntityManager em;
 
     private List<Repository> allRepositories = Collections.emptyList();
-    private Map<String, Repository> repositoriesMap = Collections.emptyMap();
 
     public RepositoryAdapter(final Repository... repositories) {
         if (ArrayUtils.isEmpty(repositories)) {
@@ -31,13 +30,6 @@ public abstract class RepositoryAdapter {
         }
 
         allRepositories = Collections.unmodifiableList(Arrays.asList(repositories));
-        repositoriesMap = Collections.unmodifiableMap(
-                Arrays.stream(repositories)
-                        .collect(Collectors.toMap(
-                                repository -> repository.getClass().getName(),
-                                Function.identity())
-                        )
-        );
 
         logger.debug("{} component startup complete", this.getClass().getSimpleName());
     }
@@ -48,9 +40,5 @@ public abstract class RepositoryAdapter {
 
     public List<Repository> getAllRepositories() {
         return allRepositories;
-    }
-
-    public Map<String, Repository> getRepositoriesMap() {
-        return repositoriesMap;
     }
 }

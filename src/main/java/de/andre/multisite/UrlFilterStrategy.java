@@ -61,7 +61,6 @@ public class UrlFilterStrategy implements SiteResolver {
         } finally {
             urlCacheLock.writeLock().unlock();
         }
-
     }
 
     private String cachedId(final String url) {

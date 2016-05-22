@@ -146,6 +146,8 @@ public class CatalogTools {
             return Collections.emptySet();
         }
 
+        // initialize if was cached
+        rootCategory.getChildCategories().size();
         return rootCategory.getChildCategories();
     }
 

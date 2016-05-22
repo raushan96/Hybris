@@ -10,6 +10,7 @@ import de.andre.repository.catalog.PricesRepository;
 import de.andre.utils.StreamUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -22,6 +23,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static de.andre.service.catalog.CatalogConstants.EMPTY_PRICE;
+import static de.andre.service.catalog.CatalogConstants.PRICE_CACHE_NAME;
 
 public class PriceTools {
     private static final Logger logger = LoggerFactory.getLogger(PriceTools.class);
@@ -44,17 +46,19 @@ public class PriceTools {
         return self.priceProduct(productId, null);
     }
 
+    @Cacheable(value = PRICE_CACHE_NAME)
     @Transactional(readOnly = true)
     public Map<String, ProductPrice> priceProducts(final Collection<Product> products) {
         if (isBulkPricing()) {
-            priceProductsBulk(products, null);
+            return self.priceProductsBulk(products, null);
         }
 
         return self.priceProducts(products, null);
     }
 
+    @Cacheable(value = PRICE_CACHE_NAME)
     @Transactional(readOnly = true)
-    public Map<String, ProductPrice> priceProductsBulk(final Collection<Product> products, final String priceListId) {
+    protected Map<String, ProductPrice> priceProductsBulk(final Collection<Product> products, final String priceListId) {
         final String resolvedPriceList = resolvePriceList(priceListId);
         if (!validPricingParams(products, resolvedPriceList)) {
             return Collections.emptyMap();
@@ -79,6 +83,7 @@ public class PriceTools {
         return productPrices;
     }
 
+    @Cacheable(value = PRICE_CACHE_NAME)
     @Transactional(readOnly = true)
     public Map<String, ProductPrice> priceProducts(final Collection<Product> products, final String priceListId) {
         final String resolvedPriceList = resolvePriceList(priceListId);

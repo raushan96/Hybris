@@ -19,6 +19,12 @@
            maxEntriesLocalHeap="10000">
     </cache>
 
+    <cache name="prices"
+           timeToLiveSeconds="600"
+           timeToIdleSeconds="300"
+           maxEntriesLocalHeap="10000">
+    </cache>
+
     <cache name="de.andre.entity.profile.Profile"
            timeToLiveSeconds="600"
            timeToIdleSeconds="300"

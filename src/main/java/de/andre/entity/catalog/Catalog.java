@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Immutable
 @Entity
 @Table(name = "hc_catalog", schema = "hybris")

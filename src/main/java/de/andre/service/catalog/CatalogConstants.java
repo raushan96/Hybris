@@ -9,4 +9,5 @@ public class CatalogConstants {
     }
 
     public static final ProductPrice EMPTY_PRICE = new ProductPrice("", BigDecimal.ZERO, BigDecimal.ZERO);
+    public static final String PRICE_CACHE_NAME = "prices";
 }

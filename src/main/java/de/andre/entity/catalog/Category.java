@@ -14,7 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Immutable
 @Entity
 @Table(name = "hc_category", schema = "hybris")
@@ -51,6 +51,7 @@ public class Category {
         this.catalogs = catalogs;
     }
 
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     @ManyToOne
     @JoinColumn(name = "parent_cat_id")
     public Category getParentCategory() {
@@ -61,6 +62,7 @@ public class Category {
         this.parentCategory = parentCategory;
     }
 
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     @OneToMany(mappedBy = "parentCategory")
     @OrderBy("displayName")
     public Set<Category> getChildCategories() {
@@ -71,6 +73,7 @@ public class Category {
         this.childCategories = childCategories;
     }
 
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     @ManyToMany
     @JoinTable(
             name = "hc_category_products",

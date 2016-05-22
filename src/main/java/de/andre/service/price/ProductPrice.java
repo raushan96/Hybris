@@ -16,13 +16,15 @@ public class ProductPrice {
         this.salePrice = salePrice;
     }
 
+    // adds by descending price
     public boolean addPrice(final BigDecimal price) {
         if (price != null && BigDecimal.ZERO.compareTo(price) < 0) {
-            if (basePrice == null) {
-                basePrice = price;
+            if (this.basePrice == null) {
+                this.basePrice = price;
                 return true;
-            } else if (salePrice == null) {
-                salePrice = price;
+            } else if (this.salePrice == null) {
+                this.salePrice = this.basePrice;
+                this.basePrice = price;
                 return true;
             }
         }
