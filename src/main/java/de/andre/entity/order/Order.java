@@ -3,14 +3,17 @@ package de.andre.entity.order;
 import de.andre.entity.enums.OrderState;
 import de.andre.entity.profile.Profile;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "hcm_order", schema = "hybris")
-public class Order extends BaseCommerceEntity {
+public class Order extends CommerceIdentifier {
     private String number;
     private String siteId;
     private String serverInfo;
@@ -21,6 +24,7 @@ public class Order extends BaseCommerceEntity {
     private LocalDateTime lastModifiedDate;
 
     private Profile profile;
+    private List<CommerceItem> commerceItems = new ArrayList<>(0);
 
     @ManyToOne
     @JoinColumn(name = "profile_id")
@@ -30,6 +34,15 @@ public class Order extends BaseCommerceEntity {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<CommerceItem> getCommerceItems() {
+        return commerceItems;
+    }
+
+    public void setCommerceItems(List<CommerceItem> commerceItems) {
+        this.commerceItems = commerceItems;
     }
 
     @NotEmpty
@@ -84,6 +97,7 @@ public class Order extends BaseCommerceEntity {
     }
 
     @NotNull
+    @LastModifiedDate
     @Column(name = "creation_date")
     public LocalDateTime getCreationDate() {
         return creationDate;

@@ -6,7 +6,7 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 
 @MappedSuperclass
-public abstract class BaseCommerceEntity {
+public abstract class CommerceIdentifier {
     protected Long id;
 
     @Id

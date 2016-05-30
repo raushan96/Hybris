@@ -2,6 +2,7 @@
 # sku -> parent product
 
 USE hybris;
+
 CREATE TABLE IF NOT EXISTS hc_catalog (
   id            VARCHAR(20),
   display_name  VARCHAR(50)                        NOT NULL,

@@ -21,7 +21,6 @@ public class WishList {
 
     private Profile profile;
     private Address shippingAddress;
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<WishItem> wishItems = new ArrayList<>(0);
 
     @Id
@@ -60,6 +59,7 @@ public class WishList {
         this.shippingAddress = shippingAddress;
     }
 
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(mappedBy = "wishList", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "index_col")
     public List<WishItem> getWishItems() {
