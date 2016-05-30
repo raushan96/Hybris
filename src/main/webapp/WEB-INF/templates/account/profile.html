@@ -68,10 +68,10 @@
                     </tr>
                     <tr th:each="address : ${addresses}">
                         <!--<span th:if="${address.addressName == T(de.andre.utils.HybrisConstants).DEFAULT_SHIPPING_NAME}" th:text="${'Default Shipping'}">default address</span>-->
-                        <td data-name="city" th:text="${address.city}">City</td>
-                        <td data-name="state" th:text="${address.state?.getName()}">State</td>
-                        <td data-name="address" th:text="${address.address}">Address</td>
-                        <td data-name="postalCode" th:text="${address.postalCode}">Postal code</td>
+                        <td data-name="city" th:text="${address.contactInfo.city}">City</td>
+                        <td data-name="state" th:text="${address.contactInfo.state?.getName()}">State</td>
+                        <td data-name="address" th:text="${address.contactInfo.address}">Address</td>
+                        <td data-name="postalCode" th:text="${address.contactInfo.postalCode}">Postal code</td>
                         <td data-name="shipping">
                             <span th:switch="${address.addressName}">
                                 <p th:case="${T(de.andre.utils.HybrisConstants).DEFAULT_SHIPPING_NAME}">Shipping Address</p>

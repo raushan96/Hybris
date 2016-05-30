@@ -1,5 +1,8 @@
 package de.andre.entity.profile;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import de.andre.entity.dto.View;
 import de.andre.entity.enums.State;
@@ -11,6 +14,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
@@ -18,13 +22,19 @@ import javax.persistence.Table;
 public class Address extends ProfileBaseEntity {
     private String addressName;
     private String displayName;
-    private String city;
-    private String postalCode;
-    private String countryCode;
-    private String address;
-    private State state;
 
     private Profile profile;
+    private ContactInfo contactInfo;
+
+    public Address() {
+    }
+
+    @JsonCreator
+    public Address(@JsonProperty("displayName") String displayName,
+            @JsonProperty("contactInfo") ContactInfo contactInfo) {
+        this.displayName = displayName;
+        this.contactInfo = contactInfo;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "profile_id")
@@ -57,62 +67,15 @@ public class Address extends ProfileBaseEntity {
     }
 
     @JsonView(View.AddressView.class)
-    @NotBlank
-    @Length(min = 3, max = 50)
-    @Column(name = "city")
-    public String getCity() {
-        return city;
+    @JsonProperty("contactInfo")
+    @NotNull
+    @Embedded
+    public ContactInfo getContactInfo() {
+        return contactInfo;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    @JsonView(View.AddressView.class)
-    @NotBlank
-    @Length(min = 3, max = 15)
-    @Column(name = "postal_code")
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    @JsonView(View.AddressView.class)
-    @NotBlank
-    @Length(min = 2, max = 2)
-    @Column(name = "country_code")
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
-    @JsonView(View.AddressView.class)
-    @NotBlank
-    @Length(min = 5, max = 80)
-    @Column(name = "address")
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    @JsonView(View.AddressView.class)
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "state")
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
+    public void setContactInfo(ContactInfo contactInfo) {
+        this.contactInfo = contactInfo;
     }
 
     @Override
@@ -120,18 +83,11 @@ public class Address extends ProfileBaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Address address1 = (Address) o;
+        Address address = (Address) o;
 
-        if (addressName != null ? !addressName.equals(address1.addressName) : address1.addressName != null)
-            return false;
-        if (displayName != null ? !displayName.equals(address1.displayName) : address1.displayName != null)
-            return false;
-        if (city != null ? !city.equals(address1.city) : address1.city != null) return false;
-        if (postalCode != null ? !postalCode.equals(address1.postalCode) : address1.postalCode != null) return false;
-        if (countryCode != null ? !countryCode.equals(address1.countryCode) : address1.countryCode != null)
-            return false;
-        if (address != null ? !address.equals(address1.address) : address1.address != null) return false;
-        return state == address1.state;
+        if (addressName != null ? !addressName.equals(address.addressName) : address.addressName != null) return false;
+        if (displayName != null ? !displayName.equals(address.displayName) : address.displayName != null) return false;
+        return contactInfo != null ? contactInfo.equals(address.contactInfo) : address.contactInfo == null;
 
     }
 
@@ -139,11 +95,7 @@ public class Address extends ProfileBaseEntity {
     public int hashCode() {
         int result = addressName != null ? addressName.hashCode() : 0;
         result = 31 * result + (displayName != null ? displayName.hashCode() : 0);
-        result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
-        result = 31 * result + (countryCode != null ? countryCode.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + (contactInfo != null ? contactInfo.hashCode() : 0);
         return result;
     }
 }

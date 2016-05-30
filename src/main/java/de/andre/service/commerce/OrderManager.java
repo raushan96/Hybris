@@ -42,8 +42,8 @@ public class OrderManager {
         orderTools.persistOrder(pOrder);
     }
 
-    @Transactional
-    public Order createOrder(final Profile profile) {
-        return orderTools.getOrderInstance(profile);
-    }
+//    @Transactional
+//    public Order createOrder(final Profile profile) {
+//        return orderTools.getOrderInstance(profile);
+//    }
 }

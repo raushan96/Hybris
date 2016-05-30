@@ -81,7 +81,7 @@ public class AddressController {
                         .put("success", true)
                         .put("nickname", addressNickname)
                         .put("isNew", !update)
-                        .put("state", address.getState().getName());
+                        .put("state", address.getContactInfo().getState().getName());
             } else {
                 return objectMapper.createObjectNode()
                         .put("success", false)

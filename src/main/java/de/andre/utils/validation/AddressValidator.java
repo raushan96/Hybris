@@ -30,16 +30,16 @@ public class AddressValidator implements Validator {
 
         final Address address = (Address) target;
 
-        if (!MASK_CITY.matcher(address.getCity()).matches()) {
+        if (!MASK_CITY.matcher(address.getContactInfo().getCity()).matches()) {
             errors.rejectValue("city", "address.city.invalidFormat");
         }
 
-        if (!ISO_COUNTRY_BY.equals(address.getCountryCode())) {
+        if (!ISO_COUNTRY_BY.equals(address.getContactInfo().getCountryCode())) {
             errors.rejectValue("countryCode", "address.countryCode.invalidFormat");
         }
 
         try {
-            if (!POSTAL_RANGE.containsValue(Long.valueOf(address.getPostalCode()))) {
+            if (!POSTAL_RANGE.containsValue(Long.valueOf(address.getContactInfo().getPostalCode()))) {
                 errors.rejectValue("postalCode", "address.postalCode.invalidRange");
             }
         } catch (NumberFormatException e) {

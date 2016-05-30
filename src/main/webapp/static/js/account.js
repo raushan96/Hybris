@@ -18,10 +18,10 @@ $(document).ready(function () {
     }
 
     function populateAddrForm(form, addrObj) {
-        form.find('#modal_addrCity').val(addrObj.city);
-        form.find('#modal_addrPostalCode').val(addrObj.postalCode);
-        form.find('#modal_addrAddress').val(addrObj.address);
-        form.find('#modal_addrState').val(addrObj.state);
+        form.find('#modal_addrCity').val(addrObj.contactInfo.city);
+        form.find('#modal_addrPostalCode').val(addrObj.contactInfo.postalCode);
+        form.find('#modal_addrAddress').val(addrObj.contactInfo.address);
+        form.find('#modal_addrState').val(addrObj.contactInfo.state);
         form.find('#modal_addrDisplayName').val(addrObj.displayName);
         form.find('#modal_addressName').val(addrObj.addressName);
     }
@@ -29,11 +29,13 @@ $(document).ready(function () {
     function collectAddrForm(form, ajaxData) {
         ajaxData['addressName'] = form.find('#modal_addressName').val();
         ajaxData['displayName'] = form.find('#modal_addrDisplayName').val();
-        ajaxData['state'] = form.find('#modal_addrState').val();
-        ajaxData['city'] = form.find('#modal_addrCity').val();
-        ajaxData['postalCode'] = form.find('#modal_addrPostalCode').val();
-        ajaxData['address'] = form.find('#modal_addrAddress').val();
-        ajaxData['countryCode'] = form.find('#modal_addrCountryCode').val();
+        var nestedObj = {};
+        nestedObj['state'] = form.find('#modal_addrState').val();
+        nestedObj['city'] = form.find('#modal_addrCity').val();
+        nestedObj['postalCode'] = form.find('#modal_addrPostalCode').val();
+        nestedObj['address'] = form.find('#modal_addrAddress').val();
+        nestedObj['countryCode'] = form.find('#modal_addrCountryCode').val();
+        ajaxData['contactInfo'] = nestedObj;
     }
 
     $('#account_addresses').on('click', 'button[name=delete_address]', function () {
@@ -116,13 +118,13 @@ $(document).ready(function () {
                     $('#account_addresses').find('tbody')
                         .append($('<tr>')
                             .append($('<td>')
-                                .append(ajaxData['city']))
+                                .append(ajaxData['contactInfo']['city']))
                             .append($('<td>')
                                 .append(res.state))
                             .append($('<td>')
-                                .append(ajaxData['address']))
+                                .append(ajaxData['contactInfo']['address']))
                             .append($('<td>')
-                                .append(ajaxData['postalCode']))
+                                .append(ajaxData['contactInfo']['postalCode']))
                             .append($('<td>')
                                 .append($('<button>')
                                     .attr('type', 'button')
@@ -143,8 +145,8 @@ $(document).ready(function () {
                 } else if (res.success) {
                     var addressRow = $('#account_addresses').find('button[id=editAddress_' + res.nickname + ']').parent().parent();
                     addressRow.find('[data-name="state"]').text(res.state);
-                    addressRow.find('[data-name="city"]').text(ajaxData['city']);
-                    addressRow.find('[data-name="postalCode"]').text(ajaxData['postalCode']);
+                    addressRow.find('[data-name="city"]').text(ajaxData['contactInfo']['city']);
+                    addressRow.find('[data-name="postalCode"]').text(ajaxData['contactInfo']['postalCode']);
                 } else {
                     console.log(res.error);
                 }

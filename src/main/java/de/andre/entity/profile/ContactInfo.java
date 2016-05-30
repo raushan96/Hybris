@@ -1,5 +1,8 @@
 package de.andre.entity.profile;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import de.andre.entity.dto.View;
 import de.andre.entity.enums.State;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -17,6 +20,7 @@ public class ContactInfo {
     private String address;
     private State state;
 
+    @JsonView(View.AddressView.class)
     @NotBlank
     @Length(min = 3, max = 50)
     @Column(name = "city")
@@ -28,6 +32,7 @@ public class ContactInfo {
         this.city = city;
     }
 
+    @JsonView(View.AddressView.class)
     @NotBlank
     @Length(min = 3, max = 15)
     @Column(name = "postal_code")
@@ -39,6 +44,7 @@ public class ContactInfo {
         this.postalCode = postalCode;
     }
 
+    @JsonView(View.AddressView.class)
     @NotBlank
     @Length(min = 2, max = 2)
     @Column(name = "country_code")
@@ -50,6 +56,7 @@ public class ContactInfo {
         this.countryCode = countryCode;
     }
 
+    @JsonView(View.AddressView.class)
     @NotBlank
     @Length(min = 5, max = 80)
     @Column(name = "address")
@@ -61,6 +68,7 @@ public class ContactInfo {
         this.address = address;
     }
 
+    @JsonView(View.AddressView.class)
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "state")
     public State getState() {
