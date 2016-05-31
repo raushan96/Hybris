@@ -1,7 +1,9 @@
-package de.andre.service.commerce;
+package de.andre.service.commerce.order;
 
 import de.andre.entity.enums.OrderState;
-import de.andre.entity.order.Order;
+import de.andre.entity.enums.PaymentState;
+import de.andre.entity.enums.ShippingState;
+import de.andre.entity.order.*;
 import de.andre.entity.profile.Profile;
 import de.andre.multisite.SiteManager;
 import de.andre.repository.order.OrderRepository;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 public class OrderTools {
@@ -36,16 +39,14 @@ public class OrderTools {
 //            amountInfo.setType(AmountType.ORDER_PRICE_INFO);
 //            order.setAmountInfo(amountInfo);
 //
-//            DcsppShipGroup shipGroup = new DcsppShipGroup();
-//            shipGroup.setState(ShippingState.INITIAL);
+        final ShippingGroup shipGroup = new HardgoodShippingGroup();
+        shipGroup.setShippingState(ShippingState.INITIAL);
 //            order.addShippingGroup(shipGroup);
-//
-//            DcsppPayGroup payGroup = new DcsppPayGroup();
-//            payGroup.setCurrencyCode("EUR");
-//            payGroup.setState(PaymentStatus.INITIAL);
-//            order.addPaymentGroup(payGroup);
 
-        orderRepository.save(order);
+        final PaymentGroup payGroup = new CreditCard();
+        payGroup.setState(PaymentState.INITIAL);
+//            payGroup.setCurrencyCode("EUR");
+//            order.addPaymentGroup(payGroup);
 
         return order;
     }
@@ -61,6 +62,20 @@ public class OrderTools {
         order.setSiteId(SiteManager.getSiteId());
 
         return order;
+    }
+
+    @Transactional(readOnly = true)
+    public Order getProfileCurrentOrder(final Long profileId) {
+        final List<Order> orders = orderRepository.currentOrders(profileId);
+        if (orders.size() == 0) {
+            logger.info("No orders for profile {}", profileId);
+            return null;
+        } else if (orders.size() > 1) {
+            logger.warn("More than one order for profile {}", profileId);
+            return orders.get(0);
+        } else {
+            return orders.get(0);
+        }
     }
 
     @Transactional

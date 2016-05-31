@@ -7,6 +7,7 @@ import de.andre.repository.catalog.PricesRepository;
 import de.andre.repository.catalog.ProductCatalog;
 import de.andre.service.price.PriceTools;
 import de.andre.utils.StreamUtils;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -147,7 +148,8 @@ public class CatalogTools {
         }
 
         // initialize if was cached
-        rootCategory.getChildCategories().size();
+        Hibernate.initialize(rootCategory.getChildCategories());
+//        rootCategory.getChildCategories().size();
         return rootCategory.getChildCategories();
     }
 

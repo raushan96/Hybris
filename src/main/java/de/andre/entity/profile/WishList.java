@@ -24,12 +24,6 @@ public class WishList {
     private List<WishItem> wishItems = new ArrayList<>(0);
 
     @Id
-    @GeneratedValue(generator="gen")
-    @GenericGenerator(
-            name="gen",
-            strategy="foreign",
-            parameters=@org.hibernate.annotations.Parameter(name="property", value="profile")
-    )
     @Column(name = "id")
     public Long getId() {
         return id;
@@ -40,7 +34,8 @@ public class WishList {
     }
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
+    @MapsId
+    @JoinColumn(name = "id")
     public Profile getProfile() {
         return profile;
     }

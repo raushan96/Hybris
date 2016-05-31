@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd ">
+
+	<bean id="commerceRepository" class="de.andre.repository.order.CommerceRepository">
+		<constructor-arg name="orderRepository" ref="orderRepository"/>
+	</bean>
+
+	<bean id="orderTools" class="de.andre.service.commerce.order.OrderTools">
+		<constructor-arg name="orderRepository" ref="orderRepository"/>
+	</bean>
+
+	<bean id="orderManager" class="de.andre.service.commerce.order.OrderManager">
+		<constructor-arg name="orderTools" ref="orderTools"/>
+	</bean>
+	<bean id="orderHolder" class="de.andre.service.commerce.order.OrderHolder" scope="session">
+		<constructor-arg name="orderManager" ref="orderManager"/>
+		<aop:scoped-proxy/>
+	</bean>
+</beans>

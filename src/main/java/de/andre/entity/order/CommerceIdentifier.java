@@ -1,12 +1,13 @@
 package de.andre.entity.order;
 
+import de.andre.entity.util.VersionedEntity;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 
 @MappedSuperclass
-public abstract class CommerceIdentifier {
+public abstract class CommerceIdentifier extends VersionedEntity {
     protected Long id;
 
     @Id

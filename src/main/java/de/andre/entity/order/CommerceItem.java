@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "hcm_item", schema = "hybris")
 public class CommerceItem extends CommerceIdentifier {
-    private Long version;
     private Long quantity;
     private LocalDateTime creationDate;
 
@@ -35,16 +34,6 @@ public class CommerceItem extends CommerceIdentifier {
         this.product = product;
     }
 
-    @Version
-    @Column(name = "version")
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
     @Column(name = "quantity")
     public Long getQuantity() {
         return quantity;
@@ -61,5 +50,24 @@ public class CommerceItem extends CommerceIdentifier {
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CommerceItem that = (CommerceItem) o;
+
+        if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) return false;
+        return creationDate != null ? creationDate.equals(that.creationDate) : that.creationDate == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = quantity != null ? quantity.hashCode() : 0;
+        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
+        return result;
     }
 }

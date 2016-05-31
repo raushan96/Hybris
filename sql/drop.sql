@@ -1,18 +1,16 @@
 USE hybris;
 
-DROP TABLE dcspp_price_adjust;
-DROP TABLE dcspp_item;
-DROP TABLE dcspp_pay_group;
-DROP TABLE dcspp_ship_info;
-DROP TABLE dcspp_ship_group;
-DROP TABLE dcspp_order;
-DROP TABLE dcspp_amount_info;
+DROP TABLE hcm_item;
+DROP TABLE hcm_credit_card;
+DROP TABLE hcm_pay_group;
+DROP TABLE hcm_hg_shipping_group;
+DROP TABLE hcm_order;
 
 DROP TABLE hp_profile_interests;
 DROP TABLE hp_interest;
-DROP TABLE hp_address;
 DROP TABLE hp_wish_item;
 DROP TABLE hp_wish_list;
+DROP TABLE hp_address;
 DROP TABLE hp_profile;
 DROP TABLE hp_identity_generator;
 

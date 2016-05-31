@@ -39,7 +39,7 @@ public class AddressValidator implements Validator {
         }
 
         try {
-            if (!POSTAL_RANGE.containsValue(Long.valueOf(address.getContactInfo().getPostalCode()))) {
+            if (!POSTAL_RANGE.containsValue(Long.parseLong(address.getContactInfo().getPostalCode()))) {
                 errors.rejectValue("postalCode", "address.postalCode.invalidRange");
             }
         } catch (NumberFormatException e) {

@@ -17,6 +17,7 @@
     <import resource="classpath:spring/service/profile.xml"/>
     <import resource="classpath:spring/service/catalog.xml"/>
     <import resource="classpath:spring/service/multisite.xml"/>
+    <import resource="classpath:spring/service/order.xml"/>
 
     <context:component-scan
             base-package="de.andre.service"/>

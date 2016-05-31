@@ -18,13 +18,14 @@ public class Order extends CommerceIdentifier {
     private String siteId;
     private String serverInfo;
     private OrderState state;
-    private Long version;
     private LocalDateTime creationDate;
     private LocalDateTime submittedDate;
     private LocalDateTime lastModifiedDate;
 
     private Profile profile;
     private List<CommerceItem> commerceItems = new ArrayList<>(0);
+    private List<HardgoodShippingGroup> hgShippingGroups = new ArrayList<>(0);
+    private List<PaymentGroup> paymentGroups = new ArrayList<>(0);
 
     @ManyToOne
     @JoinColumn(name = "profile_id")
@@ -37,12 +38,33 @@ public class Order extends CommerceIdentifier {
     }
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "index_col")
     public List<CommerceItem> getCommerceItems() {
         return commerceItems;
     }
 
     public void setCommerceItems(List<CommerceItem> commerceItems) {
         this.commerceItems = commerceItems;
+    }
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "index_col")
+    public List<HardgoodShippingGroup> getHgShippingGroups() {
+        return hgShippingGroups;
+    }
+
+    public void setHgShippingGroups(List<HardgoodShippingGroup> hgShippingGroups) {
+        this.hgShippingGroups = hgShippingGroups;
+    }
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "index_col")
+    public List<PaymentGroup> getPaymentGroups() {
+        return paymentGroups;
+    }
+
+    public void setPaymentGroups(List<PaymentGroup> paymentGroups) {
+        this.paymentGroups = paymentGroups;
     }
 
     @NotEmpty
@@ -84,16 +106,6 @@ public class Order extends CommerceIdentifier {
 
     public void setState(OrderState state) {
         this.state = state;
-    }
-
-    @Version
-    @Column(name = "version")
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
     }
 
     @NotNull

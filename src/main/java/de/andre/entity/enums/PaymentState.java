@@ -1,5 +1,5 @@
 package de.andre.entity.enums;
 
-public enum PaymentStatus {
+public enum PaymentState {
     INITIAL, AUTHORIZED, SETTLED, FAILED
 }

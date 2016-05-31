@@ -71,7 +71,8 @@ public class Profile extends ProfileBaseEntity {
     }
 
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @OneToOne(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @PrimaryKeyJoinColumn
     public WishList getWishList() {
         return wishList;
     }
