@@ -3,6 +3,7 @@ package de.andre.utils;
 import de.andre.service.security.HybrisUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,18 +17,18 @@ import java.util.UUID;
 
 import static de.andre.utils.HybrisConstants.*;
 
-public class ProfileHelper {
-    private static final Logger logger = LoggerFactory.getLogger(ProfileHelper.class);
+public class ProfileUtils {
+    private static final Logger logger = LoggerFactory.getLogger(ProfileUtils.class);
 
-    private ProfileHelper() {
+    private ProfileUtils() {
     }
 
-    public static Long currentProfileId() {
+    public static Long currentId() {
         final HybrisUser.UserIdentity userIdentity = getCurrentUserIdentity();
         return userIdentity != null ? userIdentity.getId() : null;
     }
 
-    public static String currentProfileEmail() {
+    public static String currentEmail() {
         final HybrisUser.UserIdentity userIdentity = getCurrentUserIdentity();
         return userIdentity != null ? userIdentity.getEmail() : null;
     }
@@ -60,6 +61,11 @@ public class ProfileHelper {
     public static boolean isSoftLogged() {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth != null && RememberMeAuthenticationToken.class.isAssignableFrom(auth.getClass());
+    }
+
+    public static boolean isLogged() {
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
     }
 
     public static int calculateAge(final LocalDate dob) {

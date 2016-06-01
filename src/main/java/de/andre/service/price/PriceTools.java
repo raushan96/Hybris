@@ -111,6 +111,18 @@ public class PriceTools {
         return priceProductImpl(productId, resolvedPriceList);
     }
 
+    @Transactional(readOnly = true)
+    public PriceList currentPriceList(final String priceListId) {
+        final String resolvedPriceList = resolvePriceList(priceListId);
+        return priceListRepository.findOne(resolvedPriceList);
+    }
+
+    @Transactional(readOnly = true)
+    public Currency getCurrency(final String priceListId) {
+        final PriceList priceList = currentPriceList(priceListId);
+        return priceList.getCurrency();
+    }
+
     private ProductPrice priceProductImpl(final String productId, final String baseListId) {
         Assert.hasLength(productId, "Product id can't be empty");
         Assert.hasLength(baseListId, "Price list id can't be empty");

@@ -9,17 +9,22 @@
 
 	<bean id="commerceRepository" class="de.andre.repository.order.CommerceRepository">
 		<constructor-arg name="orderRepository" ref="orderRepository"/>
+		<constructor-arg name="commerceItemRepository" ref="commerceItemRepository"/>
+		<constructor-arg name="hgShippingGroupRepository" ref="hgShippingGroupRepository"/>
 	</bean>
 
 	<bean id="orderTools" class="de.andre.service.commerce.order.OrderTools">
 		<constructor-arg name="orderRepository" ref="orderRepository"/>
+		<constructor-arg name="profileTools" ref="profileTools"/>
+		<constructor-arg name="priceTools" ref="priceTools"/>
+		<constructor-arg name="idGenerator" ref="idGenerator"/>
 	</bean>
 
 	<bean id="orderManager" class="de.andre.service.commerce.order.OrderManager">
 		<constructor-arg name="orderTools" ref="orderTools"/>
 	</bean>
 	<bean id="orderHolder" class="de.andre.service.commerce.order.OrderHolder" scope="session">
-		<constructor-arg name="orderManager" ref="orderManager"/>
+		<constructor-arg name="orderTools" ref="orderTools"/>
 		<aop:scoped-proxy/>
 	</bean>
 </beans>

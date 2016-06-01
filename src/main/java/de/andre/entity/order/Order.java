@@ -43,6 +43,13 @@ public class Order extends CommerceIdentifier {
         return commerceItems;
     }
 
+    public void addCommerceItem(CommerceItem ci) {
+        if (ci != null) {
+            getCommerceItems().add(ci);
+            ci.setOrder(this);
+        }
+    }
+
     public void setCommerceItems(List<CommerceItem> commerceItems) {
         this.commerceItems = commerceItems;
     }
@@ -53,6 +60,13 @@ public class Order extends CommerceIdentifier {
         return hgShippingGroups;
     }
 
+    public void addHgShippingGroup(HardgoodShippingGroup hg) {
+        if (hg != null) {
+            getHgShippingGroups().add(hg);
+            hg.setOrder(this);
+        }
+    }
+
     public void setHgShippingGroups(List<HardgoodShippingGroup> hgShippingGroups) {
         this.hgShippingGroups = hgShippingGroups;
     }
@@ -61,6 +75,13 @@ public class Order extends CommerceIdentifier {
     @OrderColumn(name = "index_col")
     public List<PaymentGroup> getPaymentGroups() {
         return paymentGroups;
+    }
+
+    public void addPaymentGroup(PaymentGroup pg) {
+        if (pg != null) {
+            getPaymentGroups().add(pg);
+            pg.setOrder(this);
+        }
     }
 
     public void setPaymentGroups(List<PaymentGroup> paymentGroups) {

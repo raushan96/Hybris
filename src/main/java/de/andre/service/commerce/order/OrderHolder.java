@@ -1,29 +1,78 @@
 package de.andre.service.commerce.order;
 
 import de.andre.entity.order.Order;
-import de.andre.utils.ProfileHelper;
+import de.andre.utils.ProfileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 public class OrderHolder {
-    private Order order;
-    private String orderId;
+    private static final Logger logger = LoggerFactory.getLogger(OrderHolder.class);
 
-    private final OrderManager orderManager;
+    private Long orderId;
 
-    public OrderHolder(final OrderManager orderManager) {
-        this.orderManager = orderManager;
+    private final OrderTools orderTools;
+
+    public OrderHolder(final OrderTools orderTools) {
+        this.orderTools = orderTools;
     }
 
-    public Order getOrder() {
-        if (this.orderId == null) {
-            order = orderManager.getProfileCurrentOrder(ProfileHelper.currentProfileId());
-            if (null == order) {
-//                order = orderManager.createOrder(accountTools.getCommerceProfile());
+    @Transactional
+    public Order currentOrder() {
+        Order currentOrder;
+
+        if (this.orderId != null) {
+            currentOrder = orderTools.loadOrder(orderId);
+            if (!OrderUtils.orderActive(currentOrder)) {
+                logger.debug("The order {} cannot be used as a shopping cart", orderId);
+                currentOrder = reloadOrder();
+                this.orderId = currentOrder.getId();
+            }
+        } else {
+            currentOrder = reloadOrder();
+            this.orderId = currentOrder.getId();
+        }
+
+        return currentOrder;
+    }
+
+    @Transactional
+    public Order switchOrder() {
+        final Order nextOrder = reloadOrder();
+        logger.debug("Switching order from '{}' to '{}'", this.orderId, nextOrder.getId());
+
+        this.orderId = nextOrder.getId();
+        return nextOrder;
+    }
+
+    @Transactional(propagation = Propagation.MANDATORY)
+    public Order reloadOrder(final Order destOrder) {
+        final List<Order> activeOrders = orderTools.getProfileCurrentOrders(ProfileUtils.currentId());
+        if (CollectionUtils.isEmpty(activeOrders)) {
+            return destOrder != null ? destOrder : orderTools.createOrder(ProfileUtils.currentId());
+        }
+
+        final Order reloadedOrder = destOrder != null ? destOrder : activeOrders.get(0);
+        for (final Order srcOrder : activeOrders) {
+            orderTools.mergeOrders(srcOrder, destOrder);
+            if (!reloadedOrder.equals(srcOrder)) {
+                orderTools.removeOrder(srcOrder);
             }
         }
-        return order;
+
+        return reloadedOrder;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    @Transactional(propagation = Propagation.MANDATORY)
+    public Order reloadOrder() {
+        return reloadOrder(null);
+    }
+
+    public boolean isResolved() {
+        return this.orderId != null;
     }
 }

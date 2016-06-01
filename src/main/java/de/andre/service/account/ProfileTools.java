@@ -8,7 +8,7 @@ import de.andre.repository.profile.ProfileAdapterRepository;
 import de.andre.repository.profile.ProfileRepository;
 import de.andre.service.security.HybrisUser;
 import de.andre.utils.BeanHelper;
-import de.andre.utils.ProfileHelper;
+import de.andre.utils.ProfileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -56,10 +56,10 @@ public class ProfileTools {
 
     @Transactional(readOnly = true)
     public Profile currentProfile() {
-        if (!ProfileHelper.loggedIn()) {
+        if (!ProfileUtils.loggedIn()) {
             return null;
         }
-        return profileById(ProfileHelper.currentProfileId());
+        return profileById(ProfileUtils.currentId());
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -146,7 +146,7 @@ public class ProfileTools {
     @Transactional
     public void updatePassword(final String newPassword) {
         final String hashedPassword = passwordEncoder.encode(newPassword);
-        profileRepository.updateProfilePassword(ProfileHelper.currentProfileEmail(), hashedPassword);
+        profileRepository.updateProfilePassword(ProfileUtils.currentEmail(), hashedPassword);
     }
 
     @Transactional(readOnly = true)
@@ -160,7 +160,7 @@ public class ProfileTools {
             logger.debug("Cannot find Profiles with {} email.", pEmail);
         }
 
-        final String randomPassword = ProfileHelper.generateRandomString();
+        final String randomPassword = ProfileUtils.generateRandomString();
         final String hashedPassword = passwordEncoder.encode(randomPassword);
         profileRepository.updateProfilePassword(pEmail, hashedPassword);
     }

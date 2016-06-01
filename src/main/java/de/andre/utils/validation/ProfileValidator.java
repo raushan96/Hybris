@@ -2,7 +2,7 @@ package de.andre.utils.validation;
 
 import de.andre.entity.profile.Profile;
 import de.andre.repository.profile.ProfileRepository;
-import de.andre.utils.ProfileHelper;
+import de.andre.utils.ProfileUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -29,13 +29,13 @@ public class ProfileValidator implements Validator {
         }
 
         final Profile profile = (Profile) target;
-        final boolean loggedIn = ProfileHelper.loggedIn();
+        final boolean loggedIn = ProfileUtils.loggedIn();
 
         if (!loggedIn && !StringUtils.hasText(profile.getPassword())) {
             errors.rejectValue("password", "user.password.empty");
         }
 
-        if (ProfileHelper.calculateAge(profile.getDateOfBirth()) < MIN_AGE) {
+        if (ProfileUtils.calculateAge(profile.getDateOfBirth()) < MIN_AGE) {
             errors.rejectValue("dateOfBirth", "user.date.invalid");
         }
 

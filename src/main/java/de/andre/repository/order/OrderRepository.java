@@ -11,7 +11,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("select ord from Order ord where " +
             "ord.profile.id = :profileId and " +
             "ord.state = de.andre.entity.enums.OrderState.INCOMPLETE and " +
-            "ord.submittedDate is null " +
-            "order by ord.creationDate")
-    List<Order> currentOrders(@Param("profileId") Long profileId);
+            "ord.siteId = :siteId " +
+            "order by ord.lastModifiedDate")
+    List<Order> currentOrders(@Param("profileId") Long profileId, @Param("siteId") String siteId);
 }

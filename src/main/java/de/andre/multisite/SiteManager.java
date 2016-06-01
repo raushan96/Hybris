@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+import static de.andre.multisite.SiteConstants.EMPTY_SITE_ID;
 import static de.andre.multisite.SiteConstants.SITE_CACHE_NAME;
 
 public class SiteManager {
@@ -53,10 +54,11 @@ public class SiteManager {
 
     public static String getSiteId() {
         final Site site = siteHolder.get();
-        if (site != null) {
-            return site.getId();
+        if (site == null) {
+            return EMPTY_SITE.getId();
         }
-        return null;
+
+        return site.getId();
     }
 
     @Cacheable(SITE_CACHE_NAME)

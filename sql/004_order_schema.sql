@@ -1,3 +1,5 @@
+USE hybris;
+
 /*CREATE TABLE hcm_price_info (
   id              BIGINT UNSIGNED,
   type            INTEGER        NULL,

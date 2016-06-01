@@ -6,7 +6,7 @@ import de.andre.repository.profile.AddressRepository;
 import de.andre.repository.profile.ProfileAdapterRepository;
 import de.andre.repository.profile.ProfileRepository;
 import de.andre.utils.HybrisConstants;
-import de.andre.utils.ProfileHelper;
+import de.andre.utils.ProfileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -37,7 +37,7 @@ public class AddressTools {
     @PreAuthorize("hasAuthority('USER')")
     @Transactional(readOnly = true)
     public Address addressByName(final String addressName) {
-        final Profile profile = profileRepository.profileWithAddresses(ProfileHelper.currentProfileId())
+        final Profile profile = profileRepository.profileWithAddresses(ProfileUtils.currentId())
                 .orElseThrow(() -> new IllegalStateException("Profile was removed"));
         return profile.getAddresses().get(addressName);
     }
@@ -45,7 +45,7 @@ public class AddressTools {
     @PreAuthorize("hasAuthority('USER')")
     @Transactional
     public int deleteAddressByName(final String addressName) {
-        return addressRepository.deleteProfileAddress(ProfileHelper.currentProfileId(), addressName);
+        return addressRepository.deleteProfileAddress(ProfileUtils.currentId(), addressName);
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -107,7 +107,7 @@ public class AddressTools {
                 .stream()
                 .map(Address::getAddressName)
                 .collect(Collectors.toSet());
-        return ProfileHelper.generateUniqueNickname(
+        return ProfileUtils.generateUniqueNickname(
                 providedNickname,
                 ADDRESS_NAME_PREFIX,
                 existingNicknames

@@ -24,7 +24,7 @@ public class CommerceItem extends CommerceIdentifier {
         this.order = order;
     }
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "product_id")
     public Product getProduct() {
         return product;
@@ -58,8 +58,8 @@ public class CommerceItem extends CommerceIdentifier {
         if (o == null || getClass() != o.getClass()) return false;
 
         CommerceItem that = (CommerceItem) o;
-
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) return false;
+        if (product.getId() != null ? !product.getId().equals(that.product.getId()) : that.product.getId() != null) return false;
         return creationDate != null ? creationDate.equals(that.creationDate) : that.creationDate == null;
 
     }
@@ -68,6 +68,7 @@ public class CommerceItem extends CommerceIdentifier {
     public int hashCode() {
         int result = quantity != null ? quantity.hashCode() : 0;
         result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
+        result = 31 * result + (product != null ? product.getId().hashCode() : 0);
         return result;
     }
 }
