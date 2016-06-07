@@ -11,8 +11,8 @@ import java.sql.SQLException;
 public class IdGenerator {
     private static final Logger logger = LoggerFactory.getLogger(IdGenerator.class);
 
-    private static final String selectSpaceSQL = "SELECT seed, batch_size FROM mebank.free_number_space WHERE space_name_id = ?";
-    private static final String updateSeedSQL = "UPDATE mebank.free_number_space SET seed = ? WHERE space_name_id = ?";
+    private static final String selectSpaceSQL = "SELECT seed, batch_size FROM hybris.he_number_space WHERE space_name_id = ?";
+    private static final String updateSeedSQL = "UPDATE hybris.he_number_space SET seed = ? WHERE space_name_id = ?";
 
     private final JdbcTemplate jdbcTemplate;
     private final String orderIdSpaceName;
@@ -28,7 +28,7 @@ public class IdGenerator {
         // init credit and deposit number spaces
         orderIdSpace = querySpace(orderIdSpaceName);
 
-        logger.debug("Credit space initialized => {}", orderIdSpace);
+        logger.debug("Order space initialized => {}", orderIdSpace);
         //increase seed by batch size
         reserveSeed(orderIdSpace);
     }

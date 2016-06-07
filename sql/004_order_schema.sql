@@ -99,3 +99,11 @@ CREATE TABLE hcm_item (
   CONSTRAINT hcm_item_order_fk FOREIGN KEY (order_id) REFERENCES hcm_order (id),
   CONSTRAINT hcm_item_prd_fk FOREIGN KEY (product_id) REFERENCES hc_product (id)
 );
+
+CREATE TABLE IF NOT EXISTS hcm_identity_generator (
+  id             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  sequence_name  VARCHAR(100)    NOT NULL,
+  sequence_value BIGINT UNSIGNED NOT NULL,
+  CONSTRAINT hp_identity_generator_pk PRIMARY KEY (id),
+  CONSTRAINT hp_identity_generator_seq_uk UNIQUE (sequence_name)
+);

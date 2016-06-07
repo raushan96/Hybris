@@ -12,7 +12,7 @@ public abstract class CommerceIdentifier extends VersionedEntity {
 
     @Id
     @GenericGenerator(name = "commerceGenerator", strategy = "enhanced-table", parameters = {
-            @Parameter(name = "table_name", value = "hcom_identity_generator"),
+            @Parameter(name = "table_name", value = "hcm_identity_generator"),
             @Parameter(name = "segment_column_name", value = "sequence_name"),
             @Parameter(name = "value_column_name", value = "sequence_value"),
             @Parameter(name = "prefer_entity_table_as_segment_value", value = "true"),
