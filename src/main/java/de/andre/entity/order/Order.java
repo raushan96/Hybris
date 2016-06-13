@@ -27,7 +27,7 @@ public class Order extends CommerceIdentifier {
     private List<HardgoodShippingGroup> hgShippingGroups = new ArrayList<>(0);
     private List<PaymentGroup> paymentGroups = new ArrayList<>(0);
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "profile_id")
     public Profile getProfile() {
         return profile;
@@ -187,5 +187,18 @@ public class Order extends CommerceIdentifier {
         result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
         result = 31 * result + (submittedDate != null ? submittedDate.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "lastModifiedDate=" + lastModifiedDate +
+                ", siteId='" + siteId + '\'' +
+                ", serverInfo='" + serverInfo + '\'' +
+                ", state=" + state +
+                ", creationDate=" + creationDate +
+                ", submittedDate=" + submittedDate +
+                ", number='" + number + '\'' +
+                '}';
     }
 }

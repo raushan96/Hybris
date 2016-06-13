@@ -4,6 +4,7 @@ import de.andre.entity.enums.State;
 import de.andre.entity.profile.Profile;
 import de.andre.entity.util.ForgotPasswordForm;
 import de.andre.service.account.ProfileTools;
+import de.andre.service.commerce.order.OrderHolder;
 import de.andre.utils.validation.ForgotPasswordFormValidator;
 import de.andre.utils.validation.ProfileValidator;
 import org.slf4j.Logger;
@@ -30,6 +31,9 @@ public class AccountController {
     private final ForgotPasswordFormValidator forgotPasswordFormValidator;
 
     @Autowired
+    private OrderHolder orderHolder;
+
+    @Autowired
     public AccountController(final ProfileTools profileTools, final ProfileValidator profileValidator,
                              final ForgotPasswordFormValidator forgotPasswordFormValidator) {
         this.profileTools = profileTools;
@@ -44,6 +48,7 @@ public class AccountController {
 
     @RequestMapping("/profile")
     public String showAccount(final Model map) {
+        orderHolder.currentOrder();
         final Profile profile = profileTools.currentProfile();
         map.addAttribute("profile", profile);
         map.addAttribute("addresses", profileTools.addressesByProfile(profile.getId()));

@@ -32,7 +32,8 @@ public class OrderHolder {
                 currentOrder = reloadOrder();
                 this.orderId = currentOrder.getId();
             }
-        } else {
+        }
+        else {
             currentOrder = reloadOrder();
             this.orderId = currentOrder.getId();
         }
