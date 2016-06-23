@@ -34,8 +34,12 @@ public abstract class RepositoryAdapter {
         logger.debug("{} component startup complete", this.getClass().getSimpleName());
     }
 
-    protected Session getSession() {
+    public Session getSession() {
         return em.unwrap(Session.class);
+    }
+
+    public EntityManager getEntityManager() {
+        return this.em;
     }
 
     public List<Repository> getAllRepositories() {

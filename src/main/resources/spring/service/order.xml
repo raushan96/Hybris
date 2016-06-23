@@ -23,8 +23,14 @@
 	<bean id="orderManager" class="de.andre.service.commerce.order.OrderManager">
 		<constructor-arg name="orderTools" ref="orderTools"/>
 	</bean>
+
 	<bean id="orderHolder" class="de.andre.service.commerce.order.OrderHolder" scope="session">
 		<constructor-arg name="orderTools" ref="orderTools"/>
+		<property name="requestOrder" ref="requestOrder"/>
+		<aop:scoped-proxy/>
+	</bean>
+
+	<bean id="requestOrder" class="de.andre.service.commerce.order.RequestOrder" scope="request">
 		<aop:scoped-proxy/>
 	</bean>
 </beans>

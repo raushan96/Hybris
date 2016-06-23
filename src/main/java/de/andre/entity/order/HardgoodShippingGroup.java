@@ -1,16 +1,21 @@
 package de.andre.entity.order;
 
 import de.andre.entity.profile.ContactInfo;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "hcm_hg_shipping_group", schema = "hybris")
 public class HardgoodShippingGroup extends ShippingGroup {
     private ContactInfo contactInfo;
+    private Set<ShippingItemRelationship> shippingItemRelationships;
 
     @Embedded
     @NotNull
@@ -20,6 +25,26 @@ public class HardgoodShippingGroup extends ShippingGroup {
 
     public void setContactInfo(ContactInfo contactInfo) {
         this.contactInfo = contactInfo;
+    }
+
+    @OneToMany(mappedBy = "shippingGroup")
+    public Set<ShippingItemRelationship> getShippingItemRelationships() {
+        return shippingItemRelationships;
+    }
+
+    public void setShippingItemRelationships(Set<ShippingItemRelationship> shippingItemRelationship) {
+        this.shippingItemRelationships = shippingItemRelationship;
+    }
+
+    public Set<ShippingItemRelationship> itemsRelsInternal() {
+        if (this.shippingItemRelationships == null) {
+            this.shippingItemRelationships = new HashSet<>();
+        }
+        return this.shippingItemRelationships;
+    }
+
+    public boolean hasItemsRels() {
+        return !CollectionUtils.isEmpty(getShippingItemRelationships());
     }
 
     @Override
@@ -39,5 +64,14 @@ public class HardgoodShippingGroup extends ShippingGroup {
         int result = super.hashCode();
         result = 31 * result + (contactInfo != null ? contactInfo.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("HardgoodShippingGroup{");
+        sb.append("contactInfo=").append(contactInfo);
+        sb.append("shippingState=").append(getShippingState());
+        sb.append('}');
+        return sb.toString();
     }
 }

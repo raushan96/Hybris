@@ -49,4 +49,11 @@ public abstract class ShippingGroup extends CommerceIdentifier {
         result = 31 * result + (shippingState != null ? shippingState.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "ShippingGroup{" +
+                "shippingState=" + shippingState +
+                '}';
+    }
 }

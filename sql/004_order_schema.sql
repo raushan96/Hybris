@@ -100,6 +100,18 @@ CREATE TABLE hcm_item (
   CONSTRAINT hcm_item_prd_fk FOREIGN KEY (product_id) REFERENCES hc_product (id)
 );
 
+CREATE TABLE hcm_ship_item (
+  id            BIGINT UNSIGNED,
+  ship_group_id BIGINT UNSIGNED NOT NULL,
+  item_id       BIGINT UNSIGNED NOT NULL,
+  version       INTEGER DEFAULT 0,
+  type          INTEGER         NOT NULL,
+  quantity      INTEGER         NULL,
+  CONSTRAINT hcm_item_pk PRIMARY KEY (id),
+  CONSTRAINT hcm_sh_item_fk FOREIGN KEY (item_id) REFERENCES hcm_item (id),
+  CONSTRAINT hcm_it_ship_fk FOREIGN KEY (ship_group_id) REFERENCES hcm_hg_shipping_group (id)
+);
+
 CREATE TABLE IF NOT EXISTS hcm_identity_generator (
   id             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   sequence_name  VARCHAR(100)    NOT NULL,

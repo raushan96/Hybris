@@ -1,6 +1,5 @@
 package de.andre.entity.profile;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import de.andre.entity.dto.View;
 import de.andre.entity.enums.State;
@@ -13,7 +12,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 @Embeddable
-public class ContactInfo {
+public class ContactInfo implements Cloneable {
     private String city;
     private String postalCode;
     private String countryCode;
@@ -102,5 +101,14 @@ public class ContactInfo {
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (state != null ? state.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public ContactInfo clone() {
+        try {
+            return (ContactInfo) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

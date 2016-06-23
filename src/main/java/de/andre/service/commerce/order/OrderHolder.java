@@ -17,6 +17,8 @@ public class OrderHolder {
 
     private final OrderTools orderTools;
 
+    private RequestOrder requestOrder;
+
     public OrderHolder(final OrderTools orderTools) {
         this.orderTools = orderTools;
     }
@@ -35,6 +37,7 @@ public class OrderHolder {
         }
         else {
             currentOrder = reloadOrder();
+            requestOrder.setOrder(currentOrder);
             this.orderId = currentOrder.getId();
         }
 
@@ -75,5 +78,9 @@ public class OrderHolder {
 
     public boolean isResolved() {
         return this.orderId != null;
+    }
+
+    public void setRequestOrder(RequestOrder requestOrder) {
+        this.requestOrder = requestOrder;
     }
 }

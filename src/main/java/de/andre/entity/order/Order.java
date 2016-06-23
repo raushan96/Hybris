@@ -4,6 +4,7 @@ import de.andre.entity.enums.OrderState;
 import de.andre.entity.profile.Profile;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -157,6 +158,10 @@ public class Order extends CommerceIdentifier {
 
     public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public boolean hasMultipleShipping() {
+        return !CollectionUtils.isEmpty(getHgShippingGroups()) && getHgShippingGroups().size() > 1;
     }
 
     @Override

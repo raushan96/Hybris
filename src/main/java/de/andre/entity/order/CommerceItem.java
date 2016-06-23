@@ -1,9 +1,12 @@
 package de.andre.entity.order;
 
 import de.andre.entity.catalog.Product;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "hcm_item", schema = "hybris")
@@ -13,6 +16,7 @@ public class CommerceItem extends CommerceIdentifier {
 
     private Order order;
     private Product product;
+    private Set<ShippingItemRelationship> shippingItemRelationships;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
@@ -34,6 +38,22 @@ public class CommerceItem extends CommerceIdentifier {
         this.product = product;
     }
 
+    @OneToMany(mappedBy = "commerceItem")
+    public Set<ShippingItemRelationship> getShippingItemRelationships() {
+        return shippingItemRelationships;
+    }
+
+    public void setShippingItemRelationships(Set<ShippingItemRelationship> shippingItemRelationship) {
+        this.shippingItemRelationships = shippingItemRelationship;
+    }
+
+    public Set<ShippingItemRelationship> shipRelsInternal() {
+        if (this.shippingItemRelationships == null) {
+            this.shippingItemRelationships = new HashSet<>();
+        }
+        return this.shippingItemRelationships;
+    }
+
     @Column(name = "quantity")
     public Long getQuantity() {
         return quantity;
@@ -50,6 +70,10 @@ public class CommerceItem extends CommerceIdentifier {
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public boolean hasShippingRels() {
+        return !CollectionUtils.isEmpty(getShippingItemRelationships());
     }
 
     @Override
@@ -70,5 +94,13 @@ public class CommerceItem extends CommerceIdentifier {
         result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
         result = 31 * result + (product != null ? product.getId().hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CommerceItem{" +
+                "quantity=" + quantity +
+                ", creationDate=" + creationDate +
+                '}';
     }
 }
