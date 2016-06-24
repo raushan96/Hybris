@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -25,8 +26,12 @@ public class OrderHolder {
 
     @Transactional
     public Order currentOrder() {
-        Order currentOrder;
+        //request cache for order
+        if (requestOrder.hasOrder()) {
+            return requestOrder.getOrder();
+        }
 
+        Order currentOrder;
         if (this.orderId != null) {
             currentOrder = orderTools.loadOrder(orderId);
             if (!OrderUtils.orderActive(currentOrder)) {
@@ -37,10 +42,11 @@ public class OrderHolder {
         }
         else {
             currentOrder = reloadOrder();
-            requestOrder.setOrder(currentOrder);
             this.orderId = currentOrder.getId();
         }
 
+        Assert.notNull(currentOrder, "Order cannot be null here");
+        requestOrder.setOrder(currentOrder);
         return currentOrder;
     }
 

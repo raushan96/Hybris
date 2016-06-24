@@ -34,12 +34,13 @@
                                 <span class="number-minus">-</span>
                                 <input type="text" name="quantity" data-min="1" data-maxallowed="8" value="1"
                                        readonly="readonly"/>
+                                <input type="hidden" name="productId" th:value="${prd.id}"/>
                                 <span class="number-plus">+</span>
                             </div>
                             <br/>
-                            <a th:href="@{${#httpServletRequest.servletPath}} + '/pId-' + ${prd.id}"
+                            <a th:href="@{/product/processItemAsync}"
                                class="btn btn-primary addQuantity">Add to cart</a>
-                            <a th:href="@{${#httpServletRequest.servletPath}} + '/prd-' + ${prd.id}"
+                            <a th:href="@{${site.attributes.pdp_path} ?: 'product'} + '/pId-' + ${prd.id}"
                                class="btn btn-default">Product Page</a>
                         </div>
                         <div class="ratings">

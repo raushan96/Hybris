@@ -1,8 +1,8 @@
 package de.andre.web.controller.catalog;
 
 import de.andre.entity.catalog.Category;
+import de.andre.multisite.SiteManager;
 import de.andre.service.catalog.CatalogTools;
-import de.andre.utils.HybrisConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +28,7 @@ public class CatalogController {
     public String catalogMenu(final Model map) {
         final Set<Category> rootCats = catalogTools.getRootChildCategories();
         map.addAttribute("rootCats", rootCats.toArray(new Category[rootCats.size()]));
+        map.addAttribute("site", SiteManager.getSite());
         return "catalog/catalog";
     }
 
@@ -37,7 +38,7 @@ public class CatalogController {
                 catalogLink.split(HYPHEN)[1] :
                 catalogLink;
         map.addAllAttributes(catalogTools.assembleCategoryContent(catId));
-
+        map.addAttribute("site", SiteManager.getSite());
         return "catalog/category";
     }
 }

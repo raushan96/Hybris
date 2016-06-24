@@ -18,6 +18,20 @@
                             <p th:text="${product.description}">See more</p>
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
                         </div>
+
+                        <form class="form-inline" th:method="post" th:action="@{/product/processItem}">
+                            <div class="form-group">
+                                <label class="sr-only" for="quantityAmount">Quantity</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">№</div>
+                                    <input type="hidden" name="productId" th:value="${product.id}"/>
+                                    <input type="text" name="quantity" class="form-control" id="quantityAmount" placeholder="Quantity"/>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add to cart</button>
+                        </form>
+
+                        <br/>
                         <div class="ratings">
                             <p class="pull-right">3 reviews</p>
                             <p>

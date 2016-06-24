@@ -21,13 +21,14 @@ $(document).ready(function () {
     $('.addQuantity').bind('click', function (event) {
         event.preventDefault();
         var quantity = parseInt($(this).parent().find("input[name=quantity]").val());
+        var productId = parseInt($(this).parent().find("input[name=productId]").val());
         var link = $(this).attr('href');
         var ajaxData = {};
         ajaxData['quantity'] = quantity;
+        ajaxData['productId'] = productId;
         $.ajax({
             type: 'POST',
             url: link,
-            dataType: 'json',
             data: $.param(ajaxData),
             success: function (res) {
                 console.log(res);

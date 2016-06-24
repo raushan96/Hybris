@@ -33,4 +33,19 @@
 	<bean id="requestOrder" class="de.andre.service.commerce.order.RequestOrder" scope="request">
 		<aop:scoped-proxy/>
 	</bean>
+
+	<bean id="commerceItemsTools" class="de.andre.service.commerce.order.CommerceItemsTools">
+		<constructor-arg name="catalogTools" ref="catalogTools"/>
+		<constructor-arg name="commerceRepository" ref="commerceRepository"/>
+	</bean>
+
+	<bean id="shippingGroupsTools" class="de.andre.service.commerce.order.ShippingGroupsTools">
+		<constructor-arg name="profileTools" ref="profileTools"/>
+	</bean>
+
+	<bean id="purchaseService" class="de.andre.service.commerce.order.PurchaseService">
+		<constructor-arg name="commerceItemsTools" ref="commerceItemsTools"/>
+		<constructor-arg name="shippingGroupsTools" ref="shippingGroupsTools"/>
+		<property name="orderHolder" ref="orderHolder"/>
+	</bean>
 </beans>
