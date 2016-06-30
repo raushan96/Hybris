@@ -56,6 +56,7 @@ public class OrderHolder {
         logger.debug("Switching order from '{}' to '{}'", this.orderId, nextOrder.getId());
 
         this.orderId = nextOrder.getId();
+        requestOrder.setOrder(nextOrder);
         return nextOrder;
     }
 

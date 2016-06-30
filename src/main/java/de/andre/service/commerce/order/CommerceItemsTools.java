@@ -2,6 +2,7 @@ package de.andre.service.commerce.order;
 
 import de.andre.entity.catalog.Product;
 import de.andre.entity.order.CommerceItem;
+import de.andre.entity.order.ItemPriceInfo;
 import de.andre.entity.order.Order;
 import de.andre.repository.order.CommerceRepository;
 import de.andre.service.catalog.CatalogTools;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -33,12 +35,24 @@ public class CommerceItemsTools {
         ci.setCreationDate(LocalDateTime.now());
         ci.setQuantity(pQuantity);
         ci.setProduct(pProduct);
+        addItemPriceInfo(ci);
 
         if (logger.isDebugEnabled()) {
             logger.debug("Created commerce item: {}, with product {}", ci, pProduct.getId());
         }
 
         return ci;
+    }
+
+    protected ItemPriceInfo addItemPriceInfo(final CommerceItem pItem) {
+        Assert.notNull(pItem);
+
+        final ItemPriceInfo priceInfo = new ItemPriceInfo();
+        priceInfo.setCommerceItem(pItem);
+        pItem.setPriceInfo(priceInfo);
+        priceInfo.fillAmounts(BigDecimal.ZERO);
+
+        return priceInfo;
     }
 
     public CommerceItem createCommerceItem(final Long pQuantity, final String pProductId) {

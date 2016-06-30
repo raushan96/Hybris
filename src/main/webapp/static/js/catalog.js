@@ -32,6 +32,11 @@ $(document).ready(function () {
             data: $.param(ajaxData),
             success: function (res) {
                 console.log(res);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status == 401) {
+                    window.location.replace("/login");
+                }
             }
         });
     })

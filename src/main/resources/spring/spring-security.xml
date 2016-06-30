@@ -8,14 +8,13 @@
     <global-method-security pre-post-annotations="enabled"/>
 
     <http security="none" pattern="/static/**"/>
-    <http use-expressions="true">
+    <http use-expressions="true" entry-point-ref="entryPoint">
         <intercept-url pattern="/" access="permitAll"/>
         <intercept-url pattern="/login" access="permitAll"/>
         <intercept-url pattern="/register" access="permitAll"/>
         <intercept-url pattern="/account/**" access="hasAuthority('USER')" method="GET"/>
         <intercept-url pattern="/account/**" access="isFullyAuthenticated()" method="PUT"/>
-        <intercept-url pattern="/catalog/**" access="permitAll" method="GET"/>
-        <intercept-url pattern="/catalog/**" access="isFullyAuthenticated()" method="POST"/>
+        <intercept-url pattern="/product/**" access="isFullyAuthenticated()" method="POST"/>
         <intercept-url pattern="/checkout/**" access="isFullyAuthenticated()"/>
 
         <form-login login-page="/login" authentication-success-handler-ref="authSuccessHandler"
@@ -36,4 +35,7 @@
 
     <beans:bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
     <beans:bean name="authSuccessHandler" class="de.andre.service.security.AuthenticationSuccessHandlerImpl"/>
+    <beans:bean name="entryPoint" class="de.andre.service.security.AjaxCapableAuthenticationEntryPoint">
+        <beans:constructor-arg name="loginFormUrl" value="/login"/>
+    </beans:bean>
 </beans:beans>

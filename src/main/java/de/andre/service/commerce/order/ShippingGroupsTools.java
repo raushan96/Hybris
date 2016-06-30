@@ -4,6 +4,7 @@ import de.andre.entity.enums.RelationshipType;
 import de.andre.entity.enums.ShippingState;
 import de.andre.entity.order.*;
 import de.andre.entity.profile.Address;
+import de.andre.entity.profile.ContactInfo;
 import de.andre.entity.profile.Profile;
 import de.andre.service.account.ProfileTools;
 import de.andre.utils.HybrisConstants;
@@ -15,6 +16,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -28,26 +30,39 @@ public class ShippingGroupsTools {
         this.profileTools = profileTools;
     }
 
-    public ShippingGroup createShippingGroup(final String pGroupClass, final ShippingState pState) {
-        final ShippingGroup sg;
+    public HardgoodShippingGroup createHardgoodShippingGroup(final String pGroupClass, final ShippingState pState) {
+        final HardgoodShippingGroup sg;
         if (StringUtils.isEmpty(pGroupClass)) {
             sg = defaultShippingGroup();
         }
         else {
             try {
-                sg = (ShippingGroup) BeanUtils.instantiate(
+                sg = (HardgoodShippingGroup) BeanUtils.instantiate(
                         ClassUtils.forName(pGroupClass, ShippingGroupsTools.class.getClassLoader()));
             } catch (ClassNotFoundException ex) {
                 throw new IllegalArgumentException("Cannot find class [" + pGroupClass + "]", ex);
             }
         }
         sg.setShippingState(pState);
+        sg.setContactInfo(profileContact());
+        addShippingPriceInfo(sg);
 
         if (logger.isDebugEnabled()) {
             logger.debug("Shipping group created: {}", sg);
         }
 
         return sg;
+    }
+
+    protected ShippingPriceInfo addShippingPriceInfo(final HardgoodShippingGroup pGroup) {
+        Assert.notNull(pGroup);
+
+        final ShippingPriceInfo priceInfo = new ShippingPriceInfo();
+        priceInfo.setShippingGroup(pGroup);
+        pGroup.setPriceInfo(priceInfo);
+        priceInfo.fillAmounts(BigDecimal.ZERO);
+
+        return priceInfo;
     }
 
     public HardgoodShippingGroup modifyShippingGroupQuantity(final CommerceItem pItem, final Long pQuantity, final HardgoodShippingGroup pShippingGroup) {
@@ -135,6 +150,23 @@ public class ShippingGroupsTools {
         }
     }
 
+    private ContactInfo profileContact() {
+        final Profile profile = profileTools.currentProfile();
+
+        if (!CollectionUtils.isEmpty(profile.getAddresses())) {
+            final Address shipAddress = profile.getAddresses().get(HybrisConstants.DEFAULT_SHIPPING_NAME);
+            if (shipAddress != null) {
+                return shipAddress.getContactInfo();
+            }
+
+            for (final Map.Entry<String, Address> address : profile.getAddresses().entrySet()) {
+                return address.getValue().getContactInfo();
+            }
+        }
+
+        return new ContactInfo();
+    }
+
     private ShippingItemRelationship addShippingRel(final HardgoodShippingGroup pShippingGroup, final CommerceItem pItem) {
         final ShippingItemRelationship rel = new ShippingItemRelationship();
         rel.setShippingGroup(pShippingGroup);
@@ -168,11 +200,11 @@ public class ShippingGroupsTools {
         }
     }
 
-    public ShippingGroup createShippingGroup() {
-        return createShippingGroup(null, ShippingState.INITIAL);
+    public HardgoodShippingGroup createHardgoodShippingGroup() {
+        return createHardgoodShippingGroup(null, ShippingState.INITIAL);
     }
 
-    protected ShippingGroup defaultShippingGroup() {
+    protected HardgoodShippingGroup defaultShippingGroup() {
         return new HardgoodShippingGroup();
     }
 }

@@ -1,51 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:aop="http://www.springframework.org/schema/aop"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans.xsd
 	   http://www.springframework.org/schema/aop
 		http://www.springframework.org/schema/aop/spring-aop.xsd ">
 
-	<bean id="commerceRepository" class="de.andre.repository.order.CommerceRepository">
-		<constructor-arg name="orderRepository" ref="orderRepository"/>
-		<constructor-arg name="commerceItemRepository" ref="commerceItemRepository"/>
-		<constructor-arg name="hgShippingGroupRepository" ref="hgShippingGroupRepository"/>
-	</bean>
+    <bean id="commerceRepository" class="de.andre.repository.order.CommerceRepository">
+        <constructor-arg name="orderRepository" ref="orderRepository"/>
+        <constructor-arg name="commerceItemRepository" ref="commerceItemRepository"/>
+        <constructor-arg name="hgShippingGroupRepository" ref="hgShippingGroupRepository"/>
+    </bean>
 
-	<bean id="orderTools" class="de.andre.service.commerce.order.OrderTools">
-		<constructor-arg name="orderRepository" ref="orderRepository"/>
-		<constructor-arg name="profileTools" ref="profileTools"/>
-		<constructor-arg name="priceTools" ref="priceTools"/>
-		<constructor-arg name="idGenerator" ref="idGenerator"/>
-	</bean>
+    <bean id="orderTools" class="de.andre.service.commerce.order.OrderTools">
+        <constructor-arg name="orderRepository" ref="orderRepository"/>
+        <constructor-arg name="profileTools" ref="profileTools"/>
+        <constructor-arg name="priceTools" ref="priceTools"/>
+        <constructor-arg name="shippingGroupsTools" ref="shippingGroupsTools"/>
+        <constructor-arg name="idGenerator" ref="idGenerator"/>
+    </bean>
 
-	<bean id="orderManager" class="de.andre.service.commerce.order.OrderManager">
-		<constructor-arg name="orderTools" ref="orderTools"/>
-	</bean>
+    <bean id="orderManager" class="de.andre.service.commerce.order.OrderManager">
+        <constructor-arg name="orderTools" ref="orderTools"/>
+    </bean>
 
-	<bean id="orderHolder" class="de.andre.service.commerce.order.OrderHolder" scope="session">
-		<constructor-arg name="orderTools" ref="orderTools"/>
-		<property name="requestOrder" ref="requestOrder"/>
-		<aop:scoped-proxy/>
-	</bean>
+    <bean id="orderHolder" class="de.andre.service.commerce.order.OrderHolder" scope="session">
+        <constructor-arg name="orderTools" ref="orderTools"/>
+        <property name="requestOrder" ref="requestOrder"/>
+        <aop:scoped-proxy/>
+    </bean>
 
-	<bean id="requestOrder" class="de.andre.service.commerce.order.RequestOrder" scope="request">
-		<aop:scoped-proxy/>
-	</bean>
+    <bean id="requestOrder" class="de.andre.service.commerce.order.RequestOrder" scope="request">
+        <aop:scoped-proxy/>
+    </bean>
 
-	<bean id="commerceItemsTools" class="de.andre.service.commerce.order.CommerceItemsTools">
-		<constructor-arg name="catalogTools" ref="catalogTools"/>
-		<constructor-arg name="commerceRepository" ref="commerceRepository"/>
-	</bean>
+    <bean id="commerceItemsTools" class="de.andre.service.commerce.order.CommerceItemsTools">
+        <constructor-arg name="catalogTools" ref="catalogTools"/>
+        <constructor-arg name="commerceRepository" ref="commerceRepository"/>
+    </bean>
 
-	<bean id="shippingGroupsTools" class="de.andre.service.commerce.order.ShippingGroupsTools">
-		<constructor-arg name="profileTools" ref="profileTools"/>
-	</bean>
+    <bean id="shippingGroupsTools" class="de.andre.service.commerce.order.ShippingGroupsTools">
+        <constructor-arg name="profileTools" ref="profileTools"/>
+    </bean>
 
-	<bean id="purchaseService" class="de.andre.service.commerce.order.PurchaseService">
-		<constructor-arg name="commerceItemsTools" ref="commerceItemsTools"/>
-		<constructor-arg name="shippingGroupsTools" ref="shippingGroupsTools"/>
-		<property name="orderHolder" ref="orderHolder"/>
-	</bean>
+    <bean id="purchaseService" class="de.andre.service.commerce.order.PurchaseService">
+        <constructor-arg name="commerceItemsTools" ref="commerceItemsTools"/>
+        <constructor-arg name="shippingGroupsTools" ref="shippingGroupsTools"/>
+        <constructor-arg name="repriceEngine" ref="repriceEngine"/>
+        <property name="orderHolder" ref="orderHolder"/>
+    </bean>
+
+    <bean id="itemPriceListCalculator" class="de.andre.service.commerce.order.price.item.ItemPriceListCalculator">
+        <constructor-arg name="priceTools" ref="priceTools"/>
+    </bean>
+
+    <bean id="itemPricingEngine" class="de.andre.service.commerce.order.price.item.ItemPricingEngineImpl">
+        <property name="preCalculators">
+            <list>
+                <ref bean="itemPriceListCalculator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="shippingFixedPriceCalculator" class="de.andre.service.commerce.order.price.shipping.ShippingFixedPriceCalculator">
+        <property name="fixedAmount" value="10"/>
+    </bean>
+
+    <bean id="shippingPricingEngine" class="de.andre.service.commerce.order.price.shipping.ShippingPricingEngineImpl">
+        <property name="shippingCalculators">
+            <list>
+                <ref bean="shippingFixedPriceCalculator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="orderItemsTotalCalculator" class="de.andre.service.commerce.order.price.order.OrderItemsTotalCalculator"> </bean>
+
+    <bean id="orderPricingEngine" class="de.andre.service.commerce.order.price.order.OrderPricingEngineImpl">
+        <property name="orderCalculators">
+            <list>
+                <ref bean="orderItemsTotalCalculator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="repriceEngine" class="de.andre.service.commerce.order.price.RepriceEngineImpl">
+        <constructor-arg name="profileTools" ref="profileTools"/>
+        <property name="pricingEngines">
+            <list>
+                <ref bean="itemPricingEngine"/>
+                <ref bean="shippingPricingEngine"/>
+                <ref bean="orderPricingEngine"/>
+            </list>
+        </property>
+    </bean>
 </beans>

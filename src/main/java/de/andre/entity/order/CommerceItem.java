@@ -16,6 +16,7 @@ public class CommerceItem extends CommerceIdentifier {
 
     private Order order;
     private Product product;
+    private ItemPriceInfo priceInfo;
     private Set<ShippingItemRelationship> shippingItemRelationships;
 
     @ManyToOne
@@ -45,6 +46,16 @@ public class CommerceItem extends CommerceIdentifier {
 
     public void setShippingItemRelationships(Set<ShippingItemRelationship> shippingItemRelationship) {
         this.shippingItemRelationships = shippingItemRelationship;
+    }
+
+    @OneToOne(optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "price_info_id")
+    public ItemPriceInfo getPriceInfo() {
+        return priceInfo;
+    }
+
+    public void setPriceInfo(ItemPriceInfo priceInfo) {
+        this.priceInfo = priceInfo;
     }
 
     public Set<ShippingItemRelationship> shipRelsInternal() {

@@ -68,10 +68,8 @@ public class HardgoodShippingGroup extends ShippingGroup {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("HardgoodShippingGroup{");
-        sb.append("contactInfo=").append(contactInfo);
-        sb.append("shippingState=").append(getShippingState());
-        sb.append('}');
-        return sb.toString();
+        return "HardgoodShippingGroup{" + "contactInfo=" + contactInfo +
+                "shippingState=" + getShippingState() +
+                '}';
     }
 }

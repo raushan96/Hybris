@@ -24,6 +24,7 @@ public class Order extends CommerceIdentifier {
     private LocalDateTime lastModifiedDate;
 
     private Profile profile;
+    private OrderPriceInfo priceInfo;
     private List<CommerceItem> commerceItems = new ArrayList<>(0);
     private List<HardgoodShippingGroup> hgShippingGroups = new ArrayList<>(0);
     private List<PaymentGroup> paymentGroups = new ArrayList<>(0);
@@ -89,6 +90,16 @@ public class Order extends CommerceIdentifier {
         this.paymentGroups = paymentGroups;
     }
 
+    @OneToOne(optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "price_info_id")
+    public OrderPriceInfo getPriceInfo() {
+        return priceInfo;
+    }
+
+    public void setPriceInfo(OrderPriceInfo priceInfo) {
+        this.priceInfo = priceInfo;
+    }
+
     @NotEmpty
     @Column(name = "number")
     public String getNumber() {
@@ -131,7 +142,6 @@ public class Order extends CommerceIdentifier {
     }
 
     @NotNull
-    @LastModifiedDate
     @Column(name = "creation_date")
     public LocalDateTime getCreationDate() {
         return creationDate;
@@ -150,6 +160,7 @@ public class Order extends CommerceIdentifier {
         this.submittedDate = submittedDate;
     }
 
+    @LastModifiedDate
     @NotNull
     @Column(name = "last_modified_date")
     public LocalDateTime getLastModifiedDate() {

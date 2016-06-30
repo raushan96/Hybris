@@ -10,6 +10,7 @@ public abstract class ShippingGroup extends CommerceIdentifier {
     private ShippingState shippingState;
 
     private Order order;
+    private ShippingPriceInfo priceInfo;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "ship_state")
@@ -30,6 +31,16 @@ public abstract class ShippingGroup extends CommerceIdentifier {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    @OneToOne(optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "price_info_id")
+    public ShippingPriceInfo getPriceInfo() {
+        return priceInfo;
+    }
+
+    public void setPriceInfo(ShippingPriceInfo priceInfo) {
+        this.priceInfo = priceInfo;
     }
 
     @Override

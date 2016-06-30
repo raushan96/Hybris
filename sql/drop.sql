@@ -1,10 +1,14 @@
 USE hybris;
 
+DROP TABLE hcm_price_adjust;
+DROP TABLE hcm_ship_item;
 DROP TABLE hcm_item;
 DROP TABLE hcm_credit_card;
 DROP TABLE hcm_pay_group;
 DROP TABLE hcm_hg_shipping_group;
 DROP TABLE hcm_order;
+DROP TABLE hcm_price_info;
+DROP TABLE hcm_identity_generator;
 
 DROP TABLE hp_profile_interests;
 DROP TABLE hp_interest;

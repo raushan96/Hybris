@@ -14,4 +14,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "ord.siteId = :siteId " +
             "order by ord.lastModifiedDate")
     List<Order> currentOrders(@Param("profileId") Long profileId, @Param("siteId") String siteId);
+
+    @Query("select ord from Order ord " +
+            "left join fetch ord.commerceItems cis " +
+            "left join fetch cis.shippingItemRelationships " +
+            "left join fetch ord.hgShippingGroups " +
+            "left join fetch ord.paymentGroups " +
+            "where ord.id = :orderId")
+    Order fetchOrder(@Param("orderId") Long orderId);
 }

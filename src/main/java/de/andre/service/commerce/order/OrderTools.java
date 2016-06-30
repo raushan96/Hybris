@@ -2,29 +2,24 @@ package de.andre.service.commerce.order;
 
 import de.andre.entity.enums.OrderState;
 import de.andre.entity.enums.PaymentState;
-import de.andre.entity.enums.ShippingState;
 import de.andre.entity.order.*;
-import de.andre.entity.profile.Address;
-import de.andre.entity.profile.ContactInfo;
 import de.andre.entity.profile.Profile;
 import de.andre.multisite.SiteManager;
 import de.andre.repository.order.OrderRepository;
 import de.andre.service.account.ProfileTools;
 import de.andre.service.price.PriceTools;
-import de.andre.utils.HybrisConstants;
-import de.andre.utils.ProfileUtils;
 import de.andre.utils.idgen.IdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
+import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 public class OrderTools {
     private static final Logger logger = LoggerFactory.getLogger(OrderTools.class);
@@ -32,13 +27,15 @@ public class OrderTools {
     private final OrderRepository orderRepository;
     private final ProfileTools profileTools;
     private final PriceTools priceTools;
+    private final ShippingGroupsTools shippingGroupsTools;
     private final IdGenerator idGenerator;
 
     public OrderTools(final OrderRepository orderRepository, final ProfileTools profileTools, final PriceTools priceTools,
-            final IdGenerator idGenerator) {
+            final ShippingGroupsTools shippingGroupsTools, final IdGenerator idGenerator) {
         this.orderRepository = orderRepository;
         this.profileTools = profileTools;
         this.priceTools = priceTools;
+        this.shippingGroupsTools = shippingGroupsTools;
         this.idGenerator = idGenerator;
     }
 
@@ -53,20 +50,9 @@ public class OrderTools {
         order.setNumber(idGenerator.generateOrderStringNumber());
         order.setProfile(profile);
 
-//            DcsppAmountInfo amountInfo = new DcsppAmountInfo();
-//            amountInfo.setCurrencyCode("EUR");
-//            amountInfo.setType(AmountType.ORDER_PRICE_INFO);
-//            order.setAmountInfo(amountInfo);
-//
-        final HardgoodShippingGroup shipGroup = initDefaultHardgoodShippingGroup();
-        shipGroup.setShippingState(ShippingState.INITIAL);
-        shipGroup.setContactInfo(profileContact());
-        order.addHgShippingGroup(shipGroup);
-
-        final PaymentGroup payGroup = initDefaultPaymentGroup();
-        payGroup.setState(PaymentState.INITIAL);
-        payGroup.setCurrency(priceTools.getCurrency(null));
-        order.addPaymentGroup(payGroup);
+        addDefaultShippingGroup(order);
+        addDefaultPaymentGroup(order);
+        addOrderPriceInfo(order);
 
         if (logger.isDebugEnabled()) {
             logger.debug("Created order instance {}", order);
@@ -74,6 +60,32 @@ public class OrderTools {
 
         persistOrder(order);
         return order;
+    }
+
+    protected void addDefaultShippingGroup(final Order pOrder) {
+        Assert.notNull(pOrder);
+        final HardgoodShippingGroup shipGroup = shippingGroupsTools.createHardgoodShippingGroup();
+        shipGroup.setOrder(pOrder);
+        pOrder.addHgShippingGroup(shipGroup);
+    }
+
+    protected void addDefaultPaymentGroup(final Order pOrder) {
+        Assert.notNull(pOrder);
+        final PaymentGroup payGroup = initDefaultPaymentGroup();
+        payGroup.setState(PaymentState.INITIAL);
+        payGroup.setCurrency(priceTools.getCurrency(null));
+        payGroup.setOrder(pOrder);
+        pOrder.addPaymentGroup(payGroup);
+    }
+
+    protected void addOrderPriceInfo(final Order pOrder) {
+        Assert.notNull(pOrder);
+        final OrderPriceInfo priceInfo = new OrderPriceInfo();
+        priceInfo.setOrder(pOrder);
+        pOrder.setPriceInfo(priceInfo);
+        priceInfo.fillAmounts(BigDecimal.ZERO);
+        priceInfo.setTax(BigDecimal.ZERO);
+        priceInfo.setShipping(BigDecimal.ZERO);
     }
 
     private Order getOrderInstance() {
@@ -98,7 +110,8 @@ public class OrderTools {
         if (orderId == null) {
             return null;
         }
-        return orderRepository.findOne(orderId);
+        logger.debug("Fetching order with {} id", orderId);
+        return orderRepository.fetchOrder(orderId);
     }
 
     @Transactional(readOnly = true)
@@ -144,23 +157,6 @@ public class OrderTools {
         }
 
         return true;
-    }
-
-    private ContactInfo profileContact() {
-        final Profile profile = profileTools.currentProfile();
-
-        if (!CollectionUtils.isEmpty(profile.getAddresses())) {
-            final Address shipAddress = profile.getAddresses().get(HybrisConstants.DEFAULT_SHIPPING_NAME);
-            if (shipAddress != null) {
-                return shipAddress.getContactInfo();
-            }
-
-            for (final Map.Entry<String, Address> address : profile.getAddresses().entrySet()) {
-                return address.getValue().getContactInfo();
-            }
-        }
-
-        return new ContactInfo();
     }
 
     @Transactional

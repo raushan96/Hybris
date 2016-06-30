@@ -194,4 +194,18 @@ public class Profile extends ProfileBaseEntity {
         result = 31 * result + (created != null ? created.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "id='" + id + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender=" + gender +
+                ", dateOfBirth=" + dateOfBirth +
+                ", acceptEmails=" + acceptEmails +
+                ", created=" + created +
+                "} " + super.toString();
+    }
 }
