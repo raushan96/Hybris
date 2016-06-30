@@ -46,6 +46,10 @@ public class PriceInfo extends CommerceIdentifier {
         this.amount = amount;
     }
 
+    public void increaseAmount(BigDecimal amount) {
+        setAmount(this.getAmount().add(amount));
+    }
+
     @NotNull
     @Column(name = "raw_amount")
     public BigDecimal getRawAmount() {
@@ -55,6 +59,11 @@ public class PriceInfo extends CommerceIdentifier {
     public void setRawAmount(BigDecimal rawAmount) {
         this.rawAmount = rawAmount;
     }
+
+    public void increaseRawAmount(BigDecimal rawAmount) {
+        setRawAmount(this.getRawAmount().add(rawAmount));
+    }
+
 
     @Column(name = "currency_code")
     public String getCurrencyCode() {

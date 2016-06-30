@@ -32,6 +32,10 @@ public class OrderPriceInfo extends PriceInfo {
         this.shipping = shipping;
     }
 
+    public void increaseShipping(BigDecimal shipping) {
+        setShipping(getShipping().add(shipping));
+    }
+
     @Column(name = "tax")
     public BigDecimal getTax() {
         return tax;

@@ -42,6 +42,6 @@ public abstract class SkeletonPricingEngine implements PricingEngine {
     }
 
     protected boolean adjustmentsChanged(final List<PriceAdjustment> oldAdj, final List<PriceAdjustment> newAdj) {
-        return Objects.equals(oldAdj, newAdj);
+        return !Objects.equals(oldAdj, newAdj);
     }
 }

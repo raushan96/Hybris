@@ -50,8 +50,8 @@ public class PricingContext {
     public String toString() {
         return "PricingContext{" +
                 "locale=" + locale +
-                ", profile=" + profile +
-                ", site=" + site +
+                ", profile=" + profile.getId() +
+                ", site=" + site.getId() +
                 '}';
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,7 @@ public class ItemPricingEngineImpl extends SkeletonPricingEngine {
             final ItemPriceInfo priceInfo = ci.getPriceInfo();
             Assert.notNull(priceInfo);
             applyCurrency(priceInfo, ctx);
+            priceInfo.fillAmounts(BigDecimal.ZERO);
 
             final List<PriceAdjustment> previousAdjustments = priceInfo.getPriceAdjustments();
 
@@ -37,22 +39,26 @@ public class ItemPricingEngineImpl extends SkeletonPricingEngine {
             // promotions logic
             final List<PriceAdjustment> postAdjustments = applyCalculators(ci, postCalculators, ctx);
 
-            final List<PriceAdjustment> calculatedAdjustments = PriceUtils.mergeLists(Arrays.asList(preAdjustments, postAdjustments));
+            final List<PriceAdjustment> calculatedAdjustments = PriceUtils.mergeLists(
+                    Arrays.asList(preAdjustments, postAdjustments));
             if (logger.isDebugEnabled()) {
-                logger.debug("Final adjustments calculated list: {}", StringUtils.collectionToCommaDelimitedString(calculatedAdjustments));
+                logger.debug("Final adjustments calculated list: {}",
+                             StringUtils.collectionToCommaDelimitedString(calculatedAdjustments));
             }
 
             if (adjustmentsChanged(previousAdjustments, calculatedAdjustments)) {
+                calculatedAdjustments.forEach(adj -> adj.setPriceInfo(priceInfo));
                 priceInfo.setPriceAdjustments(calculatedAdjustments);
             }
         }
     }
 
-    private List<PriceAdjustment> applyCalculators(final CommerceItem item, final List<ItemCalculator> calculators, final PricingContext ctx) {
+    private List<PriceAdjustment> applyCalculators(final CommerceItem item, final List<ItemCalculator> calculators,
+            final PricingContext ctx) {
         final List<List<PriceAdjustment>> adjLists = new ArrayList<>(calculators.size());
         adjLists.addAll(calculators.stream()
-                .map(calculator -> calculator.priceItem(item, ctx))
-                .collect(Collectors.toList()));
+                                .map(calculator -> calculator.priceItem(item, ctx))
+                                .collect(Collectors.toList()));
         return PriceUtils.mergeLists(adjLists);
     }
 

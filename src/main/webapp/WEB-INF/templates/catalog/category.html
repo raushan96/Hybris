@@ -40,7 +40,7 @@
                             <br/>
                             <a th:href="@{/product/processItemAsync}"
                                class="btn btn-primary addQuantity">Add to cart</a>
-                            <a th:href="@{${site.attributes.pdp_path} ?: 'product'} + '/pId-' + ${prd.id}"
+                            <a th:href="@{${site.attributes[pdp_path]} ?: '/product'} + '/pId-' + ${prd.id}"
                                class="btn btn-default">Product Page</a>
                         </div>
                         <div class="ratings">

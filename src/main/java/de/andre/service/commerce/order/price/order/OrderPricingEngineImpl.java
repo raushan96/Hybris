@@ -1,36 +1,54 @@
 package de.andre.service.commerce.order.price.order;
 
 import de.andre.entity.order.Order;
-import de.andre.service.commerce.order.price.Calculator;
+import de.andre.entity.order.OrderPriceInfo;
+import de.andre.entity.order.PriceAdjustment;
+import de.andre.service.commerce.order.price.PriceUtils;
 import de.andre.service.commerce.order.price.PricingContext;
-import de.andre.service.commerce.order.price.PricingEngine;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import de.andre.service.commerce.order.price.SkeletonPricingEngine;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class OrderPricingEngineImpl implements PricingEngine {
-    private static final Logger logger = LoggerFactory.getLogger(OrderPricingEngineImpl.class);
-
-    private List<Calculator> orderCalculators = Collections.emptyList();
+public class OrderPricingEngineImpl extends SkeletonPricingEngine {
+    private List<OrderCalculator> orderCalculators = Collections.emptyList();
 
     @Override
-    public void priceOrder(Order order, PricingContext pricingContext) {
-        Assert.notNull(order);
-        Assert.notNull(pricingContext);
+    public void priceOrderInternal(final Order order, final PricingContext ctx) {
+        final OrderPriceInfo priceInfo = order.getPriceInfo();
+        Assert.notNull(priceInfo);
+        applyCurrency(priceInfo, ctx);
+        priceInfo.fillAmounts(BigDecimal.ZERO);
 
+        final List<PriceAdjustment> previousAdjustments = priceInfo.getPriceAdjustments();
+
+        final List<PriceAdjustment> calculatedAdjustments = applyCalculators(order, orderCalculators, ctx);
         if (logger.isDebugEnabled()) {
-            logger.debug("Starting shipping pricing on {} order, with {} context", order.getId(), pricingContext);
+            logger.debug("Final adjustments calculated list: {}",
+                         StringUtils.collectionToCommaDelimitedString(calculatedAdjustments));
         }
 
-        for (final Calculator orderCalculator : orderCalculators) {
-            orderCalculator.priceOrderItems(order, pricingContext);
+        if (adjustmentsChanged(previousAdjustments, calculatedAdjustments)) {
+            priceInfo.setPriceAdjustments(calculatedAdjustments);
+            calculatedAdjustments.forEach(adj -> adj.setPriceInfo(priceInfo));
         }
     }
 
-    public void setOrderCalculators(List<Calculator> orderCalculators) {
+    private List<PriceAdjustment> applyCalculators(final Order order, final List<OrderCalculator> calculators,
+            final PricingContext ctx) {
+        final List<List<PriceAdjustment>> adjLists = new ArrayList<>(calculators.size());
+        adjLists.addAll(calculators.stream()
+                                .map(calculator -> calculator.priceOrder(order, ctx))
+                                .collect(Collectors.toList()));
+        return PriceUtils.mergeLists(adjLists);
+    }
+
+    public void setOrderCalculators(List<OrderCalculator> orderCalculators) {
         this.orderCalculators = orderCalculators;
     }
 }

@@ -4,18 +4,21 @@ import de.andre.entity.order.HardgoodShippingGroup;
 import de.andre.entity.order.Order;
 import de.andre.entity.order.PriceAdjustment;
 import de.andre.entity.order.ShippingPriceInfo;
-import de.andre.service.commerce.order.price.Calculator;
+import de.andre.service.commerce.order.price.PriceUtils;
 import de.andre.service.commerce.order.price.PricingContext;
 import de.andre.service.commerce.order.price.SkeletonPricingEngine;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShippingPricingEngineImpl extends SkeletonPricingEngine {
-    private List<Calculator> shippingCalculators = Collections.emptyList();
+    private List<ShippingCalculator> shippingCalculators = Collections.emptyList();
 
     @Override
     protected void priceOrderInternal(final Order order, final PricingContext ctx) {
@@ -29,25 +32,33 @@ public class ShippingPricingEngineImpl extends SkeletonPricingEngine {
             final ShippingPriceInfo priceInfo = hg.getPriceInfo();
             Assert.notNull(priceInfo);
             applyCurrency(priceInfo, ctx);
+            priceInfo.fillAmounts(BigDecimal.ZERO);
 
             final List<PriceAdjustment> previousAdjustments = priceInfo.getPriceAdjustments();
 
-            final List<PriceAdjustment> calculatedAdjustments = Collections.emptyList();
+            final List<PriceAdjustment> calculatedAdjustments = applyCalculators(hg, shippingCalculators, ctx);
             if (logger.isDebugEnabled()) {
-                logger.debug("Final adjustments calculated list: {}", StringUtils.collectionToCommaDelimitedString(calculatedAdjustments));
+                logger.debug("Final adjustments calculated list: {}",
+                             StringUtils.collectionToCommaDelimitedString(calculatedAdjustments));
             }
 
             if (adjustmentsChanged(previousAdjustments, calculatedAdjustments)) {
                 priceInfo.setPriceAdjustments(calculatedAdjustments);
+                calculatedAdjustments.forEach(adj -> adj.setPriceInfo(priceInfo));
             }
-        }
-
-        for (final Calculator shippingCalculator : shippingCalculators) {
-            shippingCalculator.priceOrderItems(order, ctx);
         }
     }
 
-    public void setShippingCalculators(List<Calculator> shippingCalculators) {
+    private List<PriceAdjustment> applyCalculators(final HardgoodShippingGroup shippingGroup, final List<ShippingCalculator> calculators,
+            final PricingContext ctx) {
+        final List<List<PriceAdjustment>> adjLists = new ArrayList<>(calculators.size());
+        adjLists.addAll(calculators.stream()
+                                .map(calculator -> calculator.priceShipping(shippingGroup, ctx))
+                                .collect(Collectors.toList()));
+        return PriceUtils.mergeLists(adjLists);
+    }
+
+    public void setShippingCalculators(List<ShippingCalculator> shippingCalculators) {
         this.shippingCalculators = shippingCalculators;
     }
 }
