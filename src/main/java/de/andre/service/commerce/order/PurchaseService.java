@@ -2,6 +2,7 @@ package de.andre.service.commerce.order;
 
 import de.andre.entity.order.CommerceItem;
 import de.andre.entity.order.Order;
+import de.andre.service.commerce.order.price.AdjustmentsPersister;
 import de.andre.service.commerce.order.price.RepriceEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,22 +15,28 @@ public class PurchaseService {
     private final CommerceItemsTools commerceItemsTools;
     private final ShippingGroupsTools shippingGroupsTools;
     private final RepriceEngine repriceEngine;
+    private final AdjustmentsPersister adjustmentsPersister;
 
     private OrderHolder orderHolder;
 
-    public PurchaseService(final CommerceItemsTools commerceItemsTools, final ShippingGroupsTools shippingGroupsTools, final RepriceEngine repriceEngine) {
+    public PurchaseService(final CommerceItemsTools commerceItemsTools, final ShippingGroupsTools shippingGroupsTools, final RepriceEngine repriceEngine,
+            final AdjustmentsPersister adjustmentsPersister) {
         this.commerceItemsTools = commerceItemsTools;
         this.shippingGroupsTools = shippingGroupsTools;
         this.repriceEngine = repriceEngine;
+        this.adjustmentsPersister = adjustmentsPersister;
     }
 
     @Transactional
     public void modifyOrderItem(final String productId, final Long quantity) {
         final Order order = orderHolder.currentOrder();
+        logger.debug("Modifying {} product by {} quantity for {} order", productId, quantity, order.getId());
+
         synchronized (order) {
             final CommerceItem ci = commerceItemsTools.modifyItemQuantity(order, productId, quantity);
             shippingGroupsTools.modifyShippingGroupQuantity(ci, quantity, null);
             repriceEngine.repriceOrder(order);
+            adjustmentsPersister.persistOrderPriceInfos(order);
         }
     }
 

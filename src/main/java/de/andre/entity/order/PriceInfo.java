@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 @Entity
@@ -15,13 +16,13 @@ import java.util.List;
 public class PriceInfo extends CommerceIdentifier {
     private BigDecimal amount;
     private BigDecimal rawAmount;
-    private String currencyCode = "EUR";
+    private Currency currency = Currency.getInstance("USD");
     private boolean discounted;
     private boolean amountIsFinal;
 
     private List<PriceAdjustment> priceAdjustments;
 
-    @OneToMany(mappedBy = "priceInfo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "priceInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "index_col")
     public List<PriceAdjustment> getPriceAdjustments() {
         return priceAdjustments;
@@ -34,6 +35,11 @@ public class PriceInfo extends CommerceIdentifier {
 
     public void setPriceAdjustments(List<PriceAdjustment> priceAdjustments) {
         this.priceAdjustments = priceAdjustments;
+    }
+
+    public void resetAdjustments(List<PriceAdjustment> priceAdjustments) {
+        this.priceAdjustmentsInternal().clear();
+        this.priceAdjustments.addAll(priceAdjustments);
     }
 
     @NotNull
@@ -64,14 +70,14 @@ public class PriceInfo extends CommerceIdentifier {
         setRawAmount(this.getRawAmount().add(rawAmount));
     }
 
-
-    @Column(name = "currency_code")
-    public String getCurrencyCode() {
-        return currencyCode;
+    @Type(type = "currency")
+    @Column(name = "currency")
+    public Currency getCurrency() {
+        return currency;
     }
 
-    public void setCurrencyCode(String currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     @Type(type = "boolean")
@@ -110,7 +116,7 @@ public class PriceInfo extends CommerceIdentifier {
         if (amountIsFinal != priceInfo.amountIsFinal) return false;
         if (amount != null ? !amount.equals(priceInfo.amount) : priceInfo.amount != null) return false;
         if (rawAmount != null ? !rawAmount.equals(priceInfo.rawAmount) : priceInfo.rawAmount != null) return false;
-        return currencyCode.equals(priceInfo.currencyCode);
+        return currency.equals(priceInfo.currency);
 
     }
 
@@ -118,7 +124,7 @@ public class PriceInfo extends CommerceIdentifier {
     public int hashCode() {
         int result = amount != null ? amount.hashCode() : 0;
         result = 31 * result + (rawAmount != null ? rawAmount.hashCode() : 0);
-        result = 31 * result + (currencyCode != null ? currencyCode.hashCode() : 0);
+        result = 31 * result + (currency != null ? currency.hashCode() : 0);
         result = 31 * result + (discounted ? 1 : 0);
         result = 31 * result + (amountIsFinal ? 1 : 0);
         return result;
@@ -128,7 +134,7 @@ public class PriceInfo extends CommerceIdentifier {
     public String toString() {
         return " amount=" + amount +
                 ", rawAmount=" + rawAmount +
-                ", currencyCode='" + currencyCode + '\'' +
+                ", currencyCode='" + currency + '\'' +
                 ", discounted=" + discounted +
                 ", amountIsFinal=" + amountIsFinal +
                 '}';

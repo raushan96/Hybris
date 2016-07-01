@@ -34,8 +34,8 @@ public class OrderPricingEngineImpl extends SkeletonPricingEngine {
         }
 
         if (adjustmentsChanged(previousAdjustments, calculatedAdjustments)) {
-            priceInfo.setPriceAdjustments(calculatedAdjustments);
             calculatedAdjustments.forEach(adj -> adj.setPriceInfo(priceInfo));
+            priceInfo.resetAdjustments(calculatedAdjustments);
         }
     }
 

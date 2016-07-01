@@ -157,9 +157,7 @@ public class PriceTools {
         }
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Found {} price, for {} priceList",
-                         productPrice,
-                         ObjectUtils.nullSafeToString(currentPriceList));
+            logger.debug("Found {} price", productPrice);
         }
         return productPrice;
     }

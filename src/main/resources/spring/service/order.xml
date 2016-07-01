@@ -11,6 +11,7 @@
         <constructor-arg name="orderRepository" ref="orderRepository"/>
         <constructor-arg name="commerceItemRepository" ref="commerceItemRepository"/>
         <constructor-arg name="hgShippingGroupRepository" ref="hgShippingGroupRepository"/>
+        <constructor-arg name="priceInfoRepository" ref="priceInfoRepository"/>
     </bean>
 
     <bean id="orderTools" class="de.andre.service.commerce.order.OrderTools">
@@ -48,7 +49,12 @@
         <constructor-arg name="commerceItemsTools" ref="commerceItemsTools"/>
         <constructor-arg name="shippingGroupsTools" ref="shippingGroupsTools"/>
         <constructor-arg name="repriceEngine" ref="repriceEngine"/>
+        <constructor-arg name="adjustmentsPersister" ref="adjustmentsPersister"/>
         <property name="orderHolder" ref="orderHolder"/>
+    </bean>
+
+    <bean id="adjustmentsPersister" class="de.andre.service.commerce.order.price.AdjustmentsPersister">
+        <constructor-arg name="commerceRepository" ref="commerceRepository"/>
     </bean>
 
     <bean id="itemPriceListCalculator" class="de.andre.service.commerce.order.price.item.ItemPriceListCalculator">

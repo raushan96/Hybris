@@ -48,7 +48,7 @@ public class ItemPricingEngineImpl extends SkeletonPricingEngine {
 
             if (adjustmentsChanged(previousAdjustments, calculatedAdjustments)) {
                 calculatedAdjustments.forEach(adj -> adj.setPriceInfo(priceInfo));
-                priceInfo.setPriceAdjustments(calculatedAdjustments);
+                priceInfo.resetAdjustments(calculatedAdjustments);
             }
         }
     }

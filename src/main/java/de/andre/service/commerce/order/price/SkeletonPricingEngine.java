@@ -6,7 +6,6 @@ import de.andre.entity.order.PriceInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.util.Currency;
 import java.util.List;
@@ -35,10 +34,8 @@ public abstract class SkeletonPricingEngine implements PricingEngine {
     protected abstract void priceOrderInternal(final Order order, final PricingContext ctx);
 
     protected void applyCurrency(final PriceInfo priceInfo, final PricingContext ctx) {
-        if (!StringUtils.hasLength(priceInfo.getCurrencyCode())) {
-            final Currency currency = Currency.getInstance(ctx.getLocale());
-            priceInfo.setCurrencyCode(currency.getCurrencyCode());
-        }
+        final Currency currency = Currency.getInstance(ctx.getLocale());
+        priceInfo.setCurrency(currency);
     }
 
     protected boolean adjustmentsChanged(final List<PriceAdjustment> oldAdj, final List<PriceAdjustment> newAdj) {

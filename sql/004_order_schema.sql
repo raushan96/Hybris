@@ -9,7 +9,7 @@ CREATE TABLE hcm_price_info (
   shipping            DECIMAL(15, 3) NULL,
   tax                 DECIMAL(15, 3) NULL,
   quantity_discounted INTEGER        NULL,
-  currency_code       VARCHAR(3)     NOT NULL,
+  currency       VARCHAR(3)     NOT NULL,
   discounted          BOOL    DEFAULT 0,
   amount_is_final     BOOL    DEFAULT 0,
   CONSTRAINT pk_price_info_id PRIMARY KEY (id)
@@ -20,7 +20,7 @@ CREATE TABLE hcm_price_adjust (
   id              BIGINT UNSIGNED,
   price_info_id   BIGINT UNSIGNED  NOT NULL,
   version         INTEGER DEFAULT 0,
-  index_col       INTEGER UNSIGNED NOT NULL,
+  index_col       INTEGER UNSIGNED NULL,
   adj_description VARCHAR(254)     NOT NULL,
   adjustment      DECIMAL(15, 3)   NOT NULL,
   qty_adjusted    INTEGER          NOT NULL,

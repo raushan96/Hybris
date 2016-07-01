@@ -92,9 +92,9 @@ insert into hc_category_products (category_id, product_id)
 values('b3', 319);
 
 insert into hc_price_list (id, base_price_list, description, locale, currency)
-values('base-list', null, 'Default Price List', 'en_US', 'EUR');
+values('base-list', null, 'Default Price List', 'en_US', 'USD');
 insert into hc_price_list (id, base_price_list, description, locale, currency)
-values('sales-list', 'base-list', 'Sales Price List', 'en_US', 'EUR');
+values('sales-list', 'base-list', 'Sales Price List', 'en_US', 'USD');
 
 INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (30,"base-list",90,300);
 INSERT INTO `hc_price` (`id`,`price_list_id`,`list_price`,`product_id`) VALUES (31,"base-list",181,301);
