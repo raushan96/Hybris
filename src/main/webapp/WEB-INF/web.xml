@@ -29,6 +29,7 @@
             <param-value>classpath:spring/dispatcher.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
+        <async-supported>true</async-supported>
     </servlet>
     <servlet-mapping>
         <servlet-name>mvc-dispatcher</servlet-name>
@@ -42,19 +43,25 @@
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <async-supported>true</async-supported>
     </filter>
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ASYNC</dispatcher>
     </filter-mapping>
 
     <filter>
         <filter-name>siteContextFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <async-supported>true</async-supported>
     </filter>
     <filter-mapping>
         <filter-name>siteContextFilter</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ASYNC</dispatcher>
     </filter-mapping>
 
     <listener>

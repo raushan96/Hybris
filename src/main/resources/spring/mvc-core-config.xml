@@ -20,11 +20,11 @@
     <import resource="classpath:spring/service/order.xml"/>
     <import resource="classpath:spring/service/utils.xml"/>
 
-    <context:component-scan
-            base-package="de.andre.service"/>
     <context:property-placeholder
             location="classpath:configuration.properties, classpath:local.properties"
             ignore-resource-not-found="true"/>
+
+    <context:mbean-export server="mbeanServer"/>
 
     <task:annotation-driven executor="myExecutor" proxy-target-class="true"/>
     <task:executor id="myExecutor" pool-size="5"/>
@@ -38,6 +38,10 @@
         </property>
         <property name="defaultEncoding" value="UTF-8"/>
         <property name="cacheSeconds" value="1"/>
+    </bean>
+
+    <bean id="mbeanServer" class="java.lang.management.ManagementFactory"
+          lazy-init="false" factory-method="getPlatformMBeanServer">
     </bean>
 
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
