@@ -3,7 +3,6 @@ package de.andre.service.catalog;
 import de.andre.entity.catalog.Category;
 import de.andre.entity.catalog.Product;
 import de.andre.multisite.SiteManager;
-import de.andre.repository.catalog.PricesRepository;
 import de.andre.repository.catalog.ProductCatalog;
 import de.andre.service.price.PriceTools;
 import de.andre.utils.StreamUtils;
@@ -25,13 +24,10 @@ public class CatalogTools {
 
     private final ProductCatalog productCatalog;
     private final PriceTools priceTools;
-    private final PricesRepository pricesRepository;
 
-    public CatalogTools(final ProductCatalog productCatalog, final PriceTools priceTools,
-            final PricesRepository pricesRepository) {
+    public CatalogTools(final ProductCatalog productCatalog, final PriceTools priceTools) {
         this.productCatalog = productCatalog;
         this.priceTools = priceTools;
-        this.pricesRepository = pricesRepository;
     }
 
     @Transactional(readOnly = true)

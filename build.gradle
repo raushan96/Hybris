@@ -55,10 +55,10 @@ dependencies {
     compile "org.springframework.security:spring-security-config:${securityVersion}"
 
     //thymeleaf
-    compile 'org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE'
-    compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE'
-    compile 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:1.3.3'
-    compile 'org.thymeleaf.extras:thymeleaf-extras-java8time:2.1.0.RELEASE'
+    compile 'org.thymeleaf:thymeleaf-spring4:3.0.0.RELEASE'
+    compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.0.RELEASE'
+    compile 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.0.0'
+    compile 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.0.RELEASE'
 
     //hibernate
     compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'

@@ -69,7 +69,7 @@ public class OrderHolder {
 
         final Order reloadedOrder = destOrder != null ? destOrder : activeOrders.get(0);
         for (final Order srcOrder : activeOrders) {
-            orderTools.mergeOrders(srcOrder, destOrder);
+            orderTools.mergeOrders(srcOrder, reloadedOrder);
             if (!reloadedOrder.equals(srcOrder)) {
                 orderTools.removeOrder(srcOrder);
             }

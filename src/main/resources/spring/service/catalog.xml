@@ -17,7 +17,6 @@
 
     <bean id="catalogTools" class="de.andre.service.catalog.CatalogTools">
         <constructor-arg name="productCatalog" ref="productCatalog"/>
-        <constructor-arg name="pricesRepository" ref="pricesRepository"/>
         <constructor-arg name="priceTools" ref="priceTools"/>
         <property name="defaultCatalogId" value="spices"/>
     </bean>

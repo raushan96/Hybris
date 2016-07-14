@@ -27,6 +27,10 @@ public class PurchaseService {
         this.adjustmentsPersister = adjustmentsPersister;
     }
 
+    public Order currentOrder() {
+        return orderHolder.currentOrder();
+    }
+
     @Transactional
     public void modifyOrderItem(final String productId, final Long quantity) {
         final Order order = orderHolder.currentOrder();
@@ -35,6 +39,18 @@ public class PurchaseService {
         synchronized (order) {
             final CommerceItem ci = commerceItemsTools.modifyItemQuantity(order, productId, quantity);
             shippingGroupsTools.modifyShippingGroupQuantity(ci, quantity, null);
+            repriceEngine.repriceOrder(order);
+            adjustmentsPersister.persistOrderPriceInfos(order);
+        }
+    }
+
+    @Transactional
+    public void deleteOrderItem(final Long commerceItemId) {
+        final Order order = orderHolder.currentOrder();
+        logger.debug("Deleting {} item for {} order", commerceItemId, order.getId());
+
+        synchronized (order) {
+            commerceItemsTools.removeItem(order, commerceItemId);
             repriceEngine.repriceOrder(order);
             adjustmentsPersister.persistOrderPriceInfos(order);
         }

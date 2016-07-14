@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-     http://www.springframework.org/schema/beans/spring-beans.xsd
-     http://www.springframework.org/schema/util
-     http://www.springframework.org/schema/util/spring-util.xsd">
+     http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <description>
         Thymeleaf and emails(processed by it) configurations.
@@ -19,11 +16,20 @@
         <property name="suffix" value=".html"/>
         <property name="templateMode" value="HTML5"/>
         <property name="characterEncoding" value="UTF-8"/>
+        <property name="order" value="1"/>
         <!-- dev mode -->
         <property name="cacheable" value="false"/>
     </bean>
 
+    <bean id="emailTemplateResolver" class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
+        <property name="prefix" value="email/"/>
+        <property name="templateMode" value="HTML5"/>
+        <property name="characterEncoding" value="UTF-8"/>
+        <property name="order" value="2"/>
+    </bean>
+
     <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+        <property name="enableSpringELCompiler" value="true"/>
         <property name="templateResolvers" >
             <set>
                 <ref bean="templateResolver"/>
@@ -39,14 +45,8 @@
         </property>
     </bean>
 
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="${mail.server.host}" />
-        <property name="port" value="${mail.server.port}" />
-        <property name="protocol" value="${mail.server.protocol}" />
-        <property name="username" value="${mail.server.username}" />
-        <property name="password" value="${mail.server.password}" />
-        <property name="javaMailProperties">
-            <util:properties location="classpath:spring/layout/javamail.properties" />
-        </property>
+    <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+        <property name="templateEngine" ref="templateEngine"/>
+        <property name="characterEncoding" value="UTF-8"/>
     </bean>
 </beans>

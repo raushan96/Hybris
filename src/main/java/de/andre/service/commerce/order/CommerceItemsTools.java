@@ -86,12 +86,33 @@ public class CommerceItemsTools {
         return ci;
     }
 
-    public CommerceItem removeItem(final Order pOrder, final String productId) {
-        return modifyItemQuantity(pOrder, productId, 0L);
+    public CommerceItem removeItem(final Order pOrder, final Long itemId) {
+        Assert.notNull(pOrder);
+        Assert.notNull(itemId);
+
+        final CommerceItem ci = findExistingItem(pOrder, itemId);
+        if (ci != null) {
+            logger.debug("Removing {} commerce item from {} order", ci.getId(), pOrder.getId());
+            pOrder.getCommerceItems().remove(ci);
+        }
+
+        return ci;
     }
 
     private CommerceItem findExistingItem(final Order pOrder, final CommerceItem pItem) {
         return findExistingItem(pOrder, pItem.getProduct().getId());
+    }
+
+    private CommerceItem findExistingItem(final Order pOrder, final Long pItemId) {
+        final List<CommerceItem> cis = pOrder.getCommerceItems();
+        if (!CollectionUtils.isEmpty(cis)) {
+            return cis.stream()
+                    .filter(ci -> Objects.equals(ci.getId(), pItemId))
+                    .findAny()
+                    .orElse(null);
+        }
+
+        return null;
     }
 
     private CommerceItem findExistingItem(final Order pOrder, final String pProductId) {

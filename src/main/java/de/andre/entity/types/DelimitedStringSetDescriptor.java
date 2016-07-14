@@ -12,12 +12,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@SuppressWarnings("unchecked")
 public class DelimitedStringSetDescriptor extends AbstractTypeDescriptor<Set> {
     public static final DelimitedStringSetDescriptor INSTANCE = new DelimitedStringSetDescriptor();
 
     public static final String DELIMITER = ",";
+    private static final long serialVersionUID = -4064270797484386299L;
 
-    @SuppressWarnings("unchecked")
     protected DelimitedStringSetDescriptor() {
         super(Set.class, new MutableMutabilityPlan<Set>() {
             @Override
@@ -27,7 +28,6 @@ public class DelimitedStringSetDescriptor extends AbstractTypeDescriptor<Set> {
         });
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public String toString(final Set value) {
         if (value == null || value.isEmpty()) {
@@ -47,7 +47,6 @@ public class DelimitedStringSetDescriptor extends AbstractTypeDescriptor<Set> {
                 .collect(Collectors.toSet());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <X> X unwrap(final Set value, final Class<X> type, final WrapperOptions options) {
         return (X) toString(value);

@@ -206,6 +206,6 @@ public class Profile extends ProfileBaseEntity {
                 ", dateOfBirth=" + dateOfBirth +
                 ", acceptEmails=" + acceptEmails +
                 ", created=" + created +
-                "} " + super.toString();
+                "} ";
     }
 }

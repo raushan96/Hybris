@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Set;
 
 public interface CatalogRepository extends JpaRepository<Catalog, String> {
     @Query(value = "select cat.id, cat.display_name from hc_category cat where cat.parent_cat_id = :catId", nativeQuery = true)

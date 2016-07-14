@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.NamedThreadLocal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -18,7 +19,7 @@ import static de.andre.multisite.SiteConstants.SITE_CACHE_NAME;
 public class SiteManager {
     protected static final Logger logger = LoggerFactory.getLogger(SiteManager.class);
 
-    private static final ThreadLocal<Site> siteHolder = new ThreadLocal<>();
+    private static final ThreadLocal<Site> siteHolder = new NamedThreadLocal<>("SITE_COMMERCE");
     private static final Site EMPTY_SITE = new Site.EmptySite();
 
     private final SiteRepository siteRepository;

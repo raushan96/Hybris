@@ -61,6 +61,7 @@ public class AccountController {
         profileValidator.validate(profile, result);
 
         if (result.hasErrors()) {
+            logger.debug("{} is not a valid profile", profile);
             return "account/editProfile";
         } else {
             profileTools.updateProfile(profile);
