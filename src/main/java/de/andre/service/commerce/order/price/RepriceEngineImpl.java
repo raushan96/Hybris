@@ -3,6 +3,7 @@ package de.andre.service.commerce.order.price;
 import de.andre.entity.order.Order;
 import de.andre.multisite.SiteManager;
 import de.andre.service.account.ProfileTools;
+import de.andre.service.commerce.order.OrderUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -24,9 +25,20 @@ public class RepriceEngineImpl implements RepriceEngine {
 
     @Override
     public void repriceOrder(final Order order) {
+        Assert.notNull(order, "Null order inside reprice");
         logger.debug("Starting {} order reprice", order.getId());
         priceOrder(order, createPricingContext());
         logger.debug("Finished {} order reprice", order.getId());
+    }
+
+    @Override
+    public void weakReprice(final Order order) {
+        Assert.notNull(order, "Null order inside reprice");
+
+        if (!OrderUtils.orderPriced(order)) {
+            logger.debug("Order {} is not priced, starting full reprice", order.getId());
+            repriceOrder(order);
+        }
     }
 
     private PricingContext createPricingContext() {

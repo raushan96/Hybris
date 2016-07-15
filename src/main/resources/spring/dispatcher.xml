@@ -29,6 +29,12 @@
                 <bean class="de.andre.entity.util.LocalDateFormatter"/>
             </set>
         </property>
+        <property name="converters">
+            <set>
+                <bean class="de.andre.entity.util.YearConverter"/>
+                <bean class="de.andre.entity.util.MonthConverter"/>
+            </set>
+        </property>
     </bean>
 
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">

@@ -200,6 +200,33 @@ public class ShippingGroupsTools {
         }
     }
 
+    public void modifyContactInfo(final HardgoodShippingGroup pShippingGroup, final Long addressId) {
+        Assert.notNull(addressId);
+        Assert.notNull(pShippingGroup);
+
+        final ContactInfo mContactInfo = profileContact(addressId);
+        Assert.notNull(mContactInfo);
+
+        if (!mContactInfo.equals(pShippingGroup.getContactInfo())) {
+            logger.debug("Setting new contact info for the {} shipping group", pShippingGroup.getId());
+            pShippingGroup.setContactInfo(mContactInfo);
+        }
+    }
+
+    public ContactInfo profileContact(final Long addressId) {
+        Assert.notNull(addressId);
+        final Profile profile = profileTools.currentProfile();
+
+        if (!CollectionUtils.isEmpty(profile.getAddresses())) {
+            for (final Map.Entry<String, Address> address : profile.getAddresses().entrySet()) {
+                if (Objects.equals(address.getValue().getId(), addressId)) {
+                    return address.getValue().getContactInfo();
+                }
+            }
+        }
+        return null;
+    }
+
     public HardgoodShippingGroup createHardgoodShippingGroup() {
         return createHardgoodShippingGroup(null, ShippingState.INITIAL);
     }

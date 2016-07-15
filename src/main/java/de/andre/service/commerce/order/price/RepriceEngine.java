@@ -4,4 +4,6 @@ import de.andre.entity.order.Order;
 
 public interface RepriceEngine extends PricingEngine {
     void repriceOrder(Order order);
+
+    void weakReprice(Order order);
 }

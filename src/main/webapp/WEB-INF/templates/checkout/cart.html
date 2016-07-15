@@ -59,11 +59,11 @@
                             <td></td>
                             <td></td>
                             <td>
-                                <a th:href="@{/catalog}" type="button" class="btn btn-default">
+                                <a th:href="${#mvc.url('CC#catalogMenu').build()}" type="button" class="btn btn-default">
                                     <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
                                 </a></td>
                             <td>
-                                <a th:href="@{/checkout/shipping}" type="button" class="btn btn-success">
+                                <a th:href="${#mvc.url('CC#viewShipping').build()}" type="button" class="btn btn-success">
                                     Checkout <span class="glyphicon glyphicon-play"></span>
                                 </a></td>
                         </tr>

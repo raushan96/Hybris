@@ -27,8 +27,13 @@ public class PurchaseService {
         this.adjustmentsPersister = adjustmentsPersister;
     }
 
+    @Transactional
     public Order currentOrder() {
-        return orderHolder.currentOrder();
+        final Order order = orderHolder.currentOrder();
+        synchronized (order) {
+            repriceEngine.weakReprice(order);
+        }
+        return order;
     }
 
     @Transactional
@@ -55,6 +60,18 @@ public class PurchaseService {
             adjustmentsPersister.persistOrderPriceInfos(order);
         }
     }
+
+    @Transactional
+    public void selectAddress(final Long addressId) {
+        final Order order = orderHolder.currentOrder();
+
+        synchronized (order) {
+            shippingGroupsTools.modifyContactInfo(
+                    shippingGroupsTools.defaultShippingGroup(order), addressId);
+            repriceEngine.repriceOrder(order);
+        }
+    }
+
 
     public void setOrderHolder(OrderHolder orderHolder) {
         this.orderHolder = orderHolder;
