@@ -4,7 +4,6 @@ import de.andre.entity.profile.Profile;
 import de.andre.multisite.Site;
 import org.springframework.util.Assert;
 
-import java.util.Currency;
 import java.util.Locale;
 
 public class PricingContext {

@@ -3,9 +3,9 @@ package de.andre.service.commerce.order.price.order;
 import de.andre.entity.order.Order;
 import de.andre.entity.order.OrderPriceInfo;
 import de.andre.entity.order.PriceAdjustment;
-import de.andre.service.commerce.order.price.PriceUtils;
 import de.andre.service.commerce.order.price.PricingContext;
-import de.andre.service.commerce.order.price.SkeletonPricingEngine;
+import de.andre.service.commerce.order.price.SkeletalPricingEngine;
+import de.andre.utils.StreamUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class OrderPricingEngineImpl extends SkeletonPricingEngine {
+public class OrderPricingEngineImpl extends SkeletalPricingEngine {
     private List<OrderCalculator> orderCalculators = Collections.emptyList();
 
     @Override
@@ -45,7 +45,7 @@ public class OrderPricingEngineImpl extends SkeletonPricingEngine {
         adjLists.addAll(calculators.stream()
                                 .map(calculator -> calculator.priceOrder(order, ctx))
                                 .collect(Collectors.toList()));
-        return PriceUtils.mergeLists(adjLists);
+        return StreamUtils.mergeLists(adjLists);
     }
 
     public void setOrderCalculators(List<OrderCalculator> orderCalculators) {

@@ -4,9 +4,9 @@ import de.andre.entity.order.HardgoodShippingGroup;
 import de.andre.entity.order.Order;
 import de.andre.entity.order.PriceAdjustment;
 import de.andre.entity.order.ShippingPriceInfo;
-import de.andre.service.commerce.order.price.PriceUtils;
 import de.andre.service.commerce.order.price.PricingContext;
-import de.andre.service.commerce.order.price.SkeletonPricingEngine;
+import de.andre.service.commerce.order.price.SkeletalPricingEngine;
+import de.andre.utils.StreamUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ShippingPricingEngineImpl extends SkeletonPricingEngine {
+public class ShippingPricingEngineImpl extends SkeletalPricingEngine {
     private List<ShippingCalculator> shippingCalculators = Collections.emptyList();
 
     @Override
@@ -55,7 +55,7 @@ public class ShippingPricingEngineImpl extends SkeletonPricingEngine {
         adjLists.addAll(calculators.stream()
                                 .map(calculator -> calculator.priceShipping(shippingGroup, ctx))
                                 .collect(Collectors.toList()));
-        return PriceUtils.mergeLists(adjLists);
+        return StreamUtils.mergeLists(adjLists);
     }
 
     public void setShippingCalculators(List<ShippingCalculator> shippingCalculators) {

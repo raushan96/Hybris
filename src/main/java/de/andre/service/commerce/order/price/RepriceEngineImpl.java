@@ -42,7 +42,11 @@ public class RepriceEngineImpl implements RepriceEngine {
     }
 
     private PricingContext createPricingContext() {
-        return new PricingContext(LocaleContextHolder.getLocale(), profileTools.currentProfile(), SiteManager.getSite());
+        return new PricingContext(
+                LocaleContextHolder.getLocale(),
+                profileTools.currentProfile(),
+                SiteManager.getSite()
+        );
     }
 
     @Override

@@ -4,18 +4,21 @@ import de.andre.entity.order.CommerceItem;
 import de.andre.entity.order.ItemPriceInfo;
 import de.andre.entity.order.Order;
 import de.andre.entity.order.PriceAdjustment;
-import de.andre.service.commerce.order.price.PriceUtils;
 import de.andre.service.commerce.order.price.PricingContext;
-import de.andre.service.commerce.order.price.SkeletonPricingEngine;
+import de.andre.service.commerce.order.price.SkeletalPricingEngine;
+import de.andre.utils.StreamUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
-public class ItemPricingEngineImpl extends SkeletonPricingEngine {
+public class ItemPricingEngineImpl extends SkeletalPricingEngine {
     private List<ItemCalculator> preCalculators = Collections.emptyList();
     private List<ItemCalculator> postCalculators = Collections.emptyList();
 
@@ -39,7 +42,7 @@ public class ItemPricingEngineImpl extends SkeletonPricingEngine {
             // promotions logic
             final List<PriceAdjustment> postAdjustments = applyCalculators(ci, postCalculators, ctx);
 
-            final List<PriceAdjustment> calculatedAdjustments = PriceUtils.mergeLists(
+            final List<PriceAdjustment> calculatedAdjustments = StreamUtils.mergeLists(
                     Arrays.asList(preAdjustments, postAdjustments));
             if (logger.isDebugEnabled()) {
                 logger.debug("Final adjustments calculated list: {}",
@@ -59,7 +62,7 @@ public class ItemPricingEngineImpl extends SkeletonPricingEngine {
         adjLists.addAll(calculators.stream()
                                 .map(calculator -> calculator.priceItem(item, ctx))
                                 .collect(Collectors.toList()));
-        return PriceUtils.mergeLists(adjLists);
+        return StreamUtils.mergeLists(adjLists);
     }
 
     public void setPreCalculators(List<ItemCalculator> preCalculators) {
