@@ -4,10 +4,7 @@ import de.andre.entity.site.SiteConfiguration;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class SiteView implements Site {
     private String id;
@@ -34,6 +31,16 @@ public class SiteView implements Site {
                 Collections.emptySet();
     }
 
+    public SiteView(final SiteBuilder builder) {
+        Assert.notNull(builder);
+        BeanUtils.copyProperties(builder, this);
+        this.urls = builder.urls != null ?
+                Collections.unmodifiableSet(builder.urls) :
+                Collections.emptySet();
+        this.attributes = builder.attributes != null ?
+                Collections.unmodifiableMap(builder.attributes) :
+                Collections.emptyMap();
+    }
 
     @Override
     public String getId() {
@@ -89,5 +96,77 @@ public class SiteView implements Site {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    @Override
+    public String toString() {
+        return "SiteView{" +
+                "id='" + id + '\'' +
+                ", catId='" + catId + '\'' +
+                ", priceListId='" + priceListId + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", locale=" + locale +
+                '}';
+    }
+
+    public static class SiteBuilder {
+        private String id;
+        private String catId;
+        private String priceListId;
+        private String displayName;
+        private Locale locale;
+        private boolean enabled;
+
+        private Set<String> urls;
+        private Map<String, String> attributes;
+
+        public SiteBuilder(final String id, final String displayName) {
+            this.id = id;
+            this.displayName = displayName;
+            this.enabled = true;
+        }
+
+        public SiteBuilder catId(String catId) {
+            this.catId = catId;
+            return this;
+        }
+
+        public SiteBuilder priceListId(String priceListId) {
+            this.priceListId = priceListId;
+            return this;
+        }
+
+        public SiteBuilder locale(Locale locale) {
+            this.locale = locale;
+            return this;
+        }
+
+        public SiteBuilder disable() {
+            this.enabled = false;
+            return this;
+        }
+
+        public SiteBuilder addUrl(String url) {
+            if (this.urls == null)
+                this.urls = new HashSet<>();
+            this.urls.add(url);
+            return this;
+        }
+
+        public SiteBuilder addUrls(Collection<String> urls) {
+            if (urls != null && !urls.isEmpty()) {
+                urls.forEach(this::addUrl);
+            }
+            return this;
+        }
+
+        public SiteBuilder attributes(Map<String, String> attributes) {
+            this.attributes = attributes;
+            return this;
+        }
+
+        public SiteView build() {
+            return new SiteView(this);
+        }
     }
 }

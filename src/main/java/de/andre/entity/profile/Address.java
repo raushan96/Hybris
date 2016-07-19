@@ -1,19 +1,14 @@
 package de.andre.entity.profile;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import de.andre.entity.dto.View;
-import de.andre.entity.enums.State;
-import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -70,6 +65,7 @@ public class Address extends ProfileBaseEntity {
     @JsonProperty("contactInfo")
     @NotNull
     @Embedded
+    @Valid
     public ContactInfo getContactInfo() {
         return contactInfo;
     }

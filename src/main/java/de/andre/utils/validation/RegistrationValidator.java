@@ -1,8 +1,6 @@
 package de.andre.utils.validation;
 
 import de.andre.entity.dto.RegistrationForm;
-import de.andre.entity.profile.Address;
-import de.andre.entity.profile.Profile;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;

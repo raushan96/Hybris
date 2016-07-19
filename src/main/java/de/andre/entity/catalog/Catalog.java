@@ -1,9 +1,8 @@
 package de.andre.entity.catalog;
 
 import de.andre.entity.site.SiteConfiguration;
-import de.andre.entity.types.CommaDelimitedStringType;
-import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;

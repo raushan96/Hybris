@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 
 import javax.persistence.QueryHint;
-import java.util.Set;
 
 public interface CategoryRepository extends JpaRepository<Category, String> {
     @QueryHints(@QueryHint(name = "org.hibernate.cacheable", value = "true"))

@@ -6,14 +6,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 
-import static de.andre.multisite.SiteConstants.EMPTY_SITE_ID;
 import static de.andre.multisite.SiteConstants.SITE_CACHE_NAME;
 
 public class SiteManager {
@@ -90,6 +92,16 @@ public class SiteManager {
         }
 
         return EMPTY_SITE;
+    }
+
+    public Site instantiateSite(final String id, final String displayName) {
+        return new SiteView.SiteBuilder(id, displayName)
+                .locale(LocaleContextHolder.getLocale())
+                .addUrl(((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).
+                        getRequest().getRequestURI())
+                .catId(getSite().catalogId())
+                .priceListId(getSite().priceListId())
+                .build();
     }
 
     @CacheEvict(cacheNames = SITE_CACHE_NAME, allEntries = true)

@@ -6,7 +6,7 @@ import de.andre.entity.profile.Profile;
 import javax.validation.Valid;
 
 public class RegistrationForm {
-    private @Valid  Profile profile;
+    private @Valid Profile profile;
     private @Valid Address shippingAddress;
 
     public Profile getProfile() {

@@ -1,11 +1,6 @@
 package de.andre.repository.profile;
 
 import de.andre.repository.RepositoryAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 public class ProfileAdapterRepository extends RepositoryAdapter {
     private final ProfileRepository profileRepository;

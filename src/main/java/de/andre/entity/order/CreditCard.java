@@ -17,7 +17,7 @@ public class CreditCard extends PaymentGroup {
     private String owner;
     private LocalDate expiryDate;
 
-    @CreditCardNumber
+//    @CreditCardNumber
     @Column(name = "card_number")
     public String getCardNumber() {
         return cardNumber;

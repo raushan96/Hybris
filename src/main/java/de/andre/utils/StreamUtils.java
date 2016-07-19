@@ -37,4 +37,19 @@ public class StreamUtils {
                         LinkedHashMap::new)
                 );
     }
+
+    public static <T> List<T> mergeLists(final List<List<T>> lists) {
+        if (CollectionUtils.isEmpty(lists)) {
+            return Collections.emptyList();
+        }
+
+        int size = 0;
+        for (final List<T> list : lists) {
+            size += list.size();
+        }
+
+        final List<T> resultList = new ArrayList<>(size);
+        lists.forEach(resultList::addAll);
+        return resultList;
+    }
 }

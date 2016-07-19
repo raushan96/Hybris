@@ -6,6 +6,7 @@ import de.andre.repository.profile.AddressRepository;
 import de.andre.repository.profile.ProfileAdapterRepository;
 import de.andre.repository.profile.ProfileRepository;
 import de.andre.utils.HybrisConstants;
+import de.andre.utils.HybrisUtils;
 import de.andre.utils.ProfileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,7 +108,7 @@ public class AddressTools {
                 .stream()
                 .map(Address::getAddressName)
                 .collect(Collectors.toSet());
-        return ProfileUtils.generateUniqueNickname(
+        return HybrisUtils.generateUniqueNickname(
                 providedNickname,
                 ADDRESS_NAME_PREFIX,
                 existingNicknames

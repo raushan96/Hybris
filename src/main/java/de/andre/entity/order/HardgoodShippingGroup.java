@@ -47,6 +47,17 @@ public class HardgoodShippingGroup extends ShippingGroup {
         return !CollectionUtils.isEmpty(getShippingItemRelationships());
     }
 
+    public ShippingItemRelationship findCommerceItemRel(final Long itemId) {
+        if (itemId != null && hasItemsRels()) {
+            for (final ShippingItemRelationship rel : itemsRelsInternal()) {
+                if (itemId.equals(rel.getCommerceItem().getId())) {
+                    return rel;
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
