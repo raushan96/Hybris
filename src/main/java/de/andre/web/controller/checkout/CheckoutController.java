@@ -4,6 +4,8 @@ import de.andre.entity.dto.PaymentForm;
 import de.andre.service.account.ProfileTools;
 import de.andre.service.commerce.order.PurchaseService;
 import de.andre.utils.ProfileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import static de.andre.utils.HybrisUtils.logParams;
+
 @Controller
 @RequestMapping(value = "/checkout")
 public class CheckoutController {
+    public static final Logger logger = LoggerFactory.getLogger(CheckoutController.class);
 
     private final PurchaseService purchaseService;
     private final ProfileTools profileTools;
@@ -35,6 +40,8 @@ public class CheckoutController {
 
     @GetMapping(value = "/deleteItem")
     public String deleteItem(@RequestParam("itemId") final Long itemId, final Model map) {
+        logParams(logger, itemId);
+
         purchaseService.deleteOrderItem(itemId);
         map.addAttribute("order", purchaseService.currentOrder());
         return "checkout/cart";
@@ -49,6 +56,8 @@ public class CheckoutController {
 
     @PostMapping
     public String selectShipping(@RequestParam("addressId") final Long addressId) {
+        logParams(logger, addressId);
+
         purchaseService.selectAddress(addressId);
         return "redirect:payment";
     }
@@ -61,11 +70,15 @@ public class CheckoutController {
     }
 
     @PostMapping(value = "/payment")
-    public String proceedOrder(@Validated final PaymentForm paymentForm, final BindingResult result, final Model map) {
+    public String proceedOrder(
+            @Validated final PaymentForm paymentForm, final BindingResult result, final Model map) {
+        logParams(logger, paymentForm);
         if (result.hasErrors()) {
             map.addAttribute("paymentForm", paymentForm);
+            map.addAttribute("order", purchaseService.currentOrder());
             return "checkout/payment";
         }
+        purchaseService.proceedOrder(paymentForm);
         return "redirect:/";
     }
 }

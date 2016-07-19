@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="itemPriceListCalculator" class="de.andre.service.commerce.order.price.item.ItemPriceListCalculator">
+        <constructor-arg name="priceTools" ref="priceTools"/>
+    </bean>
+
+    <bean id="itemPricingEngine" class="de.andre.service.commerce.order.price.item.ItemPricingEngineImpl">
+        <property name="preCalculators">
+            <list>
+                <ref bean="itemPriceListCalculator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="shippingFixedPriceCalculator" class="de.andre.service.commerce.order.price.shipping.ShippingFixedPriceCalculator">
+        <property name="fixedAmount" value="10"/>
+    </bean>
+
+    <bean id="shippingPricingEngine" class="de.andre.service.commerce.order.price.shipping.ShippingPricingEngineImpl">
+        <property name="shippingCalculators">
+            <list>
+                <ref bean="shippingFixedPriceCalculator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="orderItemsTotalCalculator" class="de.andre.service.commerce.order.price.order.OrderItemsTotalCalculator"> </bean>
+
+    <bean id="orderPricingEngine" class="de.andre.service.commerce.order.price.order.OrderPricingEngineImpl">
+        <property name="orderCalculators">
+            <list>
+                <ref bean="orderItemsTotalCalculator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="repriceEngine" class="de.andre.service.commerce.order.price.RepriceEngineImpl">
+        <constructor-arg name="profileTools" ref="profileTools"/>
+        <property name="pricingEngines">
+            <list>
+                <ref bean="itemPricingEngine"/>
+                <ref bean="shippingPricingEngine"/>
+                <ref bean="orderPricingEngine"/>
+            </list>
+        </property>
+    </bean>
+</beans>

@@ -19,6 +19,8 @@
     <import resource="classpath:spring/service/multisite.xml"/>
     <import resource="classpath:spring/service/order.xml"/>
     <import resource="classpath:spring/service/utils.xml"/>
+    <import resource="classpath:spring/service/reprice.xml"/>
+    <import resource="classpath:spring/service/processors.xml"/>
 
     <context:property-placeholder
             location="classpath:configuration.properties, classpath:local.properties"

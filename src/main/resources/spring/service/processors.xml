@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/util
+     http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="chainExecutor" class="de.andre.service.commerce.order.processor.ProcessChainExecutor"
+          init-method="initialize">
+        <property name="orderChains">
+            <map>
+                <entry key="validateOrder" value-ref="validateOrderChain"/>
+                <entry key="processOrder" value-ref="processOrder"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="orderProcessBridge" class="de.andre.service.commerce.order.processor.order.OrderProcessBridge"/>
+
+    <bean id="procValidateOrder" class="de.andre.service.commerce.order.processor.order.ProcValidateOrder">
+        <constructor-arg name="name" value="procValidateOrder"/>
+        <constructor-arg name="messageSource" ref="messageSource"/>
+    </bean>
+
+    <bean id="dispatchOrderProcessor" class="de.andre.service.commerce.order.processor.order.DispatchOrderProcessor"></bean>
+
+    <bean id="validateOrderChain" class="de.andre.service.commerce.order.processor.ProcessChain">
+        <constructor-arg name="chainId" value="validateOrderChain"/>
+        <constructor-arg name="processBridge" ref="orderProcessBridge"/>
+        <property name="processors">
+            <list>
+                <ref bean="procValidateOrder"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="processOrder" class="de.andre.service.commerce.order.processor.ComplexProcessChain">
+        <constructor-arg name="chainId" value="processOrder"/>
+        <constructor-arg name="processBridge" ref="orderProcessBridge"/>
+        <constructor-arg name="chainExecutor" ref="chainExecutor"/>
+        <property name="processors">
+            <list>
+                <ref bean="procValidateOrder"/>
+                <ref bean="dispatchOrderProcessor"/>
+            </list>
+        </property>
+    </bean>
+</beans>
