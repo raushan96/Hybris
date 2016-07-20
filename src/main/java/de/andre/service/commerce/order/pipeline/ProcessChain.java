@@ -1,4 +1,4 @@
-package de.andre.service.commerce.order.processor;
+package de.andre.service.commerce.order.pipeline;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,32 +8,26 @@ import org.springframework.validation.Errors;
 
 import java.util.*;
 
-import static de.andre.service.commerce.order.processor.PipelineConstants.ERROR_GENERIC;
+import static de.andre.service.commerce.order.pipeline.PipelineConstants.ERROR_GENERIC;
 
-public class ProcessChain<P extends Processor, C extends BaseContext>
-        implements IProcessChain<P, C> {
+public class ProcessChain<P> implements IProcessChain<P> {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    // lock for chain execution?
     private final String chainId;
-    private final ProcessBridge<P, C> processBridge;
 
     private boolean enabled = true;
     private boolean forceExecution = false;
-    protected List<P> processors = Collections.emptyList();
+    protected List<Processor<P>> processors = Collections.emptyList();
 
     protected ProcessChainValidator chainValidator = new DefaultChainValidator();
 
-    public ProcessChain(final String chainId, final ProcessBridge<P, C> processBridge) {
+    public ProcessChain(final String chainId) {
         Assert.hasText(chainId);
-        Assert.notNull(processBridge);
-
         this.chainId = chainId;
-        this.processBridge = processBridge;
     }
 
     @Override
-    public boolean processChain(final C ctx, final Errors result) {
+    public boolean processChain(final ProcessContext<P> ctx, final Errors result) {
         if (!chainValidator.validateChain(this)) {
             return false;
         }
@@ -47,10 +41,9 @@ public class ProcessChain<P extends Processor, C extends BaseContext>
 
         final Set<String> seenSoFar = new HashSet<>(this.processors.size());
         int currentPosition = 0;
-        boolean stopExecution = false;
 
-        while (currentPosition < this.processors.size() && !stopExecution) {
-            final P processor = this.processors.get(currentPosition);
+        while (currentPosition < this.processors.size()) {
+            final Processor<P> processor = this.processors.get(currentPosition);
             final String processorName = processor.getName();
 
             if (!seenSoFar.add(processor.getName())) {
@@ -61,12 +54,12 @@ public class ProcessChain<P extends Processor, C extends BaseContext>
             }
 
             try {
-                final ProcessorResult res = getProcessBridge().invokeProcessor(processor, ctx, result);
+                final ProcessorResult res = processor.process(ctx, result);
                 Assert.notNull(res, "Result must be not null after processing!");
 
                 if (result.hasErrors()) {
                     logger.debug("Cancelling '{}' chain because of errors during execution", this.chainId);
-                    stopExecution = true;
+                    break;
                 }
                 else if (res.getAction() == ProcessorResult.Result.PROCEED) {
                     logger.debug("Processor {} returns proceed result", processorName);
@@ -95,7 +88,7 @@ public class ProcessChain<P extends Processor, C extends BaseContext>
 
     protected boolean onProcessResult(
             final ProcessorResult processResult,
-            final C ctx,
+            final ProcessContext<P> ctx,
             final Errors result) {
         logger.warn("Unsupported result operation '{}' received, proceeding into next processor" +
                             "Consider using advanced chain classes for handling", processResult.getAction());
@@ -111,7 +104,7 @@ public class ProcessChain<P extends Processor, C extends BaseContext>
     }
 
     @Override
-    public P getProcessor(final String processorName) {
+    public Processor<P> getProcessor(final String processorName) {
         return this.processors.stream()
                 .filter(proc -> proc.getName().equals(processorName))
                 .findAny()
@@ -134,16 +127,11 @@ public class ProcessChain<P extends Processor, C extends BaseContext>
         return this.chainId;
     }
 
-    @Override
-    public ProcessBridge<P, C> getProcessBridge() {
-        return this.processBridge;
-    }
-
-    public List<P> getProcessors() {
+    public List<Processor<P>> getProcessors() {
         return processors;
     }
 
-    public void setProcessors(List<P> processors) {
+    public void setProcessors(List<Processor<P>> processors) {
         this.processors = processors;
     }
 

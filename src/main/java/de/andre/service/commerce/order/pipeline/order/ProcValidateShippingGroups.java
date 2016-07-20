@@ -1,31 +1,30 @@
-package de.andre.service.commerce.order.processor.order;
+package de.andre.service.commerce.order.pipeline.order;
 
 import de.andre.entity.order.CommerceItem;
 import de.andre.entity.order.HardgoodShippingGroup;
 import de.andre.entity.order.Order;
 import de.andre.entity.order.ShippingItemRelationship;
-import org.springframework.context.MessageSource;
+import de.andre.service.commerce.order.pipeline.ProcessContext;
 import org.springframework.validation.Errors;
 
 import java.util.List;
 
 public class ProcValidateShippingGroups extends SkeletalOrderProcessor {
-    protected ProcValidateShippingGroups(final String name, final MessageSource messageSource) {
-        super(name, messageSource);
+    protected ProcValidateShippingGroups(final String name) {
+        super(name);
     }
 
     @Override
-    protected void processInternal(final OrderContext orderContext, final Errors result) {
-        final Order order = orderContext.getOrder();
+    protected void processInternal(final ProcessContext<Order> orderContext, final Errors result) {
+        final Order order = orderContext.getTarget();
         final List<HardgoodShippingGroup> hgs = order.getHgShippingGroups();
 
         if (hgs.size() > 1) {
             // need to check for correct ci assignments
-            for (final CommerceItem ci : order.getCommerceItems()) {
-                if (!validateCommercetItem(ci, hgs)) {
-//                    result.addError(PipelineError.of("unassigned.ci"));
-                }
-            }
+            order.getCommerceItems()
+                    .stream()
+                    .filter(ci -> !validateCommercetItem(ci, hgs))
+                    .forEach(ci -> result.reject("unassigned.ci"));
         }
     }
 

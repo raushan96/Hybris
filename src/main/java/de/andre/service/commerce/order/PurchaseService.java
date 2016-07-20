@@ -7,7 +7,8 @@ import de.andre.entity.order.Order;
 import de.andre.entity.order.PaymentGroup;
 import de.andre.service.commerce.order.price.AdjustmentsPersister;
 import de.andre.service.commerce.order.price.RepriceEngine;
-import de.andre.service.commerce.order.processor.ProcessChainExecutor;
+import de.andre.service.commerce.order.pipeline.ProcessChainExecutor;
+import de.andre.service.commerce.order.pipeline.ProcessContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -15,8 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
-import static de.andre.service.commerce.order.processor.PipelineConstants.*;
-import static java.util.Collections.*;
+import static de.andre.service.commerce.order.pipeline.PipelineConstants.*;
 
 // purchase facade
 public class PurchaseService {
@@ -100,7 +100,7 @@ public class PurchaseService {
                         1)
                 );
             }
-            chainExecutor.executeOrderChain(CHAIN_ORDER_PROCESS, singletonMap(ORDER, order));
+            chainExecutor.executeOrderChain(CHAIN_ORDER_PROCESS, ProcessContext.order(order));
 //            chainExecutor.executeOrderChain("validateOrder", singletonMap(ORDER, order));
             orderHolder.switchOrder();
         }

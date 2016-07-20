@@ -99,6 +99,30 @@ public class SiteView implements Site {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SiteView siteView = (SiteView) o;
+
+        if (enabled != siteView.enabled) return false;
+        if (id != null ? !id.equals(siteView.id) : siteView.id != null) return false;
+        if (displayName != null ? !displayName.equals(siteView.displayName) : siteView.displayName != null)
+            return false;
+        return locale != null ? locale.equals(siteView.locale) : siteView.locale == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (displayName != null ? displayName.hashCode() : 0);
+        result = 31 * result + (locale != null ? locale.hashCode() : 0);
+        result = 31 * result + (enabled ? 1 : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "SiteView{" +
                 "id='" + id + '\'' +

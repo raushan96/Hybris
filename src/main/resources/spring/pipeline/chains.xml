@@ -7,7 +7,9 @@
      http://www.springframework.org/schema/util
      http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean id="chainExecutor" class="de.andre.service.commerce.order.processor.ProcessChainExecutor"
+    <import resource="processors.xml"/>
+
+    <bean id="chainExecutor" class="de.andre.service.commerce.order.pipeline.ProcessChainExecutor"
           init-method="initialize">
         <property name="orderChains">
             <map>
@@ -17,28 +19,19 @@
         </property>
     </bean>
 
-    <bean id="orderProcessBridge" class="de.andre.service.commerce.order.processor.order.OrderProcessBridge"/>
-
-    <bean id="procValidateOrder" class="de.andre.service.commerce.order.processor.order.ProcValidateOrder">
-        <constructor-arg name="name" value="procValidateOrder"/>
-        <constructor-arg name="messageSource" ref="messageSource"/>
-    </bean>
-
-    <bean id="dispatchOrderProcessor" class="de.andre.service.commerce.order.processor.order.DispatchOrderProcessor"></bean>
-
-    <bean id="validateOrderChain" class="de.andre.service.commerce.order.processor.ProcessChain">
+    <bean id="validateOrderChain" class="de.andre.service.commerce.order.pipeline.ProcessChain">
         <constructor-arg name="chainId" value="validateOrderChain"/>
-        <constructor-arg name="processBridge" ref="orderProcessBridge"/>
         <property name="processors">
             <list>
+                <ref bean="procValidateOrderProps"/>
                 <ref bean="procValidateOrder"/>
+                <ref bean="procValidateShippingGroups"/>
             </list>
         </property>
     </bean>
 
-    <bean id="processOrder" class="de.andre.service.commerce.order.processor.ComplexProcessChain">
+    <bean id="processOrder" class="de.andre.service.commerce.order.pipeline.ComplexProcessChain">
         <constructor-arg name="chainId" value="processOrder"/>
-        <constructor-arg name="processBridge" ref="orderProcessBridge"/>
         <constructor-arg name="chainExecutor" ref="chainExecutor"/>
         <property name="processors">
             <list>

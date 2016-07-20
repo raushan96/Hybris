@@ -1,4 +1,4 @@
-package de.andre.service.commerce.order.processor;
+package de.andre.service.commerce.order.pipeline;
 
 import org.springframework.util.Assert;
 
