@@ -22,7 +22,9 @@ public class ProcessChainExecutor {
     }
 
     public Errors executeOrderChain(final String pChainId, final ProcessContext<Order> ctx) {
-        logger.debug("Executing chain for '{}' chainId", pChainId);
+        if (logger.isTraceEnabled()) {
+            logger.trace("Executing chain for '{}' chainId and context '{}'", pChainId, ctx);
+        }
 
         final IProcessChain<Order> chain = this.orderChains.get(pChainId);
         Assert.notNull(chain, "Chain is not defined for '" + pChainId + "' chainId");

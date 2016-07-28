@@ -46,7 +46,7 @@ public class ProcessChain<P> implements IProcessChain<P> {
             final Processor<P> processor = this.processors.get(currentPosition);
             final String processorName = processor.getName();
 
-            if (!seenSoFar.add(processor.getName())) {
+            if (!seenSoFar.add(processorName)) {
                 logger.warn("{} processor was already executed, possible circular reference", processorName);
                 if (!isForceExecution()) {
                     return false;
@@ -54,18 +54,18 @@ public class ProcessChain<P> implements IProcessChain<P> {
             }
 
             try {
-                final ProcessorResult res = processor.process(ctx, result);
+                final ProcResult res = processor.process(ctx, result);
                 Assert.notNull(res, "Result must be not null after processing!");
 
                 if (result.hasErrors()) {
                     logger.debug("Cancelling '{}' chain because of errors during execution", this.chainId);
                     break;
                 }
-                else if (res.getAction() == ProcessorResult.Result.PROCEED) {
+                else if (res.getAction() == ProcResult.Result.PROCEED) {
                     logger.debug("Processor {} returns proceed result", processorName);
                     currentPosition++;
                 }
-                else if (res.getAction() == ProcessorResult.Result.PROCESS_DISPATCH) {
+                else if (res.getAction() == ProcResult.Result.PROCESS_DISPATCH) {
                     logger.debug("Processor {} returns dispatch result, dispatching to {}",
                                  processorName, res.getDispatchProcessorName());
                     currentPosition = processorPosition(res.getDispatchProcessorName());
@@ -87,7 +87,7 @@ public class ProcessChain<P> implements IProcessChain<P> {
     }
 
     protected boolean onProcessResult(
-            final ProcessorResult processResult,
+            final ProcResult processResult,
             final ProcessContext<P> ctx,
             final Errors result) {
         logger.warn("Unsupported result operation '{}' received, proceeding into next processor" +

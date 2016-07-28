@@ -9,7 +9,8 @@ public class PricedProductDTO implements Serializable {
     private Double price;
     private String priceList;
 
-    public PricedProductDTO(){};
+    public PricedProductDTO() {
+    }
 
     public PricedProductDTO(Integer productId, Double basePrice, String priceList) {
         this.productId = productId;

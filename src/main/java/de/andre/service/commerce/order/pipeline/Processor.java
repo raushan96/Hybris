@@ -5,5 +5,5 @@ import org.springframework.validation.Errors;
 public interface Processor<T> {
     String getName();
 
-    ProcessorResult process(ProcessContext<T> ctx, Errors result);
+    ProcResult process(ProcessContext<T> ctx, Errors result);
 }

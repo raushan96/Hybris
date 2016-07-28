@@ -2,28 +2,28 @@ package de.andre.service.commerce.order.pipeline;
 
 import org.springframework.util.Assert;
 
-public class DispatchableProcessorResult extends ProcessorResult {
+public class DispatchableProcResult extends ProcResult {
     private String dispatchChainName;
 
-    public static DispatchableProcessorResult dispatchChainResult(
+    public static DispatchableProcResult dispatchChainResult(
             final String processorName, final String dispatchProcessorName, final String dispatchChainName) {
-        return new DispatchableProcessorResult(processorName, Result.CHAIN_DISPATCH, dispatchProcessorName,
-                                               dispatchChainName);
+        return new DispatchableProcResult(processorName, Result.CHAIN_DISPATCH, dispatchProcessorName,
+                                          dispatchChainName);
     }
 
-    public static DispatchableProcessorResult dispatchChainResult(
+    public static DispatchableProcResult dispatchChainResult(
             final String processorName, final String dispatchChainName) {
-        return new DispatchableProcessorResult(processorName, Result.CHAIN_DISPATCH, dispatchChainName);
+        return new DispatchableProcResult(processorName, Result.CHAIN_DISPATCH, dispatchChainName);
     }
 
-    private DispatchableProcessorResult(String processorName, Result action,
+    private DispatchableProcResult(String processorName, Result action,
             String dispatchProcessorName, String dispatchChainName) {
         super(processorName, action, dispatchProcessorName);
         Assert.hasLength(dispatchChainName);
         this.dispatchChainName = dispatchChainName;
     }
 
-    private DispatchableProcessorResult(String processorName, Result action, String dispatchChainName) {
+    private DispatchableProcResult(String processorName, Result action, String dispatchChainName) {
         super(processorName, action);
         Assert.hasLength(dispatchChainName);
         this.dispatchChainName = dispatchChainName;

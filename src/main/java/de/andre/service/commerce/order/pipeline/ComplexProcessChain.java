@@ -27,12 +27,12 @@ public class ComplexProcessChain<P> extends ProcessChain<P>
 
     @Override
     protected boolean onProcessResult(
-            final ProcessorResult processResult,
+            final ProcResult processResult,
             final ProcessContext<P> ctx,
             final Errors result) {
-        if (processResult instanceof DispatchableProcessorResult &&
-                processResult.getAction() == ProcessorResult.Result.CHAIN_DISPATCH) {
-            final DispatchableProcessorResult dispatchResult = (DispatchableProcessorResult) processResult;
+        if (processResult instanceof DispatchableProcResult &&
+                processResult.getAction() == ProcResult.Result.CHAIN_DISPATCH) {
+            final DispatchableProcResult dispatchResult = (DispatchableProcResult) processResult;
             final String dispatchChain = dispatchResult.getDispatchChainName();
             logger.debug("Invoking '{}' chain from the '{}' complex chain", dispatchChain, this.getChainId());
 

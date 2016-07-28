@@ -2,22 +2,22 @@ package de.andre.service.commerce.order.pipeline;
 
 import org.springframework.util.Assert;
 
-public class ProcessorResult {
+public class ProcResult {
     private final String processorName;
     private final Result action;
 
     private String dispatchProcessorName;
 
-    public static ProcessorResult successResult(final String processorName) {
-        return new ProcessorResult(processorName, Result.PROCEED);
+    public static ProcResult successResult(final String processorName) {
+        return new ProcResult(processorName, Result.PROCEED);
     }
 
-    public static ProcessorResult dispatchProcessorResult(
+    public static ProcResult dispatchProcessorResult(
             final String processorName, final String dispatchProcessorName) {
-        return new ProcessorResult(processorName, Result.PROCESS_DISPATCH, dispatchProcessorName);
+        return new ProcResult(processorName, Result.PROCESS_DISPATCH, dispatchProcessorName);
     }
 
-    protected ProcessorResult(String processorName, Result action) {
+    protected ProcResult(String processorName, Result action) {
         Assert.hasLength(processorName);
         Assert.notNull(action);
 
@@ -25,7 +25,7 @@ public class ProcessorResult {
         this.action = action;
     }
 
-    protected ProcessorResult(String processorName, Result action, String dispatchProcessorName) {
+    protected ProcResult(String processorName, Result action, String dispatchProcessorName) {
         this(processorName, action);
         Assert.hasLength(dispatchProcessorName);
         this.dispatchProcessorName = dispatchProcessorName;
